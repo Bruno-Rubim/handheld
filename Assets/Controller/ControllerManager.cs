@@ -5,15 +5,6 @@ using UnityEngine.UI;
 
 public class ControllerManager : MonoBehaviour
 {
-//    public Button circle;
-//    public Button square;
-//    public Button cross;
-//    public Button triangle;
-//    public Button dpadUp;
-//    public Button dpadDown;
-//    public Button dpadLeft;
-//    public Button select;
-//    public Button start;
 
     public bool circlePressed;
     public bool squarePressed;
