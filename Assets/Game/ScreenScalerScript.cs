@@ -8,8 +8,8 @@ public class ScreenScalerScript : MonoBehaviour
     void Start()
 
     {
-        var scale = (Screen.width/180f)/6;
-//        transform.localScale = new Vector3(scale, scale,0);
+        var scale = (Screen.width/180f)/6*0.8f;
+        transform.localScale = new Vector3(scale, scale,0);
         Debug.Log(Screen.width);
         Debug.Log(Screen.height);
         Debug.Log(scale);
