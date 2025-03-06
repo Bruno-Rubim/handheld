@@ -66,6 +66,11 @@ const sprites = [
     '/handheld/images/game/button-off-blue.png',
     '/handheld/images/game/blue-wall-on.png',
     '/handheld/images/game/button-on-blue.png',
+    '/handheld/images/game/inventory-frame.png',
+    '/handheld/images/game/green-scan.png',
+    '/handheld/images/game/green-wall-on.png',
+    '/handheld/images/game/push-box-controls.png',
+    '/handheld/images/game/green-wall-off.png',
 ]
 
 for (const sprite of sprites) {

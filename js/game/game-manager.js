@@ -67,7 +67,7 @@ const controlsDict = {
 
 function renderControls(){
     //Frame
-    const frameImg = getImg('..//handheld/images/game/inventory-frame.png')
+    const frameImg = getImg('/handheld/images/game/inventory-frame.png')
     ctx.drawImage(frameImg,
         ((screenPosX)) * renderScale,
         ((screenPosY) + (screenHeight - 2 * tileSize)) * renderScale,
