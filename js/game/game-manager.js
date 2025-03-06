@@ -2,7 +2,7 @@ import { ctx, renderScale } from "../canvas-handler.js";
 import { keyIsPressed } from "../key-handler.js";
 import { player } from "./player.js";
 import { getImg } from '../image-store.js'
-import { room0, room1, room2, room3, room4, testRoom } from "./rooms.js";
+import { room0, room1, room2, room3, room4, room5, room6, testRoom } from "./rooms.js";
 
 const tileSize = 16
 export const gameWidthInTiles = 16
@@ -50,7 +50,8 @@ function renderObjectList(){
 
 function renderBackGround(){
     let backgroundImg = getImg('/handheld/images/game/background.png')
-    backgroundImg = getImg('/handheld/images/game/background-debug.png')
+    // uncomment for debug
+    // backgroundImg = getImg('/handheld/images/game/background-debug.png')
     ctx.drawImage(backgroundImg,
         (screenPosX) * renderScale,
         (screenPosY) * renderScale,

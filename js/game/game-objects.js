@@ -15,7 +15,7 @@ export class Disc {
 }
 
 export class DiscScanner {
-    constructor({posX=7, posY=5, effectOn=()=>{}, effectOff=()=>{}, color='default'}){
+    constructor({posX=7, posY=5, effectOn=()=>{}, effectOff=()=>{}, color='default', state='off'}){
         this.posX = posX
         this.posY = posY
         this.layer = 'scanner'
@@ -23,42 +23,19 @@ export class DiscScanner {
         this.effectOff = effectOff;
         this.color = color;
         this.name = this.color + '-scan'
-        this.previousState = 'off'
+        this.state = state
     }
     discCheck(disc){
         if (disc?.color == this.color){
-            if (this.previousState == 'off'){
+            if (this.state == 'off'){
                 netSwitch(this.color)
-                this.previousState = 'on'
+                this.state = 'on'
             }
         } else {
-            if (this.previousState == 'on') { 
+            if (this.state == 'on') { 
                 netSwitch(this.color)
-                this.previousState = 'off'
+                this.state = 'off'
             }
-        }
-    }
-}
-
-export class PlayerScanner {
-    constructor({posX=7, posY=5, effectOn=()=>{}, effectOff=()=>{}}){
-        this.posX = posX
-        this.posY = posY
-        this.layer = layer
-        this.effectOn = effectOn;
-        this.effectOff = effectOff;
-        this.color = 'blue';
-        this.name = 'player-scan'
-        this.previousState = 'off'
-        this.colorNet = true;
-    }
-    playerCheck(){
-        if (this.previousState == 'off'){
-            netSwitch(this.color)
-            this.previousState = 'on'
-        } else {
-            netSwitch(this.color)
-            this.previousState = 'off'
         }
     }
 }
@@ -76,19 +53,19 @@ export class SwitchButton {
     get name() {
         return `button-${this.state}-${this.color}`
     }
-    flipOff(){
+    switchOff(){
         this.state = 'off'
     }
-    flipOn(){
+    switchOn(){
         this.state = 'on'
     }
     switchState(){
         if (this.state == 'off'){
             netSwitch(this.color)
-            this.flipOn
+            this.switchOn
         } else {
             netSwitch(this.color)
-            this.flipOff
+            this.switchOff
         }
     }
 }
@@ -99,9 +76,9 @@ export function netSwitch(color){
             return
         }
         if (obj.state == 'on'){
-            obj.flipOff()
+            obj.switchOff()
         } else {
-            obj.flipOn()
+            obj.switchOn()
         }
     })
 }
@@ -120,11 +97,11 @@ export class FlipWall {
             this.layer = 'player'
         }
     }
-    flipOn(){
+    switchOn(){
         this.layer = 'player'
         this.state = 'on'
     }
-    flipOff(){
+    switchOff(){
         this.layer = 'wallOff'
         this.state = 'off'
     }
@@ -134,13 +111,21 @@ export class FlipWall {
 }
 
 export class DiscTrap {
-    constructor({posX=0, posY=0}){
+    constructor({posX=0, posY=0, state='on', color='white'}){
         this.posX = posX
         this.posY = posY
         this.layer = 'disc-trap' 
-        this.name = 'disc-trap'
+        this.state = state
+        this.color = color
+        this.colorNet = color
+    }
+    get name(){
+        return `disc-trap-${this.state}-${this.color}`
     }
     pullDisc(){
+        if (this.state == 'off'){
+            return
+        }
         const discFloor = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY, 'disc')
         const bot = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY, 'player')
         if (bot.disc) {
@@ -153,6 +138,12 @@ export class DiscTrap {
             roomModule.currentRoom.objectList.push(bot.disc)
             bot.disc = null
         }
+    }
+    switchOff(){
+        this.state = 'off'
+    }
+    switchOn(){
+        this.state = 'on'
     }
 }
 
