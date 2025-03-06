@@ -141,9 +141,11 @@ export class DiscTrap {
     }
     switchOff(){
         this.state = 'off'
+        console.log(this.state)
     }
     switchOn(){
         this.state = 'on'
+        console.log(this.state)
     }
 }
 

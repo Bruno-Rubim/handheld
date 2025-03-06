@@ -20,7 +20,8 @@ export class Room {
         let obj = originalObj;
         for(let i = posStart; i <= posEnd; i++){
             if (originalObj.class){
-                obj = new originalObj.class (obj)
+                // console.log(originalObj.constructor)
+                obj = new originalObj.constructor(obj)
             } else {
                 obj = {...originalObj}
             }
@@ -93,157 +94,211 @@ testRoom.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 2, 15)
 testRoom.addLineToObjectList({name:'wall', layer:'player'}, 'y', 7, 9, 15)
 
 //room0
-export let room0 = new Room({playerStartPos:{posX: 1, posY: 5}})
+export let roomButton1 = new Room({playerStartPos:{posX: 1, posY: 5}})
 
-room0.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 0)
-room0.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 1)
-room0.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 2)
-room0.addLineToObjectList({name:'wall', layer:'player'}, 'x', 8, 12, 3)
-room0.addLineToObjectList({name:'wall', layer:'player'}, 'x', 8, 12, 6)
-room0.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 7)
-room0.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 8)
-room0.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 9)
-room0.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 9, 0)
+roomButton1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 0)
+roomButton1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 1)
+roomButton1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 2)
+roomButton1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 8, 12, 3)
+roomButton1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 8, 12, 6)
+roomButton1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 7)
+roomButton1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 8)
+roomButton1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 9)
+roomButton1.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 9, 0)
 
-room0.addLineToObjectList(new FlipWall({color:'white', state:'on', layer:'player'}), 'y', 4, 5, 8)
-room0.objectList.push (new SwitchButton({posX: 5, posY: 4, color: 'white'}))
+roomButton1.addLineToObjectList(new FlipWall({color:'white', state:'on', layer:'player'}), 'y', 4, 5, 8)
+roomButton1.objectList.push (new SwitchButton({posX: 5, posY: 4, color: 'white'}))
 
 //room1
-export let room1 = new Room({playerStartPos:{posX: 0, posY: 5}})
-room0.rightRoom = room1
-room1.leftRoom = room0
+export let roomButton2 = new Room({playerStartPos:{posX: 0, posY: 5}})
+roomButton1.rightRoom = roomButton2
+roomButton2.leftRoom = roomButton1
 
-room1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 8, 0)
-room1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 8, 1)
+roomButton2.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 8, 0)
+roomButton2.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 8, 1)
 
-room1.objectList.push({name:'wall', layer:'player', posX:9, posY:1})
-room1.addLineToObjectList(new FlipWall({color:'white', state:'off'}), 'x', 10, 12, 1)
-room1.objectList.push({name:'wall', layer:'player', posX:13, posY:1})
+roomButton2.objectList.push({name:'wall', layer:'player', posX:9, posY:1})
+roomButton2.addLineToObjectList(new FlipWall({color:'white', state:'off'}), 'x', 10, 12, 1)
+roomButton2.objectList.push({name:'wall', layer:'player', posX:13, posY:1})
 
-room1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 8, 2)
-room1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 7)
-room1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 8)
-room1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 9)
+roomButton2.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 8, 2)
+roomButton2.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 7)
+roomButton2.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 8)
+roomButton2.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 9)
 
-room1.objectList.push({name:'wall', layer:'player', posX:7, posY:3})
-room1.addLineToObjectList(new FlipWall({color:'white', state:'on'}), 'y', 4, 5, 7)
-room1.objectList.push({name:'wall', layer:'player', posX:7, posY:6})
+roomButton2.objectList.push({name:'wall', layer:'player', posX:7, posY:3})
+roomButton2.addLineToObjectList(new FlipWall({color:'white', state:'on'}), 'y', 4, 5, 7)
+roomButton2.objectList.push({name:'wall', layer:'player', posX:7, posY:6})
 
-room1.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 9, 14)
-room1.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 9, 15)
+roomButton2.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 9, 14)
+roomButton2.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 9, 15)
 
-room1.objectList.push(new SwitchButton({posX: 4,posY: 3,color: 'white'}))
-room1.objectList.push(new SwitchButton({posX: 12, posY: 5, color: 'white'}))
+roomButton2.objectList.push(new SwitchButton({posX: 4,posY: 3,color: 'white'}))
+roomButton2.objectList.push(new SwitchButton({posX: 12, posY: 5, color: 'white'}))
 
 //room2
-export let room2 = new Room({playerStartPos:{posX: 12, posY: 9}})
+export let roomDisc1 = new Room({playerStartPos:{posX: 12, posY: 9}})
 
-room1.upRoom = room2
-room2.downRoom = room1
+roomButton2.upRoom = roomDisc1
+roomDisc1.downRoom = roomButton2
 
-room2.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 0)
-room2.addLineToObjectList({name:'wall', layer:'player'}, 'x', 5, 8, 1)
-room2.addLineToObjectList({name:'wall', layer:'player'}, 'x', 5, 8, 7)
-room2.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 8, 8)
-room2.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 8, 9)
-room2.addLineToObjectList(new FlipWall({color:'white', state:'on'}), 'y', 1, 7, 2)
-room2.addLineToObjectList({name:'wall', layer:'player'}, 'y', 8, 9, 14)
-room2.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 9, 15)
+roomDisc1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 0)
+roomDisc1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 5, 8, 1)
+roomDisc1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 5, 8, 7)
+roomDisc1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 8, 8)
+roomDisc1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 8, 9)
+roomDisc1.addLineToObjectList(new FlipWall({color:'white', state:'on'}), 'y', 1, 7, 2)
+roomDisc1.addLineToObjectList({name:'wall', layer:'player'}, 'y', 8, 9, 14)
+roomDisc1.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 9, 15)
 
-room2.objectList.push(new Disc({posX: 11, posY: 2, color: 'white'}))
+roomDisc1.objectList.push(new Disc({posX: 11, posY: 2, color: 'white'}))
 
-room2.objectList.push(new DiscScanner({posX: 6, posY: 4, color: 'white'}))
+roomDisc1.objectList.push(new DiscScanner({posX: 6, posY: 4, color: 'white'}))
 
 
 //room3
-export let room3 = new Room({playerStartPos:{posX: 15, posY: 4}})
+export let roomDiscButton = new Room({playerStartPos:{posX: 15, posY: 4}})
 
-room2.leftRoom = room3
-room3.rightRoom = room2
+roomDisc1.leftRoom = roomDiscButton
+roomDiscButton.rightRoom = roomDisc1
 
-room3.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 4, 0)
-room3.addLineToObjectList(new FlipWall({color:'white', state:'on'}), 'x', 5, 9, 0)
-room3.addLineToObjectList({name:'wall', layer:'player'}, 'x', 10, 15, 0)
-room3.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 4, 1)
-room3.addLineToObjectList(new FlipWall({color:'blue', state:'off'}), 'x', 5, 9, 1)
-room3.addLineToObjectList({name:'wall', layer:'player'}, 'x', 10, 15, 1)
-room3.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 4, 7)
-room3.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 8)
-room3.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 9)
+roomDiscButton.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 4, 0)
+roomDiscButton.addLineToObjectList(new FlipWall({color:'white', state:'on'}), 'x', 5, 9, 0)
+roomDiscButton.addLineToObjectList({name:'wall', layer:'player'}, 'x', 10, 15, 0)
+roomDiscButton.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 4, 1)
+roomDiscButton.addLineToObjectList(new FlipWall({color:'blue', state:'off'}), 'x', 5, 9, 1)
+roomDiscButton.addLineToObjectList({name:'wall', layer:'player'}, 'x', 10, 15, 1)
+roomDiscButton.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 4, 7)
+roomDiscButton.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 8)
+roomDiscButton.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 9)
 
-room3.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 9, 0)
-room3.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 2, 1)
-room3.addLineToObjectList({name:'wall', layer:'player'}, 'y', 6, 9, 1)
-room3.addLineToObjectList(new FlipWall({color:'blue', state:'on'}), 'y', 2, 6, 4)
+roomDiscButton.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 9, 0)
+roomDiscButton.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 2, 1)
+roomDiscButton.addLineToObjectList({name:'wall', layer:'player'}, 'y', 6, 9, 1)
+roomDiscButton.addLineToObjectList(new FlipWall({color:'blue', state:'on'}), 'y', 2, 6, 4)
 
-room3.objectList.push(new SwitchButton({posX: 8, posY: 5, color: 'blue'}))
+roomDiscButton.objectList.push(new SwitchButton({posX: 8, posY: 5, color: 'blue'}))
 
-room3.objectList.push(new Disc({posX: 14, posY: 7, color: 'white'}))
+roomDiscButton.objectList.push(new Disc({posX: 14, posY: 7, color: 'white'}))
 
-room3.objectList.push(new DiscScanner({posX: 2, posY: 4, color: 'white'}))
+roomDiscButton.objectList.push(new DiscScanner({posX: 2, posY: 4, color: 'white'}))
 
 //room4
-export let room4 = new Room({playerStartPos:{posX: 7, posY:9}})
+export let roomDisc2 = new Room({playerStartPos:{posX: 7, posY:9}})
 
-room3.upRoom = room4
-room4.downRoom = room3
+roomDiscButton.upRoom = roomDisc2
+roomDisc2.downRoom = roomDiscButton
 
-room4.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 0)
-room4.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 1)
-room4.addLineToObjectList({name:'wall', layer:'player'}, 'x', 12, 15, 2)
-room4.addLineToObjectList({name:'wall', layer:'player'}, 'x', 12, 15, 7)
-room4.addLineToObjectList({name:'wall', layer:'player'}, 'x', 10, 15, 8)
-room4.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 4, 8)
-room4.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 4, 9)
-room4.addLineToObjectList({name:'wall', layer:'player'}, 'x', 10, 15, 9)
+roomDisc2.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 0)
+roomDisc2.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 1)
+roomDisc2.addLineToObjectList({name:'wall', layer:'player'}, 'x', 12, 15, 2)
+roomDisc2.addLineToObjectList({name:'wall', layer:'player'}, 'x', 12, 15, 7)
+roomDisc2.addLineToObjectList({name:'wall', layer:'player'}, 'x', 10, 15, 8)
+roomDisc2.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 4, 8)
+roomDisc2.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 4, 9)
+roomDisc2.addLineToObjectList({name:'wall', layer:'player'}, 'x', 10, 15, 9)
 
-room4.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 9, 0)
-room4.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 9, 1)
-room4.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 9, 2)
-room4.addLineToObjectList(new FlipWall({color:'white', state:'on'}), 'y', 3, 6, 13)
-room4.addLineToObjectList(new FlipWall({color:'green', state:'on'}), 'y', 3, 6, 14)
+roomDisc2.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 9, 0)
+roomDisc2.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 9, 1)
+roomDisc2.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 9, 2)
+roomDisc2.addLineToObjectList(new FlipWall({color:'white', state:'on'}), 'y', 3, 6, 13)
+roomDisc2.addLineToObjectList(new FlipWall({color:'green', state:'on'}), 'y', 3, 6, 14)
 
-room4.objectList.push({name:'box', posX: 8, posY: 4, layer:'player'})
-room4.objectList.push({name:'box', posX: 8, posY: 5, layer:'player'})
+roomDisc2.objectList.push({name:'box', posX: 10, posY: 3, layer:'player'})
+roomDisc2.objectList.push({name:'box', posX: 10, posY: 6, layer:'player'})
 
-room4.objectList.push(new Disc({color: 'green', posX: 4, posY: 3}))
-room4.objectList.push(new Disc({color: 'white', posX: 4, posY: 6}))
+roomDisc2.objectList.push(new Disc({color: 'green', posX: 4, posY: 3}))
+roomDisc2.objectList.push(new Disc({color: 'white', posX: 4, posY: 6}))
 
-room4.objectList.push(new DiscScanner({color: 'green', posX: 4, posY: 6}))
-room4.objectList.push(new DiscScanner({color: 'white', posX: 4, posY: 3}))
+roomDisc2.objectList.push(new DiscScanner({color: 'green', posX: 4, posY: 6}))
+roomDisc2.objectList.push(new DiscScanner({color: 'white', posX: 4, posY: 3}))
 
 //room5
-export let room5 = new Room({playerStartPos:{posX: 0, posY:4}})
+export let roomPushBox = new Room({playerStartPos:{posX: 0, posY:4}})
 
-room4.rightRoom = room5
-room5.leftRoom = room4
+roomDisc2.rightRoom = roomPushBox
+roomPushBox.leftRoom = roomDisc2
 
-room5.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 10, 0)
-room5.addLineToObjectList(new FlipWall({color:'green', state:'on'}), 'x', 11, 13, 0)
-room5.addLineToObjectList({name:'wall', layer:'player'}, 'x', 14, 15, 0)
-room5.addLineToObjectList({name:'wall', layer:'player'}, 'x', 4, 10, 3)
-room5.addLineToObjectList({name:'wall', layer:'player'}, 'x', 4, 10, 7)
-room5.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 8)
-room5.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 9)
+roomPushBox.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 0)
+roomPushBox.addLineToObjectList({name:'wall', layer:'player'}, 'x', 4, 10, 3)
+roomPushBox.addLineToObjectList({name:'wall', layer:'player'}, 'x', 4, 10, 7)
+roomPushBox.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 8)
+roomPushBox.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 9)
 
-room5.addLineToObjectList({name:'box', layer:'player'}, 'y', 2, 5, 1)
-room5.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 2, 0)
-room5.addLineToObjectList({name:'wall', layer:'player'}, 'y', 7, 9, 0)
-room5.addLineToObjectList(new FlipWall({color:'green', state:'off'}), 'y', 4, 6, 10)
-room5.addLineToObjectList({name:'box', layer:'player'}, 'y', 4, 6, 4)
-room5.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 9, 15)
+roomPushBox.addLineToObjectList({name:'box', layer:'player'}, 'y', 4, 5, 1)
+roomPushBox.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 2, 0)
+roomPushBox.addLineToObjectList({name:'wall', layer:'player'}, 'y', 7, 9, 0)
+roomPushBox.addLineToObjectList(new FlipWall({color:'green', state:'off'}), 'y', 4, 6, 10)
+roomPushBox.addLineToObjectList({name:'box', layer:'player'}, 'y', 4, 6, 4)
+roomPushBox.addLineToObjectList(new FlipWall({color:'green', state:'on'}), 'y', 1, 3, 15)
+roomPushBox.addLineToObjectList({name:'wall', layer:'player'}, 'y', 4, 9, 15)
 
-room5.objectList.push(new Disc({color: 'green', posX: 8, posY: 5}))
-room5.objectList.push(new DiscScanner({color: 'green', posX: 6, posY: 5}))
+roomPushBox.objectList.push(new Disc({color: 'green', posX: 6, posY: 5}))
+roomPushBox.objectList.push(new DiscScanner({color: 'green', posX: 8, posY: 5}))
+roomPushBox.addLineToObjectList({name:'wall', layer:'player'}, 'x', 4, 10, 3)
 
-// room5.objectList.push(new DiscTrap({posX: 8, posY: 2}))
-// room5.objectList.push(new DiscTrap({posX: 8, posY: 1}))
+//roomTrap1
+export let roomTrap1 = new Room({playerStartPos:{posX: 0, posY:2}})
+
+roomPushBox.rightRoom = roomTrap1
+roomTrap1.leftRoom = roomPushBox
+
+roomTrap1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 10, 0)
+roomTrap1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 14, 15, 0)
+// roomTrap1.addLineToObjectList(new DiscTrap({color:'white', state:'on'}), 'x', 11, 13, 1)
+roomTrap1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 9)
+roomTrap1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 4, 10, 1)
+roomTrap1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 4, 10, 2)
+roomTrap1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 4, 10, 3)
+roomTrap1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 4, 10, 4)
+roomTrap1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 5, 9, 5)
+roomTrap1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 5, 9, 7)
+roomTrap1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 8)
+
+roomTrap1.addLineToObjectList({name:'wall', layer:'player'}, 'y', 4, 9, 0)
+roomTrap1.addLineToObjectList({name:'wall', layer:'player'}, 'y', 1, 4, 14)
+roomTrap1.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 9, 15)
+
+roomTrap1.objectList.push(new Disc({color: 'green', posX: 4, posY: 5}))
+roomTrap1.objectList.push(new Disc({color: 'white', posX: 4, posY: 7}))
+
+roomTrap1.objectList.push({name:'box', posX: 9, posY: 6, layer:'player'})
+roomTrap1.objectList.push(new DiscTrap({posX: 7, posY: 6}))
+
+roomTrap1.objectList.push(new DiscTrap({posX: 11, posY: 1}))
+roomTrap1.objectList.push(new DiscTrap({posX: 12, posY: 1}))
+roomTrap1.objectList.push(new DiscTrap({posX: 13, posY: 1}))
 
 //room6
-export let room6 = new Room({playerStartPos:{posX: 12, posY:9}})
+export let roomTrap2 = new Room({playerStartPos:{posX: 12, posY:9}})
 
-room5.upRoom = room6
-room6.downRoom = room5
+roomTrap1.upRoom = roomTrap2
+roomTrap2.downRoom = roomTrap1
 
-room6.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 10, 9)
-room6.addLineToObjectList({name:'wall', layer:'player'}, 'x', 14, 15, 9)
+roomTrap2.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 0)
+roomTrap2.addLineToObjectList({name:'wall', layer:'player'}, 'x', 4, 15, 5)
+roomTrap2.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 10, 9)
+roomTrap2.addLineToObjectList({name:'wall', layer:'player'}, 'x', 3, 9, 6)
+roomTrap2.addLineToObjectList({name:'wall', layer:'player'}, 'x', 3, 9, 8)
+roomTrap2.addLineToObjectList({name:'wall', layer:'player'}, 'x', 14, 15, 9)
+
+roomTrap2.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 9, 0)
+roomTrap2.addLineToObjectList(new FlipWall({color:'white', state:'on'}), 'y', 1, 4, 12)
+roomTrap2.addLineToObjectList(new FlipWall({color:'green', state:'on'}), 'y', 1, 4, 13)
+roomTrap2.addLineToObjectList({name:'wall', layer:'player'}, 'y', 4, 9, 15)
+
+roomTrap2.objectList.push(new Disc({color: 'green', posX: 14, posY: 6}))
+roomTrap2.objectList.push(new Disc({color: 'white', posX: 14, posY: 8}))
+
+roomTrap2.objectList.push({name:'box', posX: 9, posY: 7, layer:'player'})
+
+roomTrap2.objectList.push(new DiscTrap({posX: 6, posY: 7}))
+
+roomTrap2.objectList.push(new DiscScanner({color: 'white', posX: 8, posY: 2}))
+roomTrap2.objectList.push(new DiscScanner({color: 'green', posX: 8, posY: 3}))
+
+//roomIdk
+export let roomIdk = new Room({playerStartPos:{posX: 0, posY:3}})
+
+roomTrap2.rightRoom = roomIdk
+roomIdk.leftRoom = roomTrap2

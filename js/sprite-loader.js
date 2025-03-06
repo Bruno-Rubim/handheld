@@ -1,12 +1,7 @@
 import { preloadImg } from './image-store.js';
 
 const sprites = [
-    '/handheld/images/game/floppy-green-description.png',
-    '/handheld/images/game/floppy-null-description.png',
-    '/handheld/images/game/floppy-purple-description.png',
-    '/handheld/images/game/floppy-red-description.png',
-    '/handheld/images/game/inventory-frame.png',
-
+    
     '/handheld/images/case-pc/case-pc.png',
     '/handheld/images/case-pc/circle-button-off.png',
     '/handheld/images/case-pc/circle-button-on.png',
@@ -37,6 +32,10 @@ const sprites = [
     '/handheld/images/game/drill-up.png',
     '/handheld/images/game/floppy-green-item.png',
     '/handheld/images/game/floppy-green-selected.png',
+    '/handheld/images/game/floppy-green-description.png',
+    '/handheld/images/game/floppy-purple-description.png',
+    '/handheld/images/game/floppy-red-description.png',
+    '/handheld/images/game/inventory-frame.png',
     '/handheld/images/game/floppy-null-selected.png',
     '/handheld/images/game/floppy-purple-item.png',
     '/handheld/images/game/floppy-purple-selected.png',
@@ -71,6 +70,8 @@ const sprites = [
     '/handheld/images/game/green-wall-on.png',
     '/handheld/images/game/push-box-controls.png',
     '/handheld/images/game/green-wall-off.png',
+    '/handheld/images/game/disc-trap-on-white.png',
+    '/handheld/images/game/disc-trap-off-white.png'
 ]
 
 for (const sprite of sprites) {
