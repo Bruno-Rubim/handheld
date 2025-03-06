@@ -16,7 +16,7 @@ const screenPosY = 13
 const shineImgSrc = '../images/case-pc/screen-shine.png'
 
 export const roomModule = {
-    currentRoom: room4,
+    currentRoom: room0,
 }
 
 roomModule.currentRoom.playerSpawn()
