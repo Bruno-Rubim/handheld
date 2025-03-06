@@ -16,7 +16,7 @@ const screenPosY = 13
 const shineImgSrc = '/handheld/images/case-pc/screen-shine.png'
 
 export const roomModule = {
-    currentRoom: roomTrap1,
+    currentRoom: roomButton1,
 }
 
 roomModule.currentRoom.playerSpawn()
@@ -51,7 +51,7 @@ function renderObjectList(){
 function renderBackGround(){
     let backgroundImg = getImg('/handheld/images/game/background.png')
     // uncomment for debug
-    backgroundImg = getImg('/handheld/images/game/background-debug.png')
+    // backgroundImg = getImg('/handheld/images/game/background-debug.png')
     ctx.drawImage(backgroundImg,
         (screenPosX) * renderScale,
         (screenPosY) * renderScale,
