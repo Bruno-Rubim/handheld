@@ -13,7 +13,7 @@ const screenHeight = tileSize * gameHeightInTiles
 const screenPosX = 95
 const screenPosY = 13
 
-const shineImgSrc = '../images/case-pc/screen-shine.png'
+const shineImgSrc = '/handheld/images/case-pc/screen-shine.png'
 
 export const roomModule = {
     currentRoom: room0,
@@ -37,7 +37,7 @@ function renderObjectList(){
             if (object.layer != layer){
                 return
             }
-            const img = getImg('../images/game/' + object.name + '.png')
+            const img = getImg('/handheld/images/game/' + object.name + '.png')
             ctx.drawImage(img,
                 (screenPosX + object.posX * tileSize) * renderScale,
                 (screenPosY + object.posY * tileSize) * renderScale,
@@ -49,8 +49,8 @@ function renderObjectList(){
 }
 
 function renderBackGround(){
-    let backgroundImg = getImg('../images/game/background.png')
-    backgroundImg = getImg('../images/game/background-debug.png')
+    let backgroundImg = getImg('/handheld/images/game/background.png')
+    backgroundImg = getImg('/handheld/images/game/background-debug.png')
     ctx.drawImage(backgroundImg,
         (screenPosX) * renderScale,
         (screenPosY) * renderScale,
@@ -67,7 +67,7 @@ const controlsDict = {
 
 function renderControls(){
     //Frame
-    const frameImg = getImg('../../images/game/inventory-frame.png')
+    const frameImg = getImg('..//handheld/images/game/inventory-frame.png')
     ctx.drawImage(frameImg,
         ((screenPosX)) * renderScale,
         ((screenPosY) + (screenHeight - 2 * tileSize)) * renderScale,
@@ -84,14 +84,14 @@ function renderControls(){
     //Disc controls
     let playerDiscImg;
     if (!player.disc){
-        playerDiscImg = getImg(`../images/game/floppy-null-selected.png`)
+        playerDiscImg = getImg(`/handheld/images/game/floppy-null-selected.png`)
         ctx.drawImage(playerDiscImg,
             (screenPosX + 8) * renderScale,
             ((screenPosY + 8) + (screenHeight - 2*tileSize)) * renderScale,
             tileSize * renderScale,tileSize * renderScale)
             return
     } else {
-        playerDiscImg = getImg(`../images/game/floppy-${player.disc.color}-selected.png`)
+        playerDiscImg = getImg(`/handheld/images/game/floppy-${player.disc.color}-selected.png`)
     }
     ctx.drawImage(playerDiscImg,
         (screenPosX + 8) * renderScale,
@@ -100,7 +100,7 @@ function renderControls(){
 
     let controls = controlsDict[player.disc.color]
     for (let i = 0; i < controls.length; i++){
-        const controlImg = getImg(`../images/game/${controls[i]}-controls.png`)
+        const controlImg = getImg(`/handheld/images/game/${controls[i]}-controls.png`)
         ctx.drawImage(controlImg,
             ((screenPosX) + (2 * tileSize*(i + 1))) * renderScale,
             ((screenPosY) + (screenHeight - 2*tileSize)) * renderScale,
@@ -119,7 +119,7 @@ function renderControls(){
         }
         let rBotDiscImg;
         if (!rBot.disc){
-            rBotDiscImg = getImg(`../images/game/floppy-null-selected.png`)
+            rBotDiscImg = getImg(`/handheld/images/game/floppy-null-selected.png`)
             ctx.drawImage(rBotDiscImg,
                 (screenPosX + screenWidth - 1.5*tileSize) * renderScale,
                 ((screenPosY + 8) + (screenHeight - 2*tileSize)) * renderScale,
@@ -127,7 +127,7 @@ function renderControls(){
                 return
         } else {
 
-            rBotDiscImg = getImg(`../images/game/floppy-${rBot.disc.color}-selected.png`)
+            rBotDiscImg = getImg(`/handheld/images/game/floppy-${rBot.disc.color}-selected.png`)
         }
         ctx.drawImage(rBotDiscImg,
             (screenPosX + screenWidth - 1.5 * tileSize) * renderScale,
@@ -138,9 +138,9 @@ function renderControls(){
         for (let i = 0; i < rControls.length; i++){
             let controlImg;
             if (i == 0){
-                controlImg = getImg(`../images/game/remote-${rControls[i]}.png`)
+                controlImg = getImg(`/handheld/images/game/remote-${rControls[i]}.png`)
             } else {
-                controlImg = getImg(`../images/game/${rControls[i]}.png`)
+                controlImg = getImg(`/handheld/images/game/${rControls[i]}.png`)
             }
             ctx.drawImage(controlImg,
                 ((screenPosX + screenWidth) - ((2 * tileSize) * (i + 2))) * renderScale,

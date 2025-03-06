@@ -4,7 +4,7 @@ import { keyIsPressed } from "./key-handler.js";
 import * as timeManager from "./time-manager.js"
 
 const consoleCase = {
-    imgSrc: '../images/case-pc/case-pc.png',
+    imgSrc: '/handheld/images/case-pc/case-pc.png',
     originalWidth: 446,
     originalHeight: 269,
 }
@@ -82,7 +82,7 @@ function renderButtons(){
         if (keyIsPressed[button.key]){
             state = 'on'
         }
-        const img = getImg('../images/case-pc/' + button.name + '-button-' +  state + '.png')
+        const img = getImg('/handheld/images/case-pc/' + button.name + '-button-' +  state + '.png')
         ctx.drawImage(
             img,
             button.posX * renderScale,
