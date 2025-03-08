@@ -74,6 +74,6 @@ const sprites = [
     '/handheld/images/game/disc-trap-off-white.png'
 ]
 
-for (const sprite of sprites) {
-    await preloadImg(sprite)
-}
+await Promise.all(
+    sprites.map(preloadImg)
+)
