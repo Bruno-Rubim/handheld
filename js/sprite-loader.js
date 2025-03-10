@@ -71,7 +71,19 @@ const sprites = [
     '/handheld/images/game/push-box-controls.png',
     '/handheld/images/game/green-wall-off.png',
     '/handheld/images/game/disc-trap-on-white.png',
-    '/handheld/images/game/disc-trap-off-white.png'
+    '/handheld/images/game/disc-trap-off-white.png',
+    '/handheld/images/game/yellow-scan.png',
+    '/handheld/images/game/yellow-wall-on.png',
+    '/handheld/images/game/move-remote-bot-controls.png',
+    '/handheld/images/game/yellow-wall-off.png',
+    '/handheld/images/game/plate-off-blue.png',
+    '/handheld/images/game/plate-on-blue.png',
+    '/handheld/images/game/plate-off-green.png',
+    '/handheld/images/game/plate-on-green.png',
+    '/handheld/images/game/plate-off-white.png',
+    '/handheld/images/game/plate-on-white.png',
+    '/handheld/images/game/pull-box-controls.png',
+    '/handheld/images/game/remote-eject-disc-controls.png',
 ]
 
 await Promise.all(

@@ -2,7 +2,7 @@ import { ctx, renderScale } from "../canvas-handler.js";
 import { keyIsPressed } from "../key-handler.js";
 import { player } from "./player.js";
 import { getImg } from '../image-store.js'
-import { roomButton1, roomButton2, roomDisc1, roomDiscButton, roomDisc2, roomPushBox, roomTrap2, testRoom, roomTrap1 } from "./rooms.js";
+import { roomButton1, roomButton2, roomDisc1, roomDiscButton, roomDisc2, roomPushBox1, roomRemoteBot1, testRoom, roomRemoteBot2, roomPushBox2, roomRemoteBot3 } from "./rooms.js";
 
 const tileSize = 16
 export const gameWidthInTiles = 16
@@ -23,8 +23,20 @@ roomModule.currentRoom.playerSpawn()
 
 //rendering
 const gameLayers = [
-    'wallOff', 'disc-trap', 'teleport', 'button', 'scanner', 'disc', 'player',
+    'wallOff', 'disc-trap', 'teleport', 'plate', 'button', 'scanner', 'disc', 'player',
 ]
+
+function renderBackGround(){
+    let backgroundImg = getImg('/handheld/images/game/background.png')
+    // uncomment for debug
+    // backgroundImg = getImg('/handheld/images/game/background-debug.png')
+    ctx.drawImage(backgroundImg,
+        (screenPosX) * renderScale,
+        (screenPosY) * renderScale,
+        gameWidthInTiles * tileSize * renderScale,
+        (gameHeightInTiles * tileSize - (2 * tileSize)) * renderScale
+    )
+}
 
 function renderObjectList(){
     for(let i = 0; i < gameLayers.length; i++) {
@@ -48,22 +60,11 @@ function renderObjectList(){
     }
 }
 
-function renderBackGround(){
-    let backgroundImg = getImg('/handheld/images/game/background.png')
-    // uncomment for debug
-    // backgroundImg = getImg('/handheld/images/game/background-debug.png')
-    ctx.drawImage(backgroundImg,
-        (screenPosX) * renderScale,
-        (screenPosY) * renderScale,
-        gameWidthInTiles * tileSize * renderScale,
-        (gameHeightInTiles * tileSize - (2 * tileSize)) * renderScale
-    )
-}
-
 const controlsDict = {
     'white': ['eject-disc'],
-    'green': ['eject-disc', 'push-box'],
+    'green': ['eject-disc', 'push-box', 'pull-box'],
     'purple': ['eject-disc', 'teleport'],
+    'yellow': ['eject-disc', 'move-remote-bot'],
 }
 
 function renderControls(){
@@ -134,10 +135,11 @@ function renderControls(){
             (screenPosX + screenWidth - 1.5 * tileSize) * renderScale,
             ((screenPosY + 8) + (screenHeight - 2*tileSize)) * renderScale,
             tileSize * renderScale,tileSize * renderScale)
-    
-        let rControls = rBot.disc.controls
-        for (let i = 0; i < rControls.length; i++){
-            let controlImg;
+        
+        if (rBot.disc){
+            let rControls = rBot.disc.controls
+            for (let i = 0; i < rControls.length; i++){
+                let controlImg;
             if (i == 0){
                 controlImg = getImg(`/handheld/images/game/remote-${rControls[i]}.png`)
             } else {
@@ -147,6 +149,7 @@ function renderControls(){
                 ((screenPosX + screenWidth) - ((2 * tileSize) * (i + 2))) * renderScale,
                 ((screenPosY) + (screenHeight - 2*tileSize)) * renderScale,
                 tileSize *2* renderScale, tileSize *2* renderScale)
+            }
         }
     }
 }

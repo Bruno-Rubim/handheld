@@ -13,9 +13,12 @@ export const player = {
     facing: 'left',
     disc: null,
     inventory(){
+        let discTrap = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY, 'disc-trap')
+        if (discTrap?.state == 'on'){
+            return
+        }
         let scanner = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY, 'scanner')
         let floorDisc = roomModule.currentRoom.takeObjectByPosition(this.posX, this.posY, 'disc')
-        let discTrap = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY, 'disc-trap')
         if (this.disc){
             this.disc.posX = this.posX
             this.disc.posY = this.posY
@@ -26,9 +29,6 @@ export const player = {
             scanner.discCheck(this.disc);
         }
         this.disc = floorDisc
-        if (discTrap){
-            discTrap.pullDisc()
-        }
     },
     move(dir){
         //Checking direction
@@ -88,6 +88,10 @@ export const player = {
                 if (!roomModule.currentRoom.findObjectByPosition(nextTargetPosX, nextTargetPosY, 'player')){
                     targetObject.posX = nextTargetPosX
                     targetObject.posY = nextTargetPosY
+                    let nextTargetPlate = roomModule.currentRoom.findObjectByPosition(nextTargetPosX, nextTargetPosY, 'plate')
+                    if (nextTargetPlate?.state == 'off'){
+                        nextTargetPlate.switchState()
+                    }
                 } else {
                     blocked = true
                 }
@@ -107,13 +111,26 @@ export const player = {
             }
         }
 
+        let playerMoved = false;
+
         if (!blocked) {
+            let currentPlate = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY, 'plate')
+            if (currentPlate?.state == 'on'){
+                currentPlate.switchState()
+            }
+
             this.posX = targetPosX
             this.posY = targetPosY
+            playerMoved = true
 
             let button = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, 'button')
             if (button){
                 button.switchState()
+            }
+
+            let targetPlate = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, 'plate')
+            if (targetPlate?.state == 'off'){
+                targetPlate.switchState()
             }
 
             let discTrap = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, 'disc-trap')
@@ -138,6 +155,8 @@ export const player = {
                 }
             })
         }
+
+        return playerMoved
     },
     discActionA(){
         if (!this.disc){
@@ -180,9 +199,10 @@ export const player = {
         if (this.disc.color == 'purple'){
             roomModule.currentRoom.forEachGameObject((obj)=>{
                 if (obj.layer == 'teleport'){
-                    if (!roomModule.currentRoom.findObjectByPosition(obj.posX, obj.posY, 'player')){
+                    if (!roomModule.currentRoom.findObjectByPosition(obj.posX, obj.posY, 'player') && obj.state == 'on'){
                         this.posX = obj.posX
                         this.posY = obj.posY
+                        return
                     }
                 }
             })
@@ -195,6 +215,55 @@ export const player = {
                 }
             })
             return
+        }
+        if (this.disc.color == 'green'){
+            if (this.state == 'walking'){
+                return
+            }
+            const startingPosX = this.posX
+            const startingPosY = this.posY
+            let box = roomModule.currentRoom.findObjectByPosition(this.posX - 1, this.posY, 'player')
+
+            function changeBoxPosition(){
+                let plate = roomModule.currentRoom.findObjectByPosition(box.posX, box.posY, 'plate')
+                if (plate) {
+                    plate.switchState()
+                }
+                box.posX = startingPosX;
+                box.posY = startingPosY;
+                plate = roomModule.currentRoom.findObjectByPosition(box.posX, box.posY, 'plate')
+                if (plate) {
+                    plate.switchState()
+                }
+            }
+
+            if (box?.name == 'box'){
+                if (this.move('right')){
+                    changeBoxPosition()
+                }
+                return
+            }
+            box = roomModule.currentRoom.findObjectByPosition(this.posX + 1, this.posY, 'player')
+            if (box?.name == 'box'){
+                if (this.move('left')){
+                    changeBoxPosition()
+                }
+                return
+            }
+            box = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY + 1, 'player')
+            if (box?.name == 'box'){
+                if (this.move('up')){
+                    changeBoxPosition()
+                }
+                return
+            }
+            box = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY - 1, 'player')
+            if (box?.name == 'box'){
+                if (this.move('down')){
+                    changeBoxPosition()
+                }
+                return
+            }
         }
     },
     discActionB(){
