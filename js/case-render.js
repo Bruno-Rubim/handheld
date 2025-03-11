@@ -1,10 +1,8 @@
 import { ctx, renderScale } from "./canvas-handler.js";
-import { getImg } from "./image-store.js";
 import { keyIsPressed } from "./key-handler.js";
-import * as timeManager from "./time-manager.js"
+import sprites, { findSprite } from "./sprites.js";
 
 const consoleCase = {
-    imgSrc: '/handheld/images/case-pc/case-pc.png',
     originalWidth: 446,
     originalHeight: 269,
 }
@@ -82,7 +80,7 @@ function renderButtons(){
         if (keyIsPressed[button.key]){
             state = 'on'
         }
-        const img = getImg('/handheld/images/case-pc/' + button.name + '-button-' +  state + '.png')
+        const img = findSprite(button.name + '-button-' + state).img
         ctx.drawImage(
             img,
             button.posX * renderScale,
@@ -94,7 +92,7 @@ function renderButtons(){
 }
 
 export function renderCase () {
-    const img = getImg(consoleCase.imgSrc)
+    const img = sprites.case_pc.img
     ctx.drawImage(img, 0, 0, consoleCase.originalWidth*renderScale, consoleCase.originalHeight * renderScale);
     renderButtons()
 }
