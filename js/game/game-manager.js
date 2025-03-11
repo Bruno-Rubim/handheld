@@ -2,7 +2,7 @@ import { ctx, renderScale } from "../canvas-handler.js";
 import { keyIsPressed } from "../key-handler.js";
 import sprites, { findSprite } from "../sprites.js";
 import { player } from "./player.js";
-import { roomButton1, roomButton2, roomDisc1, roomDiscButton, roomDisc2, roomPushBox1, roomRemoteBot1, testRoom, roomRemoteBot2, roomPushBox2, roomRemoteBot3 } from "./rooms.js";
+import { startingRoom } from "./rooms.js";
 
 const tileSize = 16
 export const gameWidthInTiles = 16
@@ -14,7 +14,7 @@ const screenPosX = 95
 const screenPosY = 13
 
 export const roomModule = {
-    currentRoom: roomButton1,
+    currentRoom: startingRoom,
 }
 
 roomModule.currentRoom.playerSpawn()
@@ -62,7 +62,8 @@ const controlsDict = {
     'white': ['eject-disc'],
     'green': ['eject-disc', 'push-box', 'pull-box'],
     'purple': ['eject-disc', 'teleport'],
-    'yellow': ['eject-disc', 'move-remote-bot'],
+    'yellow': ['eject-disc', 'move-remote-bot', 'remote-bot-disc'],
+    'red': ['eject-disc'],
 }
 
 function renderControls(){
@@ -184,7 +185,7 @@ export function keyHandler(){
         player.move('right', roomModule.currentRoom.objectList, 'd')
     }
 
-    if (keyIsPressed['5']) {
+    if (keyIsPressed['5'] || keyIsPressed['k']) {
         if (!keyHeldDict['5']){
             player.discActionA()
             keyHeldDict['5'] = true
@@ -193,7 +194,7 @@ export function keyHandler(){
         keyHeldDict['5'] = false
     }
 
-    if (keyIsPressed['4']) {
+    if (keyIsPressed['4'] || keyIsPressed['j']) {
         if (!keyHeldDict['4']){
             player.discActionB()
             keyHeldDict['4'] = true
@@ -202,7 +203,7 @@ export function keyHandler(){
         keyHeldDict['4'] = false
     }
 
-    if (keyIsPressed['8']) {
+    if (keyIsPressed['8'] || keyIsPressed['i']) {
         if (!keyHeldDict['8']){
             player.discActionC()
             keyHeldDict['8'] = true
@@ -211,7 +212,7 @@ export function keyHandler(){
         keyHeldDict['8'] = false
     }
 
-    if (keyIsPressed['6']) {
+    if (keyIsPressed['6'] || keyIsPressed['l']) {
         if (!keyHeldDict['6']){
             player.inventory()
             keyHeldDict['6'] = true

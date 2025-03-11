@@ -35,7 +35,7 @@ export class DiscScanner {
         this.effectOn = effectOn;
         this.effectOff = effectOff;
         this.color = color;
-        this.name = this.color + '-scan'
+        this.name = 'scan-' + this.color
         this.state = state
     }
     discCheck(disc){
@@ -192,11 +192,9 @@ export class DiscTrap {
     }
     switchOff(){
         this.state = 'off'
-        console.log(this.state)
     }
     switchOn(){
         this.state = 'on'
-        console.log(this.state)
     }
 }
 
@@ -300,8 +298,6 @@ export class RemoteBot {
             this.posY = targetPosY
             botMoved = true
 
-            let discTrap = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, 'disc-trap')
-
             let targetPlate = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY, 'plate')
             if (targetPlate?.state == 'off'){
                 targetPlate.switchState()
@@ -311,7 +307,8 @@ export class RemoteBot {
             if (button){
                 button.switchState()
             }
-
+            
+            let discTrap = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, 'disc-trap')
             if (discTrap){
                 discTrap.pullDisc()
             }

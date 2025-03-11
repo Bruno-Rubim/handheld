@@ -56,7 +56,7 @@ const sprites = {
 	floppy_yellow_selected: new Sprite('./images/game/floppy-yellow-selected.png'),
 	red_bricks_off: new Sprite('./images/game/red-bricks-off.png'),
 	red_bricks_on: new Sprite('./images/game/red-bricks-on.png'),
-	red_scan: new Sprite('./images/game/red-scan.png'),
+	scan_red: new Sprite('./images/game/scan-red.png'),
 	remote_bot_left: new Sprite('./images/game/remote-bot-left.png'),
 	remote_bot_right: new Sprite('./images/game/remote-bot-right.png'),
 	teleport_pad: new Sprite('./images/game/teleport-pad.png'),
@@ -64,7 +64,7 @@ const sprites = {
 	wall: new Sprite('./images/game/wall.png'),
 	eject_disc_controls: new Sprite('./images/game/eject-disc-controls.png'),
 	drill_controls: new Sprite('./images/game/drill-controls.png'),
-	white_scan: new Sprite('./images/game/white-scan.png'),
+	scan_white: new Sprite('./images/game/scan-white.png'),
 	floppy_white_item: new Sprite('./images/game/floppy-white-item.png'),
 	white_wall_on: new Sprite('./images/game/white-wall-on.png'),
 	floppy_white_selected: new Sprite('./images/game/floppy-white-selected.png'),
@@ -77,13 +77,13 @@ const sprites = {
 	blue_wall_on: new Sprite('./images/game/blue-wall-on.png'),
 	button_on_blue: new Sprite('./images/game/button-on-blue.png'),
 	inventory_frame: new Sprite('./images/game/inventory-frame.png'),
-	green_scan: new Sprite('./images/game/green-scan.png'),
+	scan_green: new Sprite('./images/game/scan-green.png'),
 	green_wall_on: new Sprite('./images/game/green-wall-on.png'),
 	push_box_controls: new Sprite('./images/game/push-box-controls.png'),
 	green_wall_off: new Sprite('./images/game/green-wall-off.png'),
 	disc_trap_on_white: new Sprite('./images/game/disc-trap-on-white.png'),
 	disc_trap_off_white: new Sprite('./images/game/disc-trap-off-white.png'),
-	yellow_scan: new Sprite('./images/game/yellow-scan.png'),
+	scan_yellow: new Sprite('./images/game/scan-yellow.png'),
 	yellow_wall_on: new Sprite('./images/game/yellow-wall-on.png'),
 	move_remote_bot_controls: new Sprite('./images/game/move-remote-bot-controls.png'),
 	yellow_wall_off: new Sprite('./images/game/yellow-wall-off.png'),
@@ -95,6 +95,11 @@ const sprites = {
 	plate_on_white: new Sprite('./images/game/plate-on-white.png'),
 	pull_box_controls: new Sprite('./images/game/pull-box-controls.png'),
 	remote_eject_disc_controls: new Sprite('./images/game/remote-eject-disc-controls.png'),
+	remote_bot_disc_controls: new Sprite('./images/game/remote-bot-disc-controls.png'),
+	teleport_pad_on_white: new Sprite('./images/game/teleport-pad-on-white.png'),
+	teleport_pad_off_white: new Sprite('./images/game/teleport-pad-off-white.png'),
+	red_wall_on: new Sprite('./images/game/red-wall-on.png'),
+	red_wall_off: new Sprite('./images/game/red-wall-off.png'),
 }
 
 const spriteArr = Object.values(sprites)
@@ -104,5 +109,9 @@ await Promise.all(promises)
 export default sprites
 
 export function findSprite(name) {
-	return sprites[name.replaceAll('-', '_')]
+	const sprite = sprites[name.replaceAll('-', '_')]
+	if (!sprite) {
+		throw new Error(`Sprite ${name} not found`)
+	}
+	return sprite
 }

@@ -14,7 +14,7 @@ export const buttons = [
         height: 34,
         posX: 35,
         posY: 77,
-        key: 'w',
+        keys: ['w'],
     },
     {
         name: 'down',
@@ -22,7 +22,7 @@ export const buttons = [
         height: 34,
         posX: 35,
         posY: 116,
-        key: 's',
+        keys: ['s'],
     },
     {
         name: 'left',
@@ -30,7 +30,7 @@ export const buttons = [
         height: 28,
         posX: 13,
         posY: 99,
-        key: 'a',
+        keys: ['a'],
     },
     {
         name: 'right',
@@ -38,7 +38,7 @@ export const buttons = [
         height: 28,
         posX: 51,
         posY: 100,
-        key: 'd',
+        keys: ['d'],
     },    
     {
         name: 'triangle',
@@ -46,7 +46,7 @@ export const buttons = [
         height: 32,
         posX: 384,
         posY: 77,
-        key: '8',
+        keys: ['8', 'i'],
     },
     {
         name: 'cross',
@@ -54,7 +54,7 @@ export const buttons = [
         height: 32,
         posX: 384,
         posY: 121,
-        key: '5',
+        keys: ['5', 'k'],
     },
     {
         name: 'square',
@@ -62,7 +62,7 @@ export const buttons = [
         height: 32,
         posX: 362,
         posY: 99,
-        key: '4',
+        keys: ['4', 'j'],
     },
     {
         name: 'circle',
@@ -70,15 +70,17 @@ export const buttons = [
         height: 32,
         posX: 406,
         posY: 99,
-        key: '6',
+        keys: ['6', 'l'],
     },
 ]
 
 function renderButtons(){
     buttons.forEach(button => {
         let state = 'off'
-        if (keyIsPressed[button.key]){
-            state = 'on'
+        for (let i = 0; i < button.keys.length; i++){
+            if (keyIsPressed[button.keys[i]]){
+                state = 'on'
+            }
         }
         const img = findSprite(button.name + '-button-' + state).img
         ctx.drawImage(

@@ -123,14 +123,23 @@ export const player = {
             this.posY = targetPosY
             playerMoved = true
 
+            if (this.disc?.color == 'yellow' && !remoteBotMoved){
+                roomModule.currentRoom.forEachGameObject((obj)=>{
+                    if (obj.name == 'remote-bot-left' || obj.name == 'remote-bot-right') {
+                        obj.move(dir)
+                    }
+                })
+                remoteBotMoved = true;
+            }
+    
+            let targetPlate = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY, 'plate')
+            if (targetPlate?.state == 'off'){
+                targetPlate.switchState()
+            }
+
             let button = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, 'button')
             if (button){
                 button.switchState()
-            }
-
-            let targetPlate = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, 'plate')
-            if (targetPlate?.state == 'off'){
-                targetPlate.switchState()
             }
 
             let discTrap = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, 'disc-trap')
@@ -154,6 +163,7 @@ export const player = {
                     obj.move(dir)
                 }
             })
+            remoteBotMoved = true;
         }
 
         return playerMoved
