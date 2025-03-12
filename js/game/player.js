@@ -85,15 +85,19 @@ export const player = {
         let targetObject = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, 'player')
         if (targetObject){
             if (this.disc?.color == 'green' && targetObject?.name == 'box'){
-                if (!roomModule.currentRoom.findObjectByPosition(nextTargetPosX, nextTargetPosY, 'player')){
-                    targetObject.posX = nextTargetPosX
-                    targetObject.posY = nextTargetPosY
-                    let nextTargetPlate = roomModule.currentRoom.findObjectByPosition(nextTargetPosX, nextTargetPosY, 'plate')
-                    if (nextTargetPlate?.state == 'off'){
-                        nextTargetPlate.switchState()
-                    }
-                } else {
+                if (nextTargetPosX < 1 || nextTargetPosX > 14 || nextTargetPosY < 1 || nextTargetPosY > 8){
                     blocked = true
+                } else {
+                    if (!roomModule.currentRoom.findObjectByPosition(nextTargetPosX, nextTargetPosY, 'player')){
+                        targetObject.posX = nextTargetPosX
+                        targetObject.posY = nextTargetPosY
+                        let nextTargetPlate = roomModule.currentRoom.findObjectByPosition(nextTargetPosX, nextTargetPosY, 'plate')
+                        if (nextTargetPlate?.state == 'off'){
+                            nextTargetPlate.switchState()
+                        }
+                    } else {
+                        blocked = true
+                    }
                 }
             } else if (this.disc?.color == 'yellow' && (targetObject?.name == 'remote-bot-right' || targetObject?.name == 'remote-bot-left')){
                 roomModule.currentRoom.forEachGameObject((obj)=>{
@@ -230,10 +234,16 @@ export const player = {
             if (this.state == 'walking'){
                 return
             }
+
             const startingPosX = this.posX
             const startingPosY = this.posY
-            let box = roomModule.currentRoom.findObjectByPosition(this.posX - 1, this.posY, 'player')
+            
+            if (startingPosX > 14 || startingPosX < 1 || startingPosY > 8 || startingPosY < 1){
+                return
+            }
 
+            let box = roomModule.currentRoom.findObjectByPosition(startingPosX - 1, startingPosY, 'player')
+            
             function changeBoxPosition(){
                 let plate = roomModule.currentRoom.findObjectByPosition(box.posX, box.posY, 'plate')
                 if (plate) {

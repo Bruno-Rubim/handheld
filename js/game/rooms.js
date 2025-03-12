@@ -86,13 +86,13 @@ testRoom.objectList.push(new TeleportPad({posX: 6, posY: 6, color: 'white'}))
 testRoom.objectList.push(new RemoteBot({posX: 7, posY: 6, disc:null}))
 
 testRoom.objectList.push(new SwitchButton({posX: 5, posY: 6,color: 'blue'}))
-
 testRoom.addLineToObjectList(new FlipWall({color:'red', state:'on', layer:'player'}), 'y', 2, 7, 14)
-testRoom.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 0)
-testRoom.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 9)
-testRoom.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 9, 0)
-testRoom.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 2, 15)
-testRoom.addLineToObjectList({name:'wall', layer:'player'}, 'y', 7, 9, 15)
+
+// testRoom.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 0)
+// testRoom.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 9)
+// testRoom.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 9, 0)
+// testRoom.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 2, 15)
+// testRoom.addLineToObjectList({name:'wall', layer:'player'}, 'y', 7, 9, 15)
 
 //first room; Introduces button and flip walls
 export let firstRoom = new Room({playerStartPos:{posX: 2, posY: 5}})
@@ -225,6 +225,8 @@ room2Discs.rightRoom = roomPushBox1
 roomPushBox1.leftRoom = room2Discs
 
 roomPushBox1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 0)
+roomPushBox1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 1)
+roomPushBox1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 1, 15, 2)
 roomPushBox1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 4, 10, 3)
 roomPushBox1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 4, 10, 7)
 roomPushBox1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 10, 8)
@@ -233,9 +235,9 @@ roomPushBox1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 10, 9)
 
 roomPushBox1.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 2, 0)
 roomPushBox1.addLineToObjectList({name:'wall', layer:'player'}, 'y', 7, 9, 0)
-roomPushBox1.addLineToObjectList({name:'box', layer:'player'}, 'y', 4, 5, 1)
-roomPushBox1.addLineToObjectList(new FlipWall({color:'green', state:'off'}), 'y', 4, 6, 10)
-roomPushBox1.addLineToObjectList({name:'box', layer:'player'}, 'y', 4, 6, 4)
+roomPushBox1.addLineToObjectList({name:'box', layer:'player'}, 'y', 4, 5, 2)
+roomPushBox1.addLineToObjectList(new FlipWall({color:'green', state:'off'}), 'y', 4, 6, 4)
+roomPushBox1.addLineToObjectList({name:'box', layer:'player'}, 'y', 4, 6, 10)
 roomPushBox1.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 9, 14)
 roomPushBox1.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 9, 15)
 

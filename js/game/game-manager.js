@@ -24,7 +24,7 @@ const gameLayers = [
     'wallOff', 'disc-trap', 'teleport', 'plate', 'button', 'scanner', 'disc', 'player',
 ]
 
-export const debug = false
+export const debug = true
 
 function renderBackGround(){
     let backgroundImg = (debug ? sprites.background_debug : sprites.background).img
@@ -227,4 +227,14 @@ export function keyHandler(){
     {
         player.state = 'idle'
     }
+}
+
+let ticInterval = 1000/24
+
+function ticHandler() {
+  // ... faz as validações de tic aqui
+}
+
+export function start() {
+  setInterval(ticHandler, ticInterval);
 }
