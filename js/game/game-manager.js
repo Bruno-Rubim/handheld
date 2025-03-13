@@ -24,7 +24,7 @@ const gameLayers = [
     'wallOff', 'disc-trap', 'teleport', 'plate', 'button', 'scanner', 'disc', 'player',
 ]
 
-export const debug = true
+export const debug = false
 
 function renderBackGround(){
     let backgroundImg = (debug ? sprites.background_debug : sprites.background).img
