@@ -32,6 +32,7 @@ const sprites = {
 	triangle_button_on: new Sprite('./images/case-pc/triangle-button-on.png'),
 	up_button_off: new Sprite('./images/case-pc/up-button-off.png'),
 	up_button_on: new Sprite('./images/case-pc/up-button-on.png'),
+	
 	background: new Sprite('./images/game/background.png'),
 	box: new Sprite('./images/game/box.png'),
 	disc_bot_left: new Sprite('./images/game/disc-bot-left.png'),

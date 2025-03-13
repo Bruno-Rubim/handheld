@@ -17,7 +17,8 @@ export class Disc {
     constructor({effect=()=>{}, color='default', posX=7, posY=5, controls=[]}){
         this.posX = posX
         this.posY = posY
-        this.layer = 'disc';
+        this.gameLayer = 'disc';
+        this.renderLayer = 'disc';
         this.effect = effect;
         this.color = color;
         this.name = 'floppy-' + this.color + '-item'
@@ -30,7 +31,8 @@ export class DiscScanner {
     constructor({posX=7, posY=5, effectOn=()=>{}, effectOff=()=>{}, color='default', state='off'}){
         this.posX = posX
         this.posY = posY
-        this.layer = 'sensor'
+        this.gameLayer = 'sensor'
+        this.gameLayer = 'sensor'
         this.effectOn = effectOn;
         this.effectOff = effectOff;
         this.color = color;
@@ -57,7 +59,8 @@ export class SwitchButton {
     constructor({posX=7, posY=5, color='', pressed=false}){
         this.posX = posX
         this.posY = posY
-        this.layer = 'sensor'
+        this.gameLayer = 'sensor'
+        this.gameLayer = 'sensor'
         this.color = color;
         this.name;
         this.state = 'off';
@@ -95,7 +98,8 @@ export class PressurePlate {
     constructor({posX=7, posY=5, color=''}){
         this.posX = posX
         this.posY = posY
-        this.layer = 'sensor'
+        this.gameLayer = 'sensor'
+        this.gameLayer = 'sensor'
         this.color = color;
         this.name;
         this.state = 'off'
@@ -134,7 +138,8 @@ export class TeleportPad {
     constructor({posX=7, posY=5, color='', state='on'}){
         this.posX = posX
         this.posY = posY
-        this.layer = 'teleport'
+        this.gameLayer = 'teleport'
+        this.renderLayer = 'sensor'
         this.color = color;
         this.name;
         this.state = state
@@ -162,17 +167,17 @@ export class FlipWall {
         this.class = FlipWall
         this.colorNet = color
         if (state=='off'){
-            this.layer = 'wallOff'
+            this.gameLayer = 'wallOff'
         } else {
-            this.layer = 'player'
+            this.gameLayer = 'player'
         }
     }
     switchState(){
         if (this.state == 'off') {
-            this.layer = 'player'
+            this.gameLayer = 'player'
             this.state = 'on'
         } else {
-            this.layer = 'wallOff'
+            this.gameLayer = 'wallOff'
             this.state = 'off'
         }
     }
@@ -185,7 +190,8 @@ export class DiscTrap {
     constructor({posX=0, posY=0, state='on', color='white'}){
         this.posX = posX
         this.posY = posY
-        this.layer = 'sensor'
+        this.gameLayer = 'sensor'
+        this.renderLayer = 'sensor'
         this.state = state
         this.color = color
         this.colorNet = color
@@ -205,7 +211,7 @@ export class DiscTrap {
             }
             bot.disc.posX = this.posX
             bot.disc.posY = this.posY
-            bot.disc.layer = 'disc'
+            bot.disc.gameLayer = 'disc'
             roomModule.currentRoom.objectList.push(bot.disc)
             bot.disc = null
         }
@@ -223,7 +229,8 @@ export class Box {
     constructor({posX=0, posY=0, disc=null}){
         this.posX = posX
         this.posY = posY
-        this.layer = 'player' 
+        this.gameLayer = 'player'
+        this.renderLayer = 'player'
         this.name = 'box'
     }
     move(dir){
@@ -291,109 +298,15 @@ export class Box {
 
         return moved
     }
-    discAction(){
-        if (!this.disc){
-            return
-        }
-        if (this.disc.color == 'red'){
-            let x = this.posX
-            let y = this.posY
-            let layer = this.layer
-            if (roomModule.currentRoom.findObjectByPosition(x + 1, y, layer) instanceof FlipWall){
-                roomModule.currentRoom.takeObjectByPosition(x + 1, y, layer)
-                roomModule.currentRoom.objectList.push({posX: x + 1, posY: y, layer: layer, name: 'drill-right'})
-                setTimeout(()=>{
-                    roomModule.currentRoom.takeObjectByPosition(x + 1, y, layer)
-                }, 200)
-            }
-            if (roomModule.currentRoom.findObjectByPosition(x - 1, y, layer) instanceof FlipWall){
-                roomModule.currentRoom.takeObjectByPosition(x - 1, y, layer)
-                roomModule.currentRoom.objectList.push({posX: x - 1, posY: y, layer: layer, name: 'drill-left'})
-                setTimeout(()=>{
-                    roomModule.currentRoom.takeObjectByPosition(x - 1, y, layer)
-                }, 200)
-            }
-            if (roomModule.currentRoom.findObjectByPosition(x, y + 1, layer) instanceof FlipWall){
-                roomModule.currentRoom.takeObjectByPosition(x, y + 1, layer)
-                roomModule.currentRoom.objectList.push({posX: x, posY: y + 1, layer: layer, name: 'drill-down'})
-                setTimeout(()=>{
-                    roomModule.currentRoom.takeObjectByPosition(x, y + 1, layer)
-                }, 200)
-            }
-            if (roomModule.currentRoom.findObjectByPosition(x, y - 1, layer) instanceof FlipWall){
-                roomModule.currentRoom.takeObjectByPosition(x, y - 1, layer)
-                roomModule.currentRoom.objectList.push({posX: x, posY: y - 1, layer: layer, name: 'drill-up'})
-                setTimeout(()=>{
-                    roomModule.currentRoom.takeObjectByPosition(x, y - 1, layer)
-                }, 200)
-            }
-            return
-        }
-        if (this.disc.color == 'purple'){
-            roomModule.currentRoom.forEachGameObject((obj)=>{
-                if (obj.layer == 'teleport'){
-                    if (!roomModule.currentRoom.findObjectByPosition(obj.posX, obj.posY, 'player')){
-                        this.posX = obj.posX
-                        this.posY = obj.posY
-                    }
-                }
-            })
-            return
-        }
-        if (this.disc.color == 'green'){
-            const startingPosX = this.posX
-            const startingPosY = this.posY
-
-            function changeBoxPosition(){
-                let plate = roomModule.currentRoom.findObjectByPosition(box.posX, box.posY, 'plate')
-                if (plate) {
-                    plate.switchState()
-                }
-                box.posX = startingPosX;
-                box.posY = startingPosY;
-                plate = roomModule.currentRoom.findObjectByPosition(box.posX, box.posY, 'plate')
-                if (plate) {
-                    plate.switchState()
-                }
-            }
-
-            let box = roomModule.currentRoom.findObjectByPosition(this.posX - 1, this.posY, 'player')
-            if (box?.name == 'box'){
-                if (this.move('right')){
-                    changeBoxPosition()
-                }
-                return
-            }
-            box = roomModule.currentRoom.findObjectByPosition(this.posX + 1, this.posY, 'player')
-            if (box?.name == 'box'){
-                if (this.move('left')){
-                    changeBoxPosition()
-                }
-                return
-            }
-            box = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY + 1, 'player')
-            if (box?.name == 'box'){
-                if (this.move('up')){
-                    changeBoxPosition()
-                }
-                return
-            }
-            box = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY - 1, 'player')
-            if (box?.name == 'box'){
-                if (this.move('down')){
-                    changeBoxPosition()
-                }
-                return
-            }
-        }
-    }
 }
 
 export class RemoteBot {
     constructor({posX=0, posY=0, disc=null}){
         this.posX = posX
         this.posY = posY
-        this.layer = 'player' 
+        this.posYOffset = 6
+        this.gameLayer = 'player' 
+        this.renderLayer = 'player'
         this.facing = 'left'
         this.name = 'remote-bot-' + this.facing
         this.disc = disc
@@ -405,7 +318,7 @@ export class RemoteBot {
         if (this.disc){
             this.disc.posX = this.posX
             this.disc.posY = this.posY
-            this.disc.layer = 'disc'
+            this.disc.gameLayer = 'disc'
             roomModule.currentRoom.objectList.push(this.disc)
         }
         if (scanner){
@@ -519,40 +432,40 @@ export class RemoteBot {
         if (this.disc.color == 'red'){
             let x = this.posX
             let y = this.posY
-            let layer = this.layer
-            if (roomModule.currentRoom.findObjectByPosition(x + 1, y, layer) instanceof FlipWall){
-                roomModule.currentRoom.takeObjectByPosition(x + 1, y, layer)
-                roomModule.currentRoom.objectList.push({posX: x + 1, posY: y, layer: layer, name: 'drill-right'})
+            let gameLayer = this.gameLayer
+            if (roomModule.currentRoom.findObjectByPosition(x + 1, y, gameLayer) instanceof FlipWall){
+                roomModule.currentRoom.takeObjectByPosition(x + 1, y, gameLayer)
+                roomModule.currentRoom.objectList.push({posX: x + 1, posY: y, gameLayer: gameLayer, name: 'drill-right'})
                 setTimeout(()=>{
-                    roomModule.currentRoom.takeObjectByPosition(x + 1, y, layer)
+                    roomModule.currentRoom.takeObjectByPosition(x + 1, y, gameLayer)
                 }, 200)
             }
-            if (roomModule.currentRoom.findObjectByPosition(x - 1, y, layer) instanceof FlipWall){
-                roomModule.currentRoom.takeObjectByPosition(x - 1, y, layer)
-                roomModule.currentRoom.objectList.push({posX: x - 1, posY: y, layer: layer, name: 'drill-left'})
+            if (roomModule.currentRoom.findObjectByPosition(x - 1, y, gameLayer) instanceof FlipWall){
+                roomModule.currentRoom.takeObjectByPosition(x - 1, y, gameLayer)
+                roomModule.currentRoom.objectList.push({posX: x - 1, posY: y, gameLayer: gameLayer, name: 'drill-left'})
                 setTimeout(()=>{
-                    roomModule.currentRoom.takeObjectByPosition(x - 1, y, layer)
+                    roomModule.currentRoom.takeObjectByPosition(x - 1, y, gameLayer)
                 }, 200)
             }
-            if (roomModule.currentRoom.findObjectByPosition(x, y + 1, layer) instanceof FlipWall){
-                roomModule.currentRoom.takeObjectByPosition(x, y + 1, layer)
-                roomModule.currentRoom.objectList.push({posX: x, posY: y + 1, layer: layer, name: 'drill-down'})
+            if (roomModule.currentRoom.findObjectByPosition(x, y + 1, gameLayer) instanceof FlipWall){
+                roomModule.currentRoom.takeObjectByPosition(x, y + 1, gameLayer)
+                roomModule.currentRoom.objectList.push({posX: x, posY: y + 1, gameLayer: gameLayer, name: 'drill-down'})
                 setTimeout(()=>{
-                    roomModule.currentRoom.takeObjectByPosition(x, y + 1, layer)
+                    roomModule.currentRoom.takeObjectByPosition(x, y + 1, gameLayer)
                 }, 200)
             }
-            if (roomModule.currentRoom.findObjectByPosition(x, y - 1, layer) instanceof FlipWall){
-                roomModule.currentRoom.takeObjectByPosition(x, y - 1, layer)
-                roomModule.currentRoom.objectList.push({posX: x, posY: y - 1, layer: layer, name: 'drill-up'})
+            if (roomModule.currentRoom.findObjectByPosition(x, y - 1, gameLayer) instanceof FlipWall){
+                roomModule.currentRoom.takeObjectByPosition(x, y - 1, gameLayer)
+                roomModule.currentRoom.objectList.push({posX: x, posY: y - 1, gameLayer: gameLayer, name: 'drill-up'})
                 setTimeout(()=>{
-                    roomModule.currentRoom.takeObjectByPosition(x, y - 1, layer)
+                    roomModule.currentRoom.takeObjectByPosition(x, y - 1, gameLayer)
                 }, 200)
             }
             return
         }
         if (this.disc.color == 'purple'){
             roomModule.currentRoom.forEachGameObject((obj)=>{
-                if (obj.layer == 'teleport'){
+                if (obj.gameLayer == 'teleport'){
                     if (!roomModule.currentRoom.findObjectByPosition(obj.posX, obj.posY, 'player')){
                         this.posX = obj.posX
                         this.posY = obj.posY

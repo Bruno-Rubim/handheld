@@ -6,7 +6,9 @@ export const player = {
     name: 'disc-bot-right',
     posX: 1,
     posY: 4,
-    layer: 'player',
+    posYOffset: 6,
+    gameLayer: 'player',
+    renderLayer: 'player',
     lastMoveDir: null,
     lastMoveTime: getNow(),
     moveDelay: 175,
@@ -132,31 +134,31 @@ export const player = {
         if (this.disc.color == 'red'){
             let x = this.posX
             let y = this.posY
-            let layer = this.layer
+            let layer = this.gameLayer
             if (roomModule.currentRoom.findObjectByPosition(x + 1, y, layer) instanceof FlipWall){
                 roomModule.currentRoom.takeObjectByPosition(x + 1, y, layer)
-                roomModule.currentRoom.objectList.push({posX: x + 1, posY: y, layer: layer, name: 'drill-right'})
+                roomModule.currentRoom.objectList.push({posX: x + 1, posY: y, gameLayer: layer, name: 'drill-right'})
                 setTimeout(()=>{
                     roomModule.currentRoom.takeObjectByPosition(x + 1, y, layer)
                 }, 200)
             }
             if (roomModule.currentRoom.findObjectByPosition(x - 1, y, layer) instanceof FlipWall){
                 roomModule.currentRoom.takeObjectByPosition(x - 1, y, layer)
-                roomModule.currentRoom.objectList.push({posX: x - 1, posY: y, layer: layer, name: 'drill-left'})
+                roomModule.currentRoom.objectList.push({posX: x - 1, posY: y, gameLayer: layer, name: 'drill-left'})
                 setTimeout(()=>{
                     roomModule.currentRoom.takeObjectByPosition(x - 1, y, layer)
                 }, 200)
             }
             if (roomModule.currentRoom.findObjectByPosition(x, y + 1, layer) instanceof FlipWall){
                 roomModule.currentRoom.takeObjectByPosition(x, y + 1, layer)
-                roomModule.currentRoom.objectList.push({posX: x, posY: y + 1, layer: layer, name: 'drill-down'})
+                roomModule.currentRoom.objectList.push({posX: x, posY: y + 1, gameLayer: layer, name: 'drill-down'})
                 setTimeout(()=>{
                     roomModule.currentRoom.takeObjectByPosition(x, y + 1, layer)
                 }, 200)
             }
             if (roomModule.currentRoom.findObjectByPosition(x, y - 1, layer) instanceof FlipWall){
                 roomModule.currentRoom.takeObjectByPosition(x, y - 1, layer)
-                roomModule.currentRoom.objectList.push({posX: x, posY: y - 1, layer: layer, name: 'drill-up'})
+                roomModule.currentRoom.objectList.push({posX: x, posY: y - 1, gameLayer: layer, name: 'drill-up'})
                 setTimeout(()=>{
                     roomModule.currentRoom.takeObjectByPosition(x, y - 1, layer)
                 }, 200)

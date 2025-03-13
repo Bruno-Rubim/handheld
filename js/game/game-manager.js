@@ -20,10 +20,6 @@ export const roomModule = {
 roomModule.currentRoom.playerSpawn()
 
 //rendering
-const gameLayers = [
-    'teleport', 'sensor', 'disc', 'wallOff', 'player',
-]
-
 export const debug = false
 
 function renderBackGround(){
@@ -36,21 +32,31 @@ function renderBackGround(){
     )
 }
 
+const renderLayers = [
+    'wall', 'sensor', 'disc', 'player',
+]
+
 function renderObjectList(){
-    for(let i = 0; i < gameLayers.length; i++) {
-        const layer = gameLayers[i];
+    for(let i = 0; i < renderLayers.length; i++) {
+        const gameLayer = renderLayers[i];
         roomModule.currentRoom.forEachGameObject((object)=>{
             if (object == null){
                 console.warn('null object')
                 return
             }
-            if (object.layer != layer){
+            if (object.renderLayer == undefined) {
+                object.renderLayer = 'wall'
+            } else if (object.renderLayer != gameLayer){
                 return
             }
             const img = findSprite(object.name).img
+            let posYOffscale = 0
+            if (object.posYOffset){
+                posYOffscale = object.posYOffset
+            }
             ctx.drawImage(img,
                 (screenPosX + object.posX * tileSize) * renderScale,
-                (screenPosY + object.posY * tileSize) * renderScale,
+                (screenPosY - posYOffscale + object.posY * tileSize) * renderScale,
                 tileSize * renderScale,
                 tileSize * renderScale
             )
@@ -253,7 +259,7 @@ let ticInterval = 1000/24
 
 function sensorCheck(){
     roomModule.currentRoom.forEachGameObject((obj)=>{
-        if (obj.layer == 'sensor') {
+        if (obj.gameLayer == 'sensor') {
             if (obj.validate){
                 obj.validate()
             }
