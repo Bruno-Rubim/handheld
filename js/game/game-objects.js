@@ -32,7 +32,7 @@ export class DiscScanner {
         this.posX = posX
         this.posY = posY
         this.gameLayer = 'sensor'
-        this.gameLayer = 'sensor'
+        this.renderLayer = 'sensor'
         this.effectOn = effectOn;
         this.effectOff = effectOff;
         this.color = color;
@@ -55,42 +55,32 @@ export class DiscScanner {
     }
 }
 
-export class SwitchButton {
+export class ToggleButton {
     constructor({posX=7, posY=5, color='', pressed=false}){
         this.posX = posX
         this.posY = posY
         this.gameLayer = 'sensor'
-        this.gameLayer = 'sensor'
+        this.renderLayer = 'sensor'
         this.color = color;
         this.name;
         this.state = 'off';
         this.pressed = pressed;
-        this.colorNet = this.color;
     }
     validate(){
         const object = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY, 'player')
         if (object) {
+            this.state = 'on'
             if (!this.pressed) {
                 this.pressed = true
-                if (this.state == 'off'){
-                    netSwitch(this.color)
-                } else {
-                    netSwitch(this.color)
-                }
+                netSwitch(this.color)
             }
         } else {
+            this.state = 'off'
             this.pressed = false
         }
     }
     get name() {
         return `button-${this.state}-${this.color}`
-    }
-    switchState(){
-        if (this.state == 'off'){
-            this.state = 'on'
-        } else {
-            this.state = 'off'
-        }
     }
 }
 
@@ -99,12 +89,11 @@ export class PressurePlate {
         this.posX = posX
         this.posY = posY
         this.gameLayer = 'sensor'
-        this.gameLayer = 'sensor'
+        this.renderLayer = 'sensor'
         this.color = color;
         this.name;
         this.state = 'off'
         this.pressed = false
-        this.colorNet = this.color;
     }
     get name() {
         return `plate-${this.state}-${this.color}`
@@ -113,23 +102,16 @@ export class PressurePlate {
         const object = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY, 'player')
         if(object){
             if (!this.pressed){
-                this.state = 'off'
+                this.state = 'on'
                 netSwitch(this.color)
             }
             this.pressed = true
         } else {
             if (this.pressed){
-                this.state = 'on'
+                this.state = 'off'
                 netSwitch(this.color)
             }
             this.pressed = false
-        }
-    }
-    switchState(){
-        if (this.state == 'off'){
-            this.state = 'on'
-        } else {
-            this.state = 'off'
         }
     }
 }
@@ -230,7 +212,7 @@ export class Box {
         this.posX = posX
         this.posY = posY
         this.gameLayer = 'player'
-        this.renderLayer = 'player'
+        this.renderLayer = 'block'
         this.name = 'box'
     }
     move(dir){

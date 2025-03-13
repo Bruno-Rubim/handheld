@@ -1,8 +1,7 @@
-import { debug } from "./game-manager.js";
-import { DiscScanner, DiscTrap, FlipWall, Disc, RemoteBot, SwitchButton, PressurePlate, TeleportPad, Box } from "./game-objects.js";
+import { DiscScanner, DiscTrap, FlipWall, Disc, RemoteBot, ToggleButton, PressurePlate, TeleportPad, Box } from "./game-objects.js";
 import { player } from "./player.js";
 
-export class Room {
+class Room {
     constructor({playerStartPos={posX:0, posY:0}}){
         this.objectList = []
         this.leftRoom = null
@@ -65,7 +64,7 @@ export class Room {
 }
 
 //test room
-export let testRoom = new Room({playerStartPos:{posX: 2, posY: 3}})
+let testRoom = new Room({playerStartPos:{posX: 2, posY: 3}})
 testRoom.rightRoom = null
 
 testRoom.objectList.push(new Disc({color:'red', posX: 1, posY: 1,}))
@@ -80,13 +79,16 @@ testRoom.objectList.push(new DiscTrap({posX: 11, posY: 6}))
 
 testRoom.objectList.push(new PressurePlate({color: 'green', posX: 3, posY: 6,}))
 testRoom.objectList.push(new DiscScanner({color: 'red', posX: 2, posY: 6,}))
+testRoom.objectList.push(new ToggleButton({color: 'white', posX: 4, posY: 2,}))
+testRoom.objectList.push(new PressurePlate({color: 'white', posX: 4, posY: 4,}))
 testRoom.objectList.push(new DiscScanner({color: 'white', posX: 4, posY: 6,}))
-testRoom.objectList.push(new SwitchButton({posX: 5, posY: 6,color: 'blue'}))
+testRoom.objectList.push(new ToggleButton({posX: 5, posY: 6,color: 'blue'}))
 testRoom.objectList.push(new TeleportPad({posX: 6, posY: 6, color: 'white'}))
 
 testRoom.objectList.push(new RemoteBot({posX: 7, posY: 6, disc:null}))
 
 
+testRoom.addLineToObjectList(new FlipWall({color:'white', state:'on', layer:'player'}), 'y', 2, 7, 12)
 testRoom.addLineToObjectList(new FlipWall({color:'red', state:'on', layer:'player'}), 'y', 2, 7, 13)
 testRoom.addLineToObjectList(new FlipWall({color:'blue', state:'on', layer:'player'}), 'y', 2, 7, 14)
 testRoom.addLineToObjectList(new FlipWall({color:'green', state:'on', layer:'player'}), 'y', 2, 7, 15)
@@ -115,10 +117,10 @@ firstRoom.objectList.push ({posX: 1, posY: 6, name: 'wall', gameLayer:'player'})
 
 firstRoom.addLineToObjectList(new FlipWall({color:'white', state:'on', layer:'player'}), 'y', 4, 5, 8)
 
-firstRoom.objectList.push (new SwitchButton({posX: 5, posY: 4, color: 'white'}))
+firstRoom.objectList.push (new ToggleButton({posX: 5, posY: 4, color: 'white'}))
 
 //roomButton2; A second button addition
-export let room2Buttons = new Room({playerStartPos:{posX: 0, posY: 5}})
+let room2Buttons = new Room({playerStartPos:{posX: 0, posY: 5}})
 firstRoom.rightRoom = room2Buttons
 room2Buttons.leftRoom = firstRoom
 
@@ -141,11 +143,11 @@ room2Buttons.objectList.push({name:'wall', renderLayer:'wall', gameLayer:'player
 room2Buttons.addLineToObjectList({name:'wall', renderLayer:'wall', gameLayer:'player'}, 'y', 0, 9, 14)
 room2Buttons.addLineToObjectList({name:'wall', renderLayer:'wall', gameLayer:'player'}, 'y', 0, 9, 15)
 
-room2Buttons.objectList.push(new SwitchButton({posX: 4,posY: 3,color: 'white'}))
-room2Buttons.objectList.push(new SwitchButton({posX: 12, posY: 5, color: 'white'}))
+room2Buttons.objectList.push(new ToggleButton({posX: 4,posY: 3,color: 'white'}))
+room2Buttons.objectList.push(new ToggleButton({posX: 12, posY: 5, color: 'white'}))
 
 //roomDisc1 Introduces Disc and Scanner
-export let room1Disc = new Room({playerStartPos:{posX: 12, posY: 9}})
+let room1Disc = new Room({playerStartPos:{posX: 12, posY: 9}})
 
 room2Buttons.upRoom = room1Disc
 room1Disc.downRoom = room2Buttons
@@ -165,7 +167,7 @@ room1Disc.objectList.push(new DiscScanner({posX: 6, posY: 4, color: 'white'}))
 
 
 //roomDiscButton Uses 2 different color nets with button and disc
-export let roomDiscButton = new Room({playerStartPos:{posX: 15, posY: 4}})
+let roomDiscButton = new Room({playerStartPos:{posX: 15, posY: 4}})
 
 room1Disc.leftRoom = roomDiscButton
 roomDiscButton.rightRoom = room1Disc
@@ -185,14 +187,14 @@ roomDiscButton.addLineToObjectList({name:'wall', renderLayer:'wall', gameLayer:'
 roomDiscButton.addLineToObjectList({name:'wall', renderLayer:'wall', gameLayer:'player'}, 'y', 6, 9, 1)
 roomDiscButton.addLineToObjectList(new FlipWall({color:'blue', state:'on'}), 'y', 2, 6, 4)
 
-roomDiscButton.objectList.push(new SwitchButton({posX: 8, posY: 5, color: 'blue'}))
+roomDiscButton.objectList.push(new ToggleButton({posX: 8, posY: 5, color: 'blue'}))
 
 roomDiscButton.objectList.push(new Disc({posX: 14, posY: 7, color: 'white'}))
 
 roomDiscButton.objectList.push(new DiscScanner({posX: 2, posY: 4, color: 'white'}))
 
 //roomDisc2 Uses 2 different color nets with 2 discs
-export let room2Discs = new Room({playerStartPos:{posX: 7, posY:9}})
+let room2Discs = new Room({playerStartPos:{posX: 7, posY:9}})
 
 roomDiscButton.upRoom = room2Discs
 room2Discs.downRoom = roomDiscButton
@@ -222,7 +224,7 @@ room2Discs.objectList.push(new DiscScanner({color: 'green', posX: 4, posY: 6}))
 room2Discs.objectList.push(new DiscScanner({color: 'white', posX: 4, posY: 3}))
 
 //roomPushBox1 Introduces disc abilities and movable boxes
-export let roomPushBox1 = new Room({playerStartPos:{posX: 0, posY:4}})
+let roomPushBox1 = new Room({playerStartPos:{posX: 0, posY:4}})
 
 room2Discs.rightRoom = roomPushBox1
 roomPushBox1.leftRoom = room2Discs
@@ -251,7 +253,7 @@ roomPushBox1.objectList.push(new Box({posX: 10, posY: 5}))
 roomPushBox1.objectList.push(new Box({posX: 10, posY: 6}))
 
 //roomPullBox; introduces ability to pull boxes and pressure plates
-export let roomPullBox = new Room({playerStartPos:{posX: 12, posY:0}})
+let roomPullBox = new Room({playerStartPos:{posX: 12, posY:0}})
 
 roomPushBox1.downRoom = roomPullBox
 roomPullBox.upRoom = roomPushBox1
@@ -279,17 +281,45 @@ roomPullBox.addLineToObjectList(new FlipWall({color:'green', state:'on'}), 'y', 
 roomPullBox.objectList.push(new DiscScanner({color: 'green', posX: 7, posY: 7}))
 
 //roomPushBox2 Uses multiple Pressure plates and boxes
-export let roomPushBox2 = new Room({playerStartPos:{posX: 0, posY:7}})
+let roomButtonPLate = new Room({playerStartPos:{posX: 0, posY:7}})
 
-roomPullBox.rightRoom = roomPushBox2
-roomPushBox2.leftRoom = roomPullBox
+roomPullBox.rightRoom = roomButtonPLate
+roomButtonPLate.leftRoom = roomPullBox
+
+roomButtonPLate.addLineToObjectList({name:'wall', renderLayer:'wall', gameLayer:'player'}, 'x', 0, 15, 0)
+roomButtonPLate.addLineToObjectList({name:'wall', renderLayer:'wall', gameLayer:'player'}, 'x', 4, 9, 4)
+roomButtonPLate.addLineToObjectList({name:'wall', renderLayer:'wall', gameLayer:'player'}, 'x', 4, 9, 5)
+roomButtonPLate.addLineToObjectList({name:'wall', renderLayer:'wall', gameLayer:'player'}, 'x', 0, 15, 9)
+
+roomButtonPLate.addLineToObjectList({name:'wall', renderLayer:'wall', gameLayer:'player'}, 'y', 0, 5, 0)
+roomButtonPLate.addLineToObjectList({name:'wall', renderLayer:'wall', gameLayer:'player'}, 'y', 1, 3, 8)
+roomButtonPLate.addLineToObjectList({name:'wall', renderLayer:'wall', gameLayer:'player'}, 'y', 1, 3, 9)
+roomButtonPLate.addLineToObjectList({name:'wall', renderLayer:'wall', gameLayer:'player'}, 'y', 0, 5, 13)
+roomButtonPLate.addLineToObjectList({name:'wall', renderLayer:'wall', gameLayer:'player'}, 'y', 0, 5, 14)
+roomButtonPLate.addLineToObjectList({name:'wall', renderLayer:'wall', gameLayer:'player'}, 'y', 0, 5, 15)
+
+roomButtonPLate.objectList.push(new ToggleButton({color: 'white', posX:6, posY:2}))
+
+roomButtonPLate.objectList.push(new Disc({color: 'green', posX:4, posY:7}))
+roomButtonPLate.objectList.push(new PressurePlate({color: 'white', posX:6, posY:7}))
+roomButtonPLate.objectList.push(new Box({posX:6, posY:7}))
+roomButtonPLate.addLineToObjectList(new FlipWall({color:'white', state:'on'}), 'y', 6, 8, 9)
+roomButtonPLate.objectList.push(new PressurePlate({color: 'white', posX:11, posY:7}))
+
+roomButtonPLate.objectList.push(new DiscScanner({color: 'green', posX:11, posY:2}))
+roomButtonPLate.addLineToObjectList(new FlipWall({color:'green', state:'on'}), 'y', 6, 8, 13)
+roomButtonPLate.addLineToObjectList(new FlipWall({color:'white', state:'off'}), 'y', 6, 8, 14)
+
+
+//roomPushBox2 Uses multiple Pressure plates and boxes
+let roomPushBox2 = new Room({playerStartPos:{posX: 0, posY:7}})
+
+roomButtonPLate.rightRoom = roomPushBox2
+roomPushBox2.leftRoom = roomButtonPLate
 
 roomPushBox2.addLineToObjectList({name:'wall', renderLayer:'wall', gameLayer:'player'}, 'x', 0, 10, 0)
-roomPushBox2.addLineToObjectList(new FlipWall({color:'white', state:'on'}), 'x', 11, 13, 0)
 roomPushBox2.addLineToObjectList({name:'wall', renderLayer:'wall', gameLayer:'player'}, 'x', 14, 15, 0)
-roomPushBox2.addLineToObjectList(new FlipWall({color:'green', state:'on'}), 'x', 11, 13, 1)
 roomPushBox2.addLineToObjectList({name:'wall', renderLayer:'wall', gameLayer:'player'}, 'x', 0, 3, 4)
-roomPushBox2.addLineToObjectList(new FlipWall({color:'blue', state:'on'}), 'x', 4, 7, 4)
 roomPushBox2.addLineToObjectList({name:'wall', renderLayer:'wall', gameLayer:'player'}, 'x', 8, 15, 4)
 roomPushBox2.addLineToObjectList({name:'wall', renderLayer:'wall', gameLayer:'player'}, 'x', 0, 15, 9)
 
@@ -299,16 +329,22 @@ roomPushBox2.addLineToObjectList({name:'wall', renderLayer:'wall', gameLayer:'pl
 roomPushBox2.addLineToObjectList({name:'wall', renderLayer:'wall', gameLayer:'player'}, 'y', 0, 1, 14)
 roomPushBox2.addLineToObjectList({name:'wall', renderLayer:'wall', gameLayer:'player'}, 'y', 0, 9, 15)
 
+
 roomPushBox2.objectList.push(new DiscScanner({color: 'green', posX: 3, posY: 2}))
 roomPushBox2.objectList.push(new Box({posX: 8, posY: 2}))
 
-roomPushBox2.objectList.push(new PressurePlate({color: 'blue', posX: 3, posY: 7}))
+roomPushBox2.addLineToObjectList(new FlipWall({color:'white', state:'on'}), 'x', 11, 13, 0)
+roomPushBox2.addLineToObjectList(new FlipWall({color:'green', state:'off'}), 'x', 11, 13, 1)
+
+roomPushBox2.addLineToObjectList(new FlipWall({color:'green', state:'on'}), 'x', 4, 7, 4)
+
+roomPushBox2.objectList.push(new PressurePlate({color: 'green', posX: 3, posY: 7}))
 roomPushBox2.objectList.push(new PressurePlate({color: 'white', posX: 8, posY: 7}))
 roomPushBox2.objectList.push(new Disc({color: 'green', posX: 10, posY: 7}))
 roomPushBox2.objectList.push(new Box({posX: 12, posY: 7}))
 
 //roomRemoteButton; Introduces remoteBot
-export let roomRemoteButton = new Room({playerStartPos:{posX: 12, posY:9}})
+let roomRemoteButton = new Room({playerStartPos:{posX: 12, posY:9}})
 
 roomPushBox2.upRoom = roomRemoteButton
 roomRemoteButton.downRoom = roomPushBox2
@@ -332,13 +368,13 @@ roomRemoteButton.objectList.push(({name:'wall', posX: 2, posY: 2, gameLayer:'pla
 roomRemoteButton.objectList.push(({name:'wall', posX: 7, posY: 7, gameLayer:'player'}))
 roomRemoteButton.objectList.push(({name:'wall', posX: 2, posY: 7, gameLayer:'player'}))
 
-roomRemoteButton.objectList.push(new SwitchButton({posX: 3, posY: 4, color:'white'}))
+roomRemoteButton.objectList.push(new ToggleButton({posX: 3, posY: 4, color:'white'}))
 roomRemoteButton.objectList.push(new RemoteBot({posX: 6, posY: 6}))
 roomRemoteButton.objectList.push(new Disc({color: 'yellow', posX: 13, posY: 7}))
 roomRemoteButton.objectList.push(new DiscScanner({color: 'yellow', posX: 11, posY: 7, state:'off'}))
 
 //Needs simple room to introduce remoteBot picking up and ejecting discs
-export let roomRemoteDisc = new Room({playerStartPos:{posX: 0, posY:2}})
+let roomRemoteDisc = new Room({playerStartPos:{posX: 0, posY:2}})
 
 roomRemoteButton.rightRoom = roomRemoteDisc
 roomRemoteDisc.leftRoom = roomRemoteButton
@@ -350,7 +386,7 @@ roomRemoteDisc.addLineToObjectList({name:'wall', renderLayer:'wall', gameLayer:'
 roomRemoteDisc.addLineToObjectList({name:'wall', renderLayer:'wall', gameLayer:'player'}, 'y', 4, 9, 0)
 roomRemoteDisc.addLineToObjectList({name:'wall', renderLayer:'wall', gameLayer:'player'}, 'y', 4, 9, 15)
 
-roomRemoteDisc.objectList.push(new SwitchButton({color:'blue', posX:3, posY:4}))
+roomRemoteDisc.objectList.push(new ToggleButton({color:'blue', posX:3, posY:4}))
 roomRemoteDisc.addLineToObjectList({name:'wall', renderLayer:'wall', gameLayer:'player'}, 'y', 3, 5, 5)
 roomRemoteDisc.objectList.push(new Disc({color:'yellow', posX:7, posY:4}))
 roomRemoteDisc.objectList.push(new DiscScanner({color:'yellow', posX:7, posY:4, state:'on'}))
@@ -368,7 +404,7 @@ roomRemoteDisc.addLineToObjectList(new FlipWall({color:'blue', state:'off'}), 'y
 roomRemoteDisc.objectList.push(new DiscScanner({color:'white', posX:13, posY:7, state:'off'}))
 
 // roomRemoteWallShift; Uses wall to shift remoteBot's position
-export let roomRemoteWallShift = new Room({playerStartPos:{posX: 0, posY:2}})
+let roomRemoteWallShift = new Room({playerStartPos:{posX: 0, posY:2}})
 
 roomRemoteDisc.rightRoom = roomRemoteWallShift
 roomRemoteWallShift.leftRoom = roomRemoteDisc
@@ -386,7 +422,7 @@ roomRemoteWallShift.addLineToObjectList(new FlipWall({color:'yellow', state:'on'
 roomRemoteWallShift.addLineToObjectList(new FlipWall({color:'green', state:'on'}), 'x', 2, 3, 7)
 
 roomRemoteWallShift.objectList.push(new DiscScanner({posX:7, posY: 7, color:'yellow', state:'off'}))
-roomRemoteWallShift.objectList.push(new SwitchButton({posX:9, posY: 4, color:'white'}))
+roomRemoteWallShift.objectList.push(new ToggleButton({posX:9, posY: 4, color:'white'}))
 roomRemoteWallShift.objectList.push(new RemoteBot({posX:9, posY: 2}))
 roomRemoteWallShift.objectList.push(new Disc({posX:5, posY: 2, color:'yellow'}))
 
@@ -397,7 +433,7 @@ roomRemoteWallShift.addLineToObjectList(new FlipWall({color:'white', state:'on'}
 roomRemoteWallShift.objectList.push(new PressurePlate({posX:13, posY: 1, color:'green'}))
 
 //roomRemotePushBox; Introduces RemoteBot using disc ability
-export let roomRemotePushBox = new Room({playerStartPos:{posX: 3, posY:0}})
+let roomRemotePushBox = new Room({playerStartPos:{posX: 3, posY:0}})
 
 roomRemoteWallShift.downRoom = roomRemotePushBox
 roomRemotePushBox.upRoom = roomRemoteWallShift
@@ -422,17 +458,18 @@ roomRemotePushBox.objectList.push(new Disc({posX:13, posY: 2, color:'yellow'}))
 
 roomRemotePushBox.objectList.push(new RemoteBot({posX:8, posY: 7}))
 
+roomRemotePushBox.objectList.push(new Disc({posX:3, posY: 3, color:'green'}))
+roomRemotePushBox.addLineToObjectList(new FlipWall({color:'green', state:'off'}), 'x', 2, 5, 6)
 roomRemotePushBox.addLineToObjectList(new FlipWall({color:'white', state:'off'}), 'x', 2, 5, 5)
-roomRemotePushBox.objectList.push(new Disc({posX:3, posY: 4, color:'green'}))
-roomRemotePushBox.objectList.push(new PressurePlate({posX:2, posY: 7, color:'green'}))
-roomRemotePushBox.objectList.push(new PressurePlate({posX:5, posY: 7, color:'white'}))
-roomRemotePushBox.objectList.push(new Box({posX:4, posY: 7}))
+roomRemotePushBox.objectList.push(new PressurePlate({posX:2, posY: 8, color:'green'}))
+roomRemotePushBox.objectList.push(new PressurePlate({posX:5, posY: 8, color:'white'}))
+roomRemotePushBox.objectList.push(new Box({posX:4, posY: 8}))
 
 roomRemotePushBox.addLineToObjectList(new FlipWall({color:'white', state:'on'}), 'y', 6, 8, 13)
 roomRemotePushBox.addLineToObjectList(new FlipWall({color:'green', state:'on'}), 'y', 6, 8, 14)
 
 //roomRemoteBot3; Use of box to shift robot position
-export let roomRemoteBot3 = new Room({playerStartPos:{posX: 0, posY:7}})
+let roomRemoteBot3 = new Room({playerStartPos:{posX: 0, posY:7}})
 
 roomRemotePushBox.rightRoom = roomRemoteBot3
 roomRemoteBot3.leftRoom = roomRemotePushBox
@@ -467,7 +504,7 @@ roomRemoteBot3.addLineToObjectList(new FlipWall({color:'blue', state:'on'}), 'y'
 roomRemoteBot3.addLineToObjectList(new FlipWall({color:'yellow', state:'off'}), 'y', 6, 8, 15)
 
 //roomRemoteBot4
-export let roomRemoteBot4 = new Room({playerStartPos:{posX: 0, posY:7}})
+let roomRemoteBot4 = new Room({playerStartPos:{posX: 0, posY:7}})
 
 roomRemoteBot3.rightRoom = roomRemoteBot4
 roomRemoteBot4.leftRoom = roomRemoteBot3
@@ -502,4 +539,4 @@ roomRemoteBot4.objectList.push(new FlipWall({color:'white', state:'on', posX:10,
 roomRemoteBot4.objectList.push(new FlipWall({color:'yellow', state:'on', posX:11, posY:4}))
 roomRemoteBot4.objectList.push(new FlipWall({color:'green', state:'on', posX:12, posY:4}))
 
-export let startingRoom = firstRoom
+export let startingRoom = roomRemotePushBox

@@ -2,7 +2,7 @@ import { ctx, renderScale } from "../canvas-handler.js";
 import { keyIsPressed } from "../key-handler.js";
 import sprites, { findSprite } from "../sprites.js";
 import { player } from "./player.js";
-import { startingRoom } from "./rooms.js";
+import { firstRoom, startingRoom } from "./rooms.js";
 
 const tileSize = 16
 export const gameWidthInTiles = 16
@@ -13,14 +13,19 @@ const screenHeight = tileSize * gameHeightInTiles
 const screenPosX = 95
 const screenPosY = 13
 
+export const debug = false
+
 export const roomModule = {
     currentRoom: startingRoom,
+}
+
+if (!debug){
+    roomModule.currentRoom = firstRoom
 }
 
 roomModule.currentRoom.playerSpawn()
 
 //rendering
-export const debug = false
 
 function renderBackGround(){
     let backgroundImg = (debug ? sprites.background_debug : sprites.background).img
@@ -33,7 +38,7 @@ function renderBackGround(){
 }
 
 const renderLayers = [
-    'wall', 'sensor', 'disc', 'player',
+    'wall', 'sensor', 'disc', 'block', 'player',
 ]
 
 function renderObjectList(){
