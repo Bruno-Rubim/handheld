@@ -34,8 +34,6 @@ export const player = {
         //Checking direction
         let targetPosX = this.posX;
         let targetPosY = this.posY;
-        let nextTargetPosX = this.posX;
-        let nextTargetPosY = this.posY;
 
         if (this.lastMoveDir == dir){
             if (this.lastMoveTime + this.moveDelay > getNow()){
@@ -47,11 +45,9 @@ export const player = {
 
         if (dir == 'up'){
             targetPosY --
-            nextTargetPosY -=2
         }
         if (dir == 'down'){
             targetPosY ++
-            nextTargetPosY +=2
         }
         if (targetPosY > 9){
             roomModule.currentRoom = roomModule.currentRoom.downRoom;
@@ -63,12 +59,10 @@ export const player = {
 
         if (dir == 'left'){
             targetPosX --
-            nextTargetPosX -= 2
             this.facing = 'left'
         }
         if (dir == 'right'){
             targetPosX ++
-            nextTargetPosX += 2
             this.facing = 'right'
         }
         if (targetPosX > gameWidthInTiles -1){
@@ -84,30 +78,13 @@ export const player = {
         let remoteBotMoved = false
         let targetObject = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, 'player')
         if (targetObject){
-            if (this.disc?.color == 'green' && targetObject?.name == 'box'){
-                if (nextTargetPosX < 1 || nextTargetPosX > 14 || nextTargetPosY < 1 || nextTargetPosY > 8){
-                    blocked = true
-                } else {
-                    if (!roomModule.currentRoom.findObjectByPosition(nextTargetPosX, nextTargetPosY, 'player')){
-                        targetObject.posX = nextTargetPosX
-                        targetObject.posY = nextTargetPosY
-                        let nextTargetPlate = roomModule.currentRoom.findObjectByPosition(nextTargetPosX, nextTargetPosY, 'plate')
-                        if (nextTargetPlate?.state == 'off'){
-                            nextTargetPlate.switchState()
-                        }
-                    } else {
-                        blocked = true
-                    }
+            if ((this.disc?.color == 'green' && targetObject?.name == 'box') ||
+                (this.disc?.color == 'yellow' && targetObject?.name == 'remote-bot')){
+                if (typeof targetObject.move != 'function'){
+                    console.log(targetObject)
+                    return
                 }
-            } else if (this.disc?.color == 'yellow' && (targetObject?.name == 'remote-bot-right' || targetObject?.name == 'remote-bot-left')){
-                roomModule.currentRoom.forEachGameObject((obj)=>{
-                    if (obj.name == 'remote-bot-left' || obj.name == 'remote-bot-right') {
-                        obj.move(dir)
-                    }
-                })
-                remoteBotMoved = true
-                targetObject = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, 'player')
-                if (targetObject){
+                if (!targetObject.move(dir)){
                     blocked = true
                 }
             } else {
@@ -126,30 +103,6 @@ export const player = {
             this.posX = targetPosX
             this.posY = targetPosY
             playerMoved = true
-
-            if (this.disc?.color == 'yellow' && !remoteBotMoved){
-                roomModule.currentRoom.forEachGameObject((obj)=>{
-                    if (obj.name == 'remote-bot-left' || obj.name == 'remote-bot-right') {
-                        obj.move(dir)
-                    }
-                })
-                remoteBotMoved = true;
-            }
-    
-            let targetPlate = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY, 'plate')
-            if (targetPlate?.state == 'off'){
-                targetPlate.switchState()
-            }
-
-            let button = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, 'button')
-            if (button){
-                button.switchState()
-            }
-
-            let discTrap = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, 'disc-trap')
-            if (discTrap){
-                discTrap.pullDisc()
-            }
 
             let floorDisc = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, 'disc')
             if (floorDisc && player.disc == null){
@@ -243,44 +196,30 @@ export const player = {
             }
 
             let box = roomModule.currentRoom.findObjectByPosition(startingPosX - 1, startingPosY, 'player')
-            
-            function changeBoxPosition(){
-                let plate = roomModule.currentRoom.findObjectByPosition(box.posX, box.posY, 'plate')
-                if (plate) {
-                    plate.switchState()
-                }
-                box.posX = startingPosX;
-                box.posY = startingPosY;
-                plate = roomModule.currentRoom.findObjectByPosition(box.posX, box.posY, 'plate')
-                if (plate) {
-                    plate.switchState()
-                }
-            }
-
             if (box?.name == 'box'){
                 if (this.move('right')){
-                    changeBoxPosition()
+                    box.move('right')
                 }
                 return
             }
             box = roomModule.currentRoom.findObjectByPosition(this.posX + 1, this.posY, 'player')
             if (box?.name == 'box'){
                 if (this.move('left')){
-                    changeBoxPosition()
+                    box.move('left')
                 }
                 return
             }
             box = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY + 1, 'player')
             if (box?.name == 'box'){
                 if (this.move('up')){
-                    changeBoxPosition()
+                    box.move('up')
                 }
                 return
             }
             box = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY - 1, 'player')
             if (box?.name == 'box'){
                 if (this.move('down')){
-                    changeBoxPosition()
+                    box.move('down')
                 }
                 return
             }

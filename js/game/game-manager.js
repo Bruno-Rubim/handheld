@@ -21,7 +21,7 @@ roomModule.currentRoom.playerSpawn()
 
 //rendering
 const gameLayers = [
-    'wallOff', 'disc-trap', 'teleport', 'plate', 'button', 'scanner', 'disc', 'player',
+    'teleport', 'sensor', 'disc', 'wallOff', 'player',
 ]
 
 export const debug = false
@@ -171,70 +171,102 @@ export function renderGame(){
     ctx.drawImage(shineImg, screenPosX * renderScale, screenPosY * renderScale, screenWidth * renderScale, screenHeight * renderScale)
 }
 
-// player input
+// Input handler
+
+export const BUTTON_UP = 0
+export const BUTTON_DOWN = 1
+export const BUTTON_HELD = 2
+
+export const BUTTON_DIR_LEFT = 'a'
+export const BUTTON_DIR_RIGHT = 'd'
+export const BUTTON_DIR_DOWN = 's'
+export const BUTTON_DIR_UP = 'w'
+
+export const BUTTON_SQUARE = 'j'
+export const BUTTON_CIRCLE = 'l'
+export const BUTTON_CROSS = 'k'
+export const BUTTON_TRIANGLE = 'i'
+
+export const BUTTON_SQUARE_ALT = '4'
+export const BUTTON_CIRCLE_ALT = '6'
+export const BUTTON_CROSS_ALT = '5'
+export const BUTTON_TRIANGLE_ALT = '8'
+
+const buttonList = [
+    BUTTON_DIR_LEFT,
+    BUTTON_DIR_RIGHT,
+    BUTTON_DIR_DOWN,
+    BUTTON_DIR_UP,
+    BUTTON_SQUARE,
+    BUTTON_CIRCLE,
+    BUTTON_CROSS,
+    BUTTON_TRIANGLE,
+    BUTTON_SQUARE_ALT,
+    BUTTON_CIRCLE_ALT,
+    BUTTON_CROSS_ALT,
+    BUTTON_TRIANGLE_ALT,]
+
 const keyHeldDict = {}
 
-export function keyHandler(){
-    if (keyIsPressed['w']){
-        player.move('up', roomModule.currentRoom.objectList, 'w')
-    } else if (keyIsPressed['s']){
-        player.move('down', roomModule.currentRoom.objectList, 's')
-    } else if (keyIsPressed['a']){
-        player.move('left', roomModule.currentRoom.objectList, 'a')
-    } else if (keyIsPressed['d']){
-        player.move('right', roomModule.currentRoom.objectList, 'd')
-    }
-
-    if (keyIsPressed['5'] || keyIsPressed['k']) {
-        if (!keyHeldDict['5']){
-            player.discActionA()
-            keyHeldDict['5'] = true
-        } 
-    } else {
-        keyHeldDict['5'] = false
-    }
-
-    if (keyIsPressed['4'] || keyIsPressed['j']) {
-        if (!keyHeldDict['4']){
-            player.discActionB()
-            keyHeldDict['4'] = true
-        } 
-    } else {
-        keyHeldDict['4'] = false
-    }
-
-    if (keyIsPressed['8'] || keyIsPressed['i']) {
-        if (!keyHeldDict['8']){
-            player.discActionC()
-            keyHeldDict['8'] = true
-        } 
-    } else {
-        keyHeldDict['8'] = false
-    }
-
-    if (keyIsPressed['6'] || keyIsPressed['l']) {
-        if (!keyHeldDict['6']){
-            player.inventory()
-            keyHeldDict['6'] = true
+function keyHandler(){
+    buttonList.forEach(key => {
+        if (keyIsPressed[key]){
+            if (keyHeldDict[key] != BUTTON_UP ){
+                keyHeldDict[key] = BUTTON_HELD
+            } else {
+                keyHeldDict[key] = BUTTON_DOWN
+            }
+        } else {
+            keyHeldDict[key] = BUTTON_UP
         }
+    });
+}
+
+function inputHandler(){
+    if (keyHeldDict[BUTTON_DIR_UP]){
+        player.move('up')
+    } else if (keyHeldDict[BUTTON_DIR_DOWN]){
+        player.move('down')
+    } else if (keyHeldDict[BUTTON_DIR_LEFT]){
+        player.move('left')
+    } else if (keyHeldDict[BUTTON_DIR_RIGHT]){
+        player.move('right')
     } else {
-        keyHeldDict['6'] = false
-    }
-    if (!keyIsPressed['w'] && 
-        !keyIsPressed['s'] && 
-        !keyIsPressed['a'] && 
-        !keyIsPressed['d'])
-    {
         player.state = 'idle'
+    }
+    if (keyHeldDict[BUTTON_CROSS] == BUTTON_DOWN ||
+        keyHeldDict[BUTTON_CROSS_ALT] == BUTTON_DOWN){
+        player.discActionA()
+    }
+    if (keyHeldDict[BUTTON_TRIANGLE] == BUTTON_DOWN ||
+        keyHeldDict[BUTTON_TRIANGLE_ALT] == BUTTON_DOWN){
+        player.discActionC()
+    }
+    if (keyHeldDict[BUTTON_CIRCLE] == BUTTON_DOWN ||
+        keyHeldDict[BUTTON_CIRCLE_ALT] == BUTTON_DOWN){
+        player.inventory()
     }
 }
 
+// handling game tics
 let ticInterval = 1000/24
 
+function sensorCheck(){
+    roomModule.currentRoom.forEachGameObject((obj)=>{
+        if (obj.layer == 'sensor') {
+            if (obj.validate){
+                obj.validate()
+            }
+        }
+    })
+}
+
 function ticHandler() {
-  // ... faz as validações de tic aqui
+    keyHandler()
+    inputHandler()
+    sensorCheck()
 }
 
 export function start() {
-  setInterval(ticHandler, ticInterval);
+    setInterval(ticHandler, ticInterval);
 }

@@ -1,0 +1,7 @@
+General notes
+
+Make more use of Switch Buttons
+
+Focus on simple mechanics, like remoteBot picking up and using and difference between scanners, pressure plates and buttons
+
+Remotebot4 may be easier than Remotebot3

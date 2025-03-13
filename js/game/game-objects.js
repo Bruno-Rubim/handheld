@@ -6,11 +6,10 @@ function netSwitch(color){
         if (obj.colorNet != color){
             return
         }
-        if (obj.state == 'on'){
-            obj.switchOff()
-        } else {
-            obj.switchOn()
+        if (typeof obj.switchState != 'function'){
+            console.warn(obj)
         }
+        obj.switchState()
     })
 }
 
@@ -31,14 +30,15 @@ export class DiscScanner {
     constructor({posX=7, posY=5, effectOn=()=>{}, effectOff=()=>{}, color='default', state='off'}){
         this.posX = posX
         this.posY = posY
-        this.layer = 'scanner'
+        this.layer = 'sensor'
         this.effectOn = effectOn;
         this.effectOff = effectOff;
         this.color = color;
         this.name = 'scan-' + this.color
         this.state = state
     }
-    discCheck(disc){
+    validate(){
+        const disc = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY, 'disc')
         if (disc?.color == this.color){
             if (this.state == 'off'){
                 netSwitch(this.color)
@@ -54,31 +54,39 @@ export class DiscScanner {
 }
 
 export class SwitchButton {
-    constructor({posX=7, posY=5, color=''}){
+    constructor({posX=7, posY=5, color='', pressed=false}){
         this.posX = posX
         this.posY = posY
-        this.layer = 'button'
+        this.layer = 'sensor'
         this.color = color;
         this.name;
-        this.state = 'off'
+        this.state = 'off';
+        this.pressed = pressed;
         this.colorNet = this.color;
+    }
+    validate(){
+        const object = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY, 'player')
+        if (object) {
+            if (!this.pressed) {
+                this.pressed = true
+                if (this.state == 'off'){
+                    netSwitch(this.color)
+                } else {
+                    netSwitch(this.color)
+                }
+            }
+        } else {
+            this.pressed = false
+        }
     }
     get name() {
         return `button-${this.state}-${this.color}`
     }
-    switchOff(){
-        this.state = 'off'
-    }
-    switchOn(){
-        this.state = 'on'
-    }
     switchState(){
         if (this.state == 'off'){
-            netSwitch(this.color)
-            this.switchOn
+            this.state = 'on'
         } else {
-            netSwitch(this.color)
-            this.switchOff
+            this.state = 'off'
         }
     }
 }
@@ -87,28 +95,37 @@ export class PressurePlate {
     constructor({posX=7, posY=5, color=''}){
         this.posX = posX
         this.posY = posY
-        this.layer = 'plate'
+        this.layer = 'sensor'
         this.color = color;
         this.name;
         this.state = 'off'
+        this.pressed = false
         this.colorNet = this.color;
     }
     get name() {
         return `plate-${this.state}-${this.color}`
     }
-    switchOff(){
-        this.state = 'off'
-    }
-    switchOn(){
-        this.state = 'on'
+    validate(){
+        const object = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY, 'player')
+        if(object){
+            if (!this.pressed){
+                this.state = 'off'
+                netSwitch(this.color)
+            }
+            this.pressed = true
+        } else {
+            if (this.pressed){
+                this.state = 'on'
+                netSwitch(this.color)
+            }
+            this.pressed = false
+        }
     }
     switchState(){
         if (this.state == 'off'){
-            netSwitch(this.color)
-            this.switchOn
+            this.state = 'on'
         } else {
-            netSwitch(this.color)
-            this.switchOff
+            this.state = 'off'
         }
     }
 }
@@ -126,12 +143,14 @@ export class TeleportPad {
     get name() {
         return `teleport-pad-${this.state}-${this.color}`
     }
-    switchOff(){
-        this.state = 'off'
+    switchState(){
+        if (this.state == 'on'){
+            this.state = 'off'
+        } else {
+            this.state = 'on'
+        }
     }
-    switchOn(){
-        this.state = 'on'
-    }
+
 }
 
 export class FlipWall {
@@ -148,13 +167,14 @@ export class FlipWall {
             this.layer = 'player'
         }
     }
-    switchOn(){
-        this.layer = 'player'
-        this.state = 'on'
-    }
-    switchOff(){
-        this.layer = 'wallOff'
-        this.state = 'off'
+    switchState(){
+        if (this.state == 'off') {
+            this.layer = 'player'
+            this.state = 'on'
+        } else {
+            this.layer = 'wallOff'
+            this.state = 'off'
+        }
     }
     get name() {
         return `${this.color}-wall-${this.state}`
@@ -165,7 +185,7 @@ export class DiscTrap {
     constructor({posX=0, posY=0, state='on', color='white'}){
         this.posX = posX
         this.posY = posY
-        this.layer = 'disc-trap'
+        this.layer = 'sensor'
         this.state = state
         this.color = color
         this.colorNet = color
@@ -173,13 +193,13 @@ export class DiscTrap {
     get name(){
         return `disc-trap-${this.state}-${this.color}`
     }
-    pullDisc(){
+    validate(){
         if (this.state == 'off'){
             return
         }
         const discFloor = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY, 'disc')
         const bot = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY, 'player')
-        if (bot.disc) {
+        if (bot?.disc) {
             if (discFloor){
                 return
             }
@@ -190,11 +210,182 @@ export class DiscTrap {
             bot.disc = null
         }
     }
-    switchOff(){
-        this.state = 'off'
+    switchState(){
+        if (this.state == 'on') {
+            this.state = 'off'
+        } else {
+            this.state = 'on'
+        }
     }
-    switchOn(){
-        this.state = 'on'
+}
+
+export class Box {
+    constructor({posX=0, posY=0, disc=null}){
+        this.posX = posX
+        this.posY = posY
+        this.layer = 'player' 
+        this.name = 'box'
+    }
+    move(dir){
+        //Checking direction
+        let targetPosX = this.posX;
+        let targetPosY = this.posY;
+
+        if (this.lastMoveDir == dir){
+            if (this.lastMoveTime + this.moveDelay > getNow()){
+                return
+            }
+        }
+        this.lastMoveTime = getNow()
+        this.lastMoveDir = dir
+
+        if (dir == 'up'){
+            targetPosY --
+        }
+        if (dir == 'down'){
+            targetPosY ++
+        }
+        if (targetPosY > 9){
+            targetPosY = 9
+        } else if (targetPosY < 0){
+            targetPosY = 0
+        }
+
+        if (dir == 'left'){
+            targetPosX --
+            this.facing = 'left'
+        }
+        if (dir == 'right'){
+            targetPosX ++
+            this.facing = 'right'
+        }
+        if (targetPosX > gameWidthInTiles -1){
+            targetPosX = 15
+        } else if (targetPosX < 0){
+            targetPosX = 0
+        }
+        
+        //Checking blockage
+        let blocked = false
+        let targetObject = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, 'player')
+        if (targetObject){
+            blocked = true
+        }
+
+        let moved = false;
+
+        if (!blocked) {
+            this.posX = targetPosX
+            this.posY = targetPosY
+            moved = true
+        }
+
+        if (this.disc?.color == 'yellow' && !remoteBotMoved){
+            roomModule.currentRoom.forEachGameObject((obj)=>{
+                if (obj.name == 'remote-bot-left' || obj.name == 'remote-bot-right') {
+                    obj.move(dir)
+                }
+            })
+            remoteBotMoved = true;
+        }
+
+        return moved
+    }
+    discAction(){
+        if (!this.disc){
+            return
+        }
+        if (this.disc.color == 'red'){
+            let x = this.posX
+            let y = this.posY
+            let layer = this.layer
+            if (roomModule.currentRoom.findObjectByPosition(x + 1, y, layer) instanceof FlipWall){
+                roomModule.currentRoom.takeObjectByPosition(x + 1, y, layer)
+                roomModule.currentRoom.objectList.push({posX: x + 1, posY: y, layer: layer, name: 'drill-right'})
+                setTimeout(()=>{
+                    roomModule.currentRoom.takeObjectByPosition(x + 1, y, layer)
+                }, 200)
+            }
+            if (roomModule.currentRoom.findObjectByPosition(x - 1, y, layer) instanceof FlipWall){
+                roomModule.currentRoom.takeObjectByPosition(x - 1, y, layer)
+                roomModule.currentRoom.objectList.push({posX: x - 1, posY: y, layer: layer, name: 'drill-left'})
+                setTimeout(()=>{
+                    roomModule.currentRoom.takeObjectByPosition(x - 1, y, layer)
+                }, 200)
+            }
+            if (roomModule.currentRoom.findObjectByPosition(x, y + 1, layer) instanceof FlipWall){
+                roomModule.currentRoom.takeObjectByPosition(x, y + 1, layer)
+                roomModule.currentRoom.objectList.push({posX: x, posY: y + 1, layer: layer, name: 'drill-down'})
+                setTimeout(()=>{
+                    roomModule.currentRoom.takeObjectByPosition(x, y + 1, layer)
+                }, 200)
+            }
+            if (roomModule.currentRoom.findObjectByPosition(x, y - 1, layer) instanceof FlipWall){
+                roomModule.currentRoom.takeObjectByPosition(x, y - 1, layer)
+                roomModule.currentRoom.objectList.push({posX: x, posY: y - 1, layer: layer, name: 'drill-up'})
+                setTimeout(()=>{
+                    roomModule.currentRoom.takeObjectByPosition(x, y - 1, layer)
+                }, 200)
+            }
+            return
+        }
+        if (this.disc.color == 'purple'){
+            roomModule.currentRoom.forEachGameObject((obj)=>{
+                if (obj.layer == 'teleport'){
+                    if (!roomModule.currentRoom.findObjectByPosition(obj.posX, obj.posY, 'player')){
+                        this.posX = obj.posX
+                        this.posY = obj.posY
+                    }
+                }
+            })
+            return
+        }
+        if (this.disc.color == 'green'){
+            const startingPosX = this.posX
+            const startingPosY = this.posY
+
+            function changeBoxPosition(){
+                let plate = roomModule.currentRoom.findObjectByPosition(box.posX, box.posY, 'plate')
+                if (plate) {
+                    plate.switchState()
+                }
+                box.posX = startingPosX;
+                box.posY = startingPosY;
+                plate = roomModule.currentRoom.findObjectByPosition(box.posX, box.posY, 'plate')
+                if (plate) {
+                    plate.switchState()
+                }
+            }
+
+            let box = roomModule.currentRoom.findObjectByPosition(this.posX - 1, this.posY, 'player')
+            if (box?.name == 'box'){
+                if (this.move('right')){
+                    changeBoxPosition()
+                }
+                return
+            }
+            box = roomModule.currentRoom.findObjectByPosition(this.posX + 1, this.posY, 'player')
+            if (box?.name == 'box'){
+                if (this.move('left')){
+                    changeBoxPosition()
+                }
+                return
+            }
+            box = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY + 1, 'player')
+            if (box?.name == 'box'){
+                if (this.move('up')){
+                    changeBoxPosition()
+                }
+                return
+            }
+            box = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY - 1, 'player')
+            if (box?.name == 'box'){
+                if (this.move('down')){
+                    changeBoxPosition()
+                }
+                return
+            }
+        }
     }
 }
 

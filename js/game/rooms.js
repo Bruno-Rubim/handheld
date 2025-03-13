@@ -1,5 +1,5 @@
 import { debug } from "./game-manager.js";
-import { DiscScanner, DiscTrap, FlipWall, Disc, RemoteBot, SwitchButton, PressurePlate, TeleportPad } from "./game-objects.js";
+import { DiscScanner, DiscTrap, FlipWall, Disc, RemoteBot, SwitchButton, PressurePlate, TeleportPad, Box } from "./game-objects.js";
 import { player } from "./player.js";
 
 export class Room {
@@ -74,19 +74,22 @@ testRoom.objectList.push(new Disc({color:'green', posX: 3, posY: 1}))
 testRoom.objectList.push(new Disc({color:'yellow', posX: 4, posY: 1}))
 testRoom.objectList.push(new Disc({color:'white', posX: 5, posY: 1}))
 
-testRoom.objectList.push(({name:'box', posX: 9, posY: 6, layer:'player'}))
+testRoom.objectList.push(new Box({posX: 9, posY: 6}))
 
 testRoom.objectList.push(new DiscTrap({posX: 11, posY: 6}))
 
+testRoom.objectList.push(new PressurePlate({color: 'green', posX: 3, posY: 6,}))
 testRoom.objectList.push(new DiscScanner({color: 'red', posX: 2, posY: 6,}))
 testRoom.objectList.push(new DiscScanner({color: 'white', posX: 4, posY: 6,}))
-
+testRoom.objectList.push(new SwitchButton({posX: 5, posY: 6,color: 'blue'}))
 testRoom.objectList.push(new TeleportPad({posX: 6, posY: 6, color: 'white'}))
 
 testRoom.objectList.push(new RemoteBot({posX: 7, posY: 6, disc:null}))
 
-testRoom.objectList.push(new SwitchButton({posX: 5, posY: 6,color: 'blue'}))
-testRoom.addLineToObjectList(new FlipWall({color:'red', state:'on', layer:'player'}), 'y', 2, 7, 14)
+
+testRoom.addLineToObjectList(new FlipWall({color:'red', state:'on', layer:'player'}), 'y', 2, 7, 13)
+testRoom.addLineToObjectList(new FlipWall({color:'blue', state:'on', layer:'player'}), 'y', 2, 7, 14)
+testRoom.addLineToObjectList(new FlipWall({color:'green', state:'on', layer:'player'}), 'y', 2, 7, 15)
 
 // testRoom.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 0)
 // testRoom.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 15, 9)
@@ -209,8 +212,8 @@ room2Discs.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 9, 2)
 room2Discs.addLineToObjectList(new FlipWall({color:'white', state:'on'}), 'y', 3, 6, 13)
 room2Discs.addLineToObjectList(new FlipWall({color:'green', state:'on'}), 'y', 3, 6, 14)
 
-room2Discs.objectList.push({name:'box', posX: 10, posY: 3, layer:'player'})
-room2Discs.objectList.push({name:'box', posX: 10, posY: 6, layer:'player'})
+room2Discs.objectList.push(new Box({posX: 10, posY: 3}))
+room2Discs.objectList.push(new Box({posX: 10, posY: 6}))
 
 room2Discs.objectList.push(new Disc({color: 'green', posX: 4, posY: 3}))
 room2Discs.objectList.push(new Disc({color: 'white', posX: 4, posY: 6}))
@@ -235,14 +238,17 @@ roomPushBox1.addLineToObjectList({name:'wall', layer:'player'}, 'x', 0, 10, 9)
 
 roomPushBox1.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 2, 0)
 roomPushBox1.addLineToObjectList({name:'wall', layer:'player'}, 'y', 7, 9, 0)
-roomPushBox1.addLineToObjectList({name:'box', layer:'player'}, 'y', 4, 5, 2)
 roomPushBox1.addLineToObjectList(new FlipWall({color:'green', state:'off'}), 'y', 4, 6, 4)
-roomPushBox1.addLineToObjectList({name:'box', layer:'player'}, 'y', 4, 6, 10)
 roomPushBox1.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 9, 14)
 roomPushBox1.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 9, 15)
 
 roomPushBox1.objectList.push(new Disc({color: 'green', posX: 6, posY: 5}))
 roomPushBox1.objectList.push(new DiscScanner({color: 'green', posX: 8, posY: 5}))
+roomPushBox1.objectList.push(new Box({posX: 2, posY: 4}))
+roomPushBox1.objectList.push(new Box({posX: 2, posY: 5}))
+roomPushBox1.objectList.push(new Box({posX: 10, posY: 4}))
+roomPushBox1.objectList.push(new Box({posX: 10, posY: 5}))
+roomPushBox1.objectList.push(new Box({posX: 10, posY: 6}))
 
 //roomPullBox; introduces ability to pull boxes and pressure plates
 export let roomPullBox = new Room({playerStartPos:{posX: 12, posY:0}})
@@ -262,7 +268,7 @@ roomPullBox.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 5, 15)
 
 roomPullBox.objectList.push(new PressurePlate({color: 'white', posX: 12, posY: 2}))
 roomPullBox.objectList.push(new Disc({color: 'green', posX: 7, posY: 2}))
-roomPullBox.objectList.push({name: 'box', posX: 2, posY: 2, layer:'player'})
+roomPullBox.objectList.push(new Box({posX: 2, posY: 2}))
 
 roomPullBox.addLineToObjectList(new FlipWall({color:'white', state:'on'}), 'x', 2, 5, 4)
 roomPullBox.addLineToObjectList(new FlipWall({color:'white', state:'on'}), 'x', 2, 5, 5)
@@ -294,12 +300,12 @@ roomPushBox2.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 1, 14)
 roomPushBox2.addLineToObjectList({name:'wall', layer:'player'}, 'y', 0, 9, 15)
 
 roomPushBox2.objectList.push(new DiscScanner({color: 'green', posX: 3, posY: 2}))
-roomPushBox2.objectList.push({name: 'box', posX: 8, posY: 2, layer:'player'})
+roomPushBox2.objectList.push(new Box({posX: 8, posY: 2}))
 
 roomPushBox2.objectList.push(new PressurePlate({color: 'blue', posX: 3, posY: 7}))
 roomPushBox2.objectList.push(new PressurePlate({color: 'white', posX: 8, posY: 7}))
 roomPushBox2.objectList.push(new Disc({color: 'green', posX: 10, posY: 7}))
-roomPushBox2.objectList.push({name: 'box', posX: 12, posY: 7, layer:'player'})
+roomPushBox2.objectList.push(new Box({posX: 12, posY: 7}))
 
 //roomRemoteButton; Introduces remoteBot
 export let roomRemoteButton = new Room({playerStartPos:{posX: 12, posY:9}})
@@ -354,9 +360,9 @@ roomRemoteDisc.addLineToObjectList(new FlipWall({color:'yellow', state:'off'}), 
 roomRemoteDisc.addLineToObjectList(new FlipWall({color:'white', state:'on'}), 'y', 2, 3, 11)
 roomRemoteDisc.addLineToObjectList({name:'wall', layer:'player'}, 'x', 10, 11, 4)
 
-roomRemoteDisc.objectList.push(new RemoteBot({posX:2, posY:7}))
+roomRemoteDisc.objectList.push(new Disc({color:'white', posX:2, posY:7}))
 roomRemoteDisc.addLineToObjectList(new FlipWall({color:'blue', state:'off'}), 'y', 6, 8, 4)
-roomRemoteDisc.objectList.push(new Disc({color:'white', posX:6, posY:7}))
+roomRemoteDisc.objectList.push(new RemoteBot({posX:6, posY:7}))
 roomRemoteDisc.addLineToObjectList(new FlipWall({color:'blue', state:'on'}), 'y', 6, 8, 8)
 roomRemoteDisc.addLineToObjectList(new FlipWall({color:'blue', state:'off'}), 'y', 6, 8, 11)
 roomRemoteDisc.objectList.push(new DiscScanner({color:'white', posX:13, posY:7, state:'off'}))
@@ -418,9 +424,9 @@ roomRemotePushBox.objectList.push(new RemoteBot({posX:8, posY: 7}))
 
 roomRemotePushBox.addLineToObjectList(new FlipWall({color:'white', state:'off'}), 'x', 2, 5, 5)
 roomRemotePushBox.objectList.push(new Disc({posX:3, posY: 4, color:'green'}))
-roomRemotePushBox.objectList.push(new DiscScanner({posX:2, posY: 7, color:'green'}))
+roomRemotePushBox.objectList.push(new PressurePlate({posX:2, posY: 7, color:'green'}))
 roomRemotePushBox.objectList.push(new PressurePlate({posX:5, posY: 7, color:'white'}))
-roomRemotePushBox.objectList.push({name:'box', posX:4, posY: 7, layer:'player'})
+roomRemotePushBox.objectList.push(new Box({posX:4, posY: 7}))
 
 roomRemotePushBox.addLineToObjectList(new FlipWall({color:'white', state:'on'}), 'y', 6, 8, 13)
 roomRemotePushBox.addLineToObjectList(new FlipWall({color:'green', state:'on'}), 'y', 6, 8, 14)
@@ -452,7 +458,7 @@ roomRemoteBot3.objectList.push(new Disc({posX:3, posY: 7, color:'yellow'}))
 roomRemoteBot3.objectList.push(new PressurePlate({color:'white', posX: 9, posY: 8}))
 roomRemoteBot3.objectList.push(new DiscScanner({color:'green', posX: 9, posY: 5}))
 
-roomRemoteBot3.objectList.push({name:'box', posX: 7, posY: 7, layer:'player'})
+roomRemoteBot3.objectList.push(new Box({posX: 7, posY: 7}))
 roomRemoteBot3.objectList.push(new Disc({posX:7, posY: 6, color:'green'}))
 
 roomRemoteBot3.addLineToObjectList(new FlipWall({color:'white', state:'on'}), 'y', 5, 8, 12)
@@ -478,7 +484,7 @@ roomRemoteBot4.addLineToObjectList({name:'wall', layer:'player'}, 'y', 6, 9, 15)
 
 roomRemoteBot4.objectList.push(new Disc({color: 'green', posX: 2, posY: 6}))
 roomRemoteBot4.addLineToObjectList(new FlipWall({color:'yellow', state:'off'}), 'x', 1, 3, 5)
-roomRemoteBot4.objectList.push(({name: 'box', posX: 2, posY: 4, layer:'player'}))
+roomRemoteBot4.objectList.push(new Box({posX: 2, posY: 4}))
 roomRemoteBot4.objectList.push(new PressurePlate({color:'white', posX: 2, posY: 2}))
 
 roomRemoteBot4.objectList.push(new Disc({color: 'yellow', posX: 7, posY: 6}))
