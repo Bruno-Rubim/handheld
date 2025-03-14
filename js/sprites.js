@@ -103,6 +103,22 @@ const sprites = {
 	teleport_pad_off_white: new Sprite('./images/game/teleport-pad-off-white.png'),
 	red_wall_on: new Sprite('./images/game/red-wall-on.png'),
 	red_wall_off: new Sprite('./images/game/red-wall-off.png'),
+	conveyor_right_0_white: new Sprite('./images/game/conveyor-right-0-white.png'),
+	conveyor_right_1_white: new Sprite('./images/game/conveyor-right-1-white.png'),
+	conveyor_right_2_white: new Sprite('./images/game/conveyor-right-2-white.png'),
+	conveyor_right_3_white: new Sprite('./images/game/conveyor-right-3-white.png'),
+	conveyor_left_0_white: new Sprite('./images/game/conveyor-left-0-white.png'),
+	conveyor_left_1_white: new Sprite('./images/game/conveyor-left-1-white.png'),
+	conveyor_left_2_white: new Sprite('./images/game/conveyor-left-2-white.png'),
+	conveyor_left_3_white: new Sprite('./images/game/conveyor-left-3-white.png'),
+	conveyor_down_0_white: new Sprite('./images/game/conveyor-down-0-white.png'),
+	conveyor_down_1_white: new Sprite('./images/game/conveyor-down-1-white.png'),
+	conveyor_down_2_white: new Sprite('./images/game/conveyor-down-2-white.png'),
+	conveyor_down_3_white: new Sprite('./images/game/conveyor-down-3-white.png'),
+	conveyor_up_0_white: new Sprite('./images/game/conveyor-up-0-white.png'),
+	conveyor_up_1_white: new Sprite('./images/game/conveyor-up-1-white.png'),
+	conveyor_up_2_white: new Sprite('./images/game/conveyor-up-2-white.png'),
+	conveyor_up_3_white: new Sprite('./images/game/conveyor-up-3-white.png'),
 }
 
 const spriteArr = Object.values(sprites)
@@ -111,10 +127,10 @@ await Promise.all(promises)
 
 export default sprites
 
-export function findSprite(name) {
-	const sprite = sprites[name.replaceAll('-', '_')]
+export function findSprite(spriteName) {
+	const sprite = sprites[spriteName.replaceAll('-', '_')]
 	if (!sprite) {
-		throw new Error(`Sprite ${name} not found`)
+		throw new Error(`Sprite ${spriteName} not found`)
 	}
 	return sprite
 }

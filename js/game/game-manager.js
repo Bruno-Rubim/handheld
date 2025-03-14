@@ -43,7 +43,7 @@ const renderLayers = [
 
 function renderObjectList(){
     for(let i = 0; i < renderLayers.length; i++) {
-        const gameLayer = renderLayers[i];
+        const renderLayer = renderLayers[i];
         roomModule.currentRoom.forEachGameObject((object)=>{
             if (object == null){
                 console.warn('null object')
@@ -51,10 +51,10 @@ function renderObjectList(){
             }
             if (object.renderLayer == undefined) {
                 object.renderLayer = 'wall'
-            } else if (object.renderLayer != gameLayer){
+            } else if (object.renderLayer != renderLayer){
                 return
             }
-            const img = findSprite(object.name).img
+            const img = findSprite(object.sprite).img
             let posYOffscale = 0
             if (object.posYOffset){
                 posYOffscale = object.posYOffset
@@ -73,7 +73,7 @@ const controlsDict = {
     'white': ['eject-disc'],
     'green': ['eject-disc', 'push-box', 'pull-box'],
     'purple': ['eject-disc', 'teleport'],
-    'yellow': ['eject-disc', 'move-remote-bot', 'remote-bot-disc'],
+    'yellow': ['eject-disc', 'move-remote-bot'],
     'red': ['eject-disc'],
 }
 
@@ -123,7 +123,7 @@ function renderControls(){
     if (player.disc?.color == 'yellow') {
         let rBot;
         roomModule.currentRoom.forEachGameObject((obj)=>{
-            if (obj.name == 'remote-bot-left'||obj.name == 'remote-bot-right'){
+            if (obj.tags.includes('bot')){
                 rBot = obj
             }
         })
@@ -264,9 +264,19 @@ let ticInterval = 1000/24
 
 function sensorCheck(){
     roomModule.currentRoom.forEachGameObject((obj)=>{
-        if (obj.gameLayer == 'sensor') {
+        if (obj.tags.includes('sensor')) {
             if (obj.validate){
                 obj.validate()
+            }
+        }
+    })
+}
+
+function dynamicCheck(){
+    roomModule.currentRoom.forEachGameObject((obj)=>{
+        if (obj.tags.includes('dynamic')) {
+            if (obj.dynamics){
+                obj.dynamics()
             }
         }
     })
@@ -276,6 +286,7 @@ function ticHandler() {
     keyHandler()
     inputHandler()
     sensorCheck()
+    dynamicCheck()
 }
 
 export function start() {

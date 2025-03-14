@@ -1,13 +1,12 @@
 import { getNow } from "../time-manager.js";
-import { gameHeightInTiles, roomModule, gameWidthInTiles} from "./game-manager.js";
-import { FlipWall } from "./game-objects.js";
+import { roomModule, gameWidthInTiles} from "./game-manager.js";
 
 export const player = {
-    name: 'disc-bot-right',
+    sprite: 'disc-bot-right',
     posX: 1,
     posY: 4,
     posYOffset: 6,
-    gameLayer: 'player',
+    tags: ['player', 'bot', 'movable'],
     renderLayer: 'player',
     lastMoveDir: null,
     lastMoveTime: getNow(),
@@ -15,20 +14,11 @@ export const player = {
     facing: 'left',
     disc: null,
     inventory(){
-        let discTrap = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY, 'disc-trap')
-        if (discTrap?.state == 'on'){
-            return
-        }
-        let scanner = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY, 'scanner')
-        let floorDisc = roomModule.currentRoom.takeObjectByPosition(this.posX, this.posY, 'disc')
+        let floorDisc = roomModule.currentRoom.takeObjectByPosition(this.posX, this.posY, ['disc'])
         if (this.disc){
             this.disc.posX = this.posX
             this.disc.posY = this.posY
-            this.disc.gameLayer = 'disc'
             roomModule.currentRoom.objectList.push(this.disc)
-        }
-        if (scanner){
-            scanner.discCheck(this.disc);
         }
         this.disc = floorDisc
     },
@@ -67,7 +57,7 @@ export const player = {
             targetPosX ++
             this.facing = 'right'
         }
-        if (targetPosX > gameWidthInTiles -1){
+        if (targetPosX > 15){
             targetPosX = 0
             roomModule.currentRoom = roomModule.currentRoom.rightRoom;
         } else if (targetPosX < 0){
@@ -78,15 +68,22 @@ export const player = {
         //Checking blockage
         let blocked = false
         let remoteBotMoved = false
-        let targetObject = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, 'player')
+        let targetObject = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, ['block', 'bot'])
         if (targetObject){
-            if ((this.disc?.color == 'green' && targetObject?.name == 'box') ||
-                (this.disc?.color == 'yellow' && targetObject?.name == 'remote-bot')){
-                if (typeof targetObject.move != 'function'){
-                    console.log(targetObject)
-                    return
+            if (this.disc?.color == 'green') {
+                if (targetObject.tags.includes('box')){
+                    if (!targetObject.move(dir)){
+                        blocked = true
+                    }
+                } else {
+                    blocked = true
                 }
-                if (!targetObject.move(dir)){
+            } else if (this.disc?.color == 'yellow'){
+                if (targetObject.tags.includes('bot')){
+                    if (!targetObject.move(dir)){
+                        blocked = true
+                    }
+                } else {
                     blocked = true
                 }
             } else {
@@ -97,28 +94,23 @@ export const player = {
         let playerMoved = false;
 
         if (!blocked) {
-            let currentPlate = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY, 'plate')
-            if (currentPlate?.state == 'on'){
-                currentPlate.switchState()
-            }
-
             this.posX = targetPosX
             this.posY = targetPosY
             playerMoved = true
 
-            let floorDisc = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, 'disc')
+            let floorDisc = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, ['disc'])
             if (floorDisc && player.disc == null){
                 this.inventory()
                 remoteBotMoved = true
             }
         }
 
-        this.name = 'disc-bot-' + this.facing
+        this.sprite = 'disc-bot-' + this.facing
         this.state = 'walking'
 
         if (this.disc?.color == 'yellow' && !remoteBotMoved){
             roomModule.currentRoom.forEachGameObject((obj)=>{
-                if (obj.name == 'remote-bot-left' || obj.name == 'remote-bot-right') {
+                if (obj.tags.includes('bot')) {
                     obj.move(dir)
                 }
             })
@@ -131,44 +123,10 @@ export const player = {
         if (!this.disc){
             return
         }
-        if (this.disc.color == 'red'){
-            let x = this.posX
-            let y = this.posY
-            let gameLayer = this.gameLayer
-            if (roomModule.currentRoom.findObjectByPosition(x + 1, y, gameLayer) instanceof FlipWall){
-                roomModule.currentRoom.takeObjectByPosition(x + 1, y, gameLayer)
-                roomModule.currentRoom.objectList.push({posX: x + 1, posY: y, gameLayer: gameLayer, name: 'drill-right'})
-                setTimeout(()=>{
-                    roomModule.currentRoom.takeObjectByPosition(x + 1, y, gameLayer)
-                }, 200)
-            }
-            if (roomModule.currentRoom.findObjectByPosition(x - 1, y, gameLayer) instanceof FlipWall){
-                roomModule.currentRoom.takeObjectByPosition(x - 1, y, gameLayer)
-                roomModule.currentRoom.objectList.push({posX: x - 1, posY: y, gameLayer: gameLayer, name: 'drill-left'})
-                setTimeout(()=>{
-                    roomModule.currentRoom.takeObjectByPosition(x - 1, y, gameLayer)
-                }, 200)
-            }
-            if (roomModule.currentRoom.findObjectByPosition(x, y + 1, gameLayer) instanceof FlipWall){
-                roomModule.currentRoom.takeObjectByPosition(x, y + 1, gameLayer)
-                roomModule.currentRoom.objectList.push({posX: x, posY: y + 1, gameLayer: gameLayer, name: 'drill-down'})
-                setTimeout(()=>{
-                    roomModule.currentRoom.takeObjectByPosition(x, y + 1, gameLayer)
-                }, 200)
-            }
-            if (roomModule.currentRoom.findObjectByPosition(x, y - 1, gameLayer) instanceof FlipWall){
-                roomModule.currentRoom.takeObjectByPosition(x, y - 1, gameLayer)
-                roomModule.currentRoom.objectList.push({posX: x, posY: y - 1, gameLayer: gameLayer, name: 'drill-up'})
-                setTimeout(()=>{
-                    roomModule.currentRoom.takeObjectByPosition(x, y - 1, gameLayer)
-                }, 200)
-            }
-            return
-        }
         if (this.disc.color == 'purple'){
             roomModule.currentRoom.forEachGameObject((obj)=>{
-                if (obj.gameLayer == 'teleport'){
-                    if (!roomModule.currentRoom.findObjectByPosition(obj.posX, obj.posY, 'player') && obj.state == 'on'){
+                if (obj.tags.includes('teleport')){
+                    if (!roomModule.currentRoom.findObjectByPosition(obj.posX, obj.posY, ['block', 'bot']) && obj.state == 'on'){
                         this.posX = obj.posX
                         this.posY = obj.posY
                         return
@@ -179,7 +137,7 @@ export const player = {
         }
         if (this.disc.color == 'yellow'){
             roomModule.currentRoom.forEachGameObject((obj)=>{
-                if (obj.name == 'remote-bot-left' || obj.name == 'remote-bot-right') {
+                if (obj.tags.includes('bot') && !obj.tags.includes('player')) {
                     obj.discAction()
                 }
             })
@@ -190,40 +148,37 @@ export const player = {
                 return
             }
 
-            const startingPosX = this.posX
-            const startingPosY = this.posY
-            
-            if (startingPosX > 14 || startingPosX < 1 || startingPosY > 8 || startingPosY < 1){
+            if (this.posX > 14 || this.posX < 1 || this.posY > 8 || this.posY < 1){
                 return
             }
 
-            let box = roomModule.currentRoom.findObjectByPosition(startingPosX - 1, startingPosY, 'player')
-            if (box?.name == 'box'){
+            let box = roomModule.currentRoom.findObjectByPosition(this.posX - 1, this.posY, ['box'])
+            if (box) {
                 if (this.move('right')){
                     box.move('right')
+                    return
                 }
-                return
             }
-            box = roomModule.currentRoom.findObjectByPosition(this.posX + 1, this.posY, 'player')
-            if (box?.name == 'box'){
+            box = roomModule.currentRoom.findObjectByPosition(this.posX + 1, this.posY, ['box'])
+            if (box) {
                 if (this.move('left')){
                     box.move('left')
+                    return
                 }
-                return
             }
-            box = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY + 1, 'player')
-            if (box?.name == 'box'){
+            box = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY + 1, ['box'])
+            if (box) {
                 if (this.move('up')){
                     box.move('up')
+                    return
                 }
-                return
             }
-            box = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY - 1, 'player')
-            if (box?.name == 'box'){
+            box = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY - 1, ['box'])
+            if (box) {
                 if (this.move('down')){
                     box.move('down')
+                    return
                 }
-                return
             }
         }
     },
@@ -238,7 +193,7 @@ export const player = {
         }
         if (this.disc.color == 'yellow'){
             roomModule.currentRoom.forEachGameObject((obj)=>{
-                if (obj.name == 'remote-bot-left' || obj.name == 'remote-bot-right') {
+                if (obj.tags.includes('bot') && !obj.tags.includes('player')) {
                     obj.inventory()
                 }            
             })

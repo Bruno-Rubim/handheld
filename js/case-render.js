@@ -9,7 +9,7 @@ const consoleCase = {
 
 export const buttons = [
     {
-        name: 'up',
+        sprite: 'up',
         width: 25,
         height: 34,
         posX: 35,
@@ -17,7 +17,7 @@ export const buttons = [
         keys: ['w'],
     },
     {
-        name: 'down',
+        sprite: 'down',
         width: 25,
         height: 34,
         posX: 35,
@@ -25,7 +25,7 @@ export const buttons = [
         keys: ['s'],
     },
     {
-        name: 'left',
+        sprite: 'left',
         width: 31,
         height: 28,
         posX: 13,
@@ -33,7 +33,7 @@ export const buttons = [
         keys: ['a'],
     },
     {
-        name: 'right',
+        sprite: 'right',
         width: 31,
         height: 28,
         posX: 51,
@@ -41,7 +41,7 @@ export const buttons = [
         keys: ['d'],
     },    
     {
-        name: 'triangle',
+        sprite: 'triangle',
         width: 29,
         height: 32,
         posX: 384,
@@ -49,7 +49,7 @@ export const buttons = [
         keys: ['8', 'i'],
     },
     {
-        name: 'cross',
+        sprite: 'cross',
         width: 29,
         height: 32,
         posX: 384,
@@ -57,7 +57,7 @@ export const buttons = [
         keys: ['5', 'k'],
     },
     {
-        name: 'square',
+        sprite: 'square',
         width: 29,
         height: 32,
         posX: 362,
@@ -65,7 +65,7 @@ export const buttons = [
         keys: ['4', 'j'],
     },
     {
-        name: 'circle',
+        sprite: 'circle',
         width: 29,
         height: 32,
         posX: 406,
@@ -82,7 +82,7 @@ function renderButtons(){
                 state = 'on'
             }
         }
-        const img = findSprite(button.name + '-button-' + state).img
+        const img = findSprite(button.sprite + '-button-' + state).img
         ctx.drawImage(
             img,
             button.posX * renderScale,
