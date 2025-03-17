@@ -1,5 +1,6 @@
 import { getNow } from "../time-manager.js";
 import { roomModule, gameWidthInTiles} from "./game-manager.js";
+import { oppDir } from "./game-objects.js";
 
 export const player = {
     sprite: 'disc-bot-right',
@@ -51,11 +52,9 @@ export const player = {
 
         if (dir == 'left'){
             targetPosX --
-            this.facing = 'left'
         }
         if (dir == 'right'){
             targetPosX ++
-            this.facing = 'right'
         }
         if (targetPosX > 15){
             targetPosX = 0
@@ -68,7 +67,7 @@ export const player = {
         //Checking blockage
         let blocked = false
         let remoteBotMoved = false
-        let targetObject = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, ['block', 'bot'])
+        let targetObject = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, ['block', 'bot', oppDir[dir]])
         if (targetObject){
             if (this.disc?.color == 'green') {
                 if (targetObject.tags.includes('box')){

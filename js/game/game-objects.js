@@ -1,6 +1,13 @@
 import { getNow } from "../time-manager.js";
 import { roomModule, gameHeightInTiles, gameWidthInTiles } from "./game-manager.js";
 
+export const oppDir = {
+    left: 'right',
+    right: 'left',
+    up: 'down',
+    down: 'up',
+}
+
 function netSwitch(color){
     roomModule.currentRoom.forEachGameObject((obj)=>{
         if (obj.colorNet != color){
@@ -66,7 +73,7 @@ export class Disc {
         
         //Checking blockage
         let blocked = false
-        let targetObject = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, ['disc'])
+        let targetObject = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, ['disc', 'block'])
         if (targetObject){
             blocked = true
         }
@@ -111,32 +118,38 @@ export class DiscScanner {
     }
 }
 
-export class ToggleButton {
+export class Lever {
     constructor({posX=7, posY=5, color='', pressed=false}){
         this.posX = posX
         this.posY = posY
-        this.tags = ['sensor']
+        this.tags = ['sensor', 'lever']
         this.renderLayer = 'sensor'
         this.color = color;
         this.sprite;
         this.state = 'off';
         this.pressed = pressed;
+        this.colorNet = color;
     }
     validate(){
-        const object = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY, ['block', 'bot'])
+        const object = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY, ['bot'])
         if (object) {
-            this.state = 'on'
             if (!this.pressed) {
                 this.pressed = true
                 netSwitch(this.color)
             }
         } else {
-            this.state = 'off'
             this.pressed = false
         }
     }
+    switchState(){
+        if (this.state == 'on'){
+            this.state = 'off'
+        } else {
+            this.state = 'on'
+        }
+    }
     get sprite() {
-        return `button-${this.state}-${this.color}`
+        return `lever-${this.color}-${this.state}`
     }
 }
 
@@ -204,7 +217,6 @@ export class FlipWall {
         this.state = state
         this.colorNet = color
         this.tags = ['block']
-        this.class = FlipWall
         if (state=='off'){
             this.tags = []
         } else {
@@ -221,7 +233,7 @@ export class FlipWall {
         }
     }
     get sprite() {
-        return `${this.color}-wall-${this.state}`
+        return `wall-${this.color}-${this.state}`
     }
 }
 
@@ -265,15 +277,15 @@ export class DiscTrap {
 }
 
 export class Conveyor {
-    constructor({posX=7, posY=5, dir='right', color='white', state='off'}){
+    constructor({posX=7, posY=5, dir='right', color='white'}){
         this.posX = posX
         this.posY = posY
         this.dir = dir
         this.color = color
         this.colorNet = color
-        this.state = state
         this.renderLayer = 'sensor'
         this.tags = ['dynamic']
+        this.tags[1] = dir
         this.ticsSinceFrame = 0
         this.animationTicDelay = 24/8
         this.animatioFrame = 0
@@ -284,38 +296,33 @@ export class Conveyor {
         return `conveyor-${this.dir}-${this.animatioFrame}-${this.color}`
     }
     dynamics(){
-        if (this.state == 'on') {
-            this.ticsSinceMove ++
-            this.ticsSinceFrame ++
-            if (this.ticsSinceFrame > this.animationTicDelay) {
-                this.animatioFrame ++
-                if (this.animatioFrame > 3){
-                    this.animatioFrame = 0
-                }
-                this.ticsSinceFrame = 0
+        this.ticsSinceMove ++
+        this.ticsSinceFrame ++
+        if (this.ticsSinceFrame > this.animationTicDelay) {
+            this.animatioFrame ++
+            if (this.animatioFrame > 3){
+                this.animatioFrame = 0
             }
-            const object = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY, ['movable'])
-            if (this.ticsSinceMove > this.moveTicDelay) {
-                if (object){
-                    if (!object.movedByConveryor){
-                        object.move(this.dir)
-                        object.movedByConveryor = true
-                    }
+            this.ticsSinceFrame = 0
+        }
+        const object = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY, ['movable'])
+        if (this.ticsSinceMove > this.moveTicDelay) {
+            if (object){
+                if (!object.movedByConveryor){
+                    object.move(this.dir)
+                    object.movedByConveryor = true
                 }
-                this.ticsSinceMove = 0
-            } else {
-                if (object){
-                    object.movedByConveryor = false
-                }
+            }
+            this.ticsSinceMove = 0
+        } else {
+            if (object){
+                object.movedByConveryor = false
             }
         }
     }
     switchState(){
-        if (this.state == 'on') {
-            this.state = 'off'
-        } else {
-            this.state = 'on'
-        }
+        this.dir = oppDir[this.dir]
+        this.tags[1] = this.dir
     }
 }
 
@@ -368,7 +375,7 @@ export class Box {
         
         //Checking blockage
         let blocked = false
-        let targetObject = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, ['bot', 'block'])
+        let targetObject = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, ['bot', 'block', 'lever'])
         if (targetObject){
             blocked = true
         }

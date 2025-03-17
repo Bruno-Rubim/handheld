@@ -1,5 +1,5 @@
-import { ctx, renderScale } from "../canvas-handler.js";
-import { keyIsPressed } from "../key-handler.js";
+import { BUTTON_DOWN, buttonHandler, buttonHeldDict } from "../button-manager.js";
+import { ctx, layout, renderScale } from "../canvas-handler.js";
 import sprites, { findSprite } from "../sprites.js";
 import { player } from "./player.js";
 import { firstRoom, startingRoom } from "./rooms.js";
@@ -10,8 +10,17 @@ export const gameHeightInTiles = 12
 
 const screenWidth = tileSize * gameWidthInTiles
 const screenHeight = tileSize * gameHeightInTiles
-const screenPosX = 95
-const screenPosY = 13
+let screenPosX;
+let screenPosY;
+
+if (layout == 'pc') {
+    screenPosX = 95
+    screenPosY = 13
+} else {
+    screenPosX = 32
+    screenPosY = 32
+}
+
 
 export const debug = false
 
@@ -183,78 +192,28 @@ export function renderGame(){
 }
 
 // Input handler
-
-export const BUTTON_UP = 0
-export const BUTTON_DOWN = 1
-export const BUTTON_HELD = 2
-
-export const BUTTON_DIR_LEFT = 'a'
-export const BUTTON_DIR_RIGHT = 'd'
-export const BUTTON_DIR_DOWN = 's'
-export const BUTTON_DIR_UP = 'w'
-
-export const BUTTON_SQUARE = 'j'
-export const BUTTON_CIRCLE = 'l'
-export const BUTTON_CROSS = 'k'
-export const BUTTON_TRIANGLE = 'i'
-
-export const BUTTON_SQUARE_ALT = '4'
-export const BUTTON_CIRCLE_ALT = '6'
-export const BUTTON_CROSS_ALT = '5'
-export const BUTTON_TRIANGLE_ALT = '8'
-
-const buttonList = [
-    BUTTON_DIR_LEFT,
-    BUTTON_DIR_RIGHT,
-    BUTTON_DIR_DOWN,
-    BUTTON_DIR_UP,
-    BUTTON_SQUARE,
-    BUTTON_CIRCLE,
-    BUTTON_CROSS,
-    BUTTON_TRIANGLE,
-    BUTTON_SQUARE_ALT,
-    BUTTON_CIRCLE_ALT,
-    BUTTON_CROSS_ALT,
-    BUTTON_TRIANGLE_ALT,]
-
-const keyHeldDict = {}
-
-function keyHandler(){
-    buttonList.forEach(key => {
-        if (keyIsPressed[key]){
-            if (keyHeldDict[key] != BUTTON_UP ){
-                keyHeldDict[key] = BUTTON_HELD
-            } else {
-                keyHeldDict[key] = BUTTON_DOWN
-            }
-        } else {
-            keyHeldDict[key] = BUTTON_UP
-        }
-    });
-}
-
 function inputHandler(){
-    if (keyHeldDict[BUTTON_DIR_UP]){
+    if (buttonHeldDict['up']){
         player.move('up')
-    } else if (keyHeldDict[BUTTON_DIR_DOWN]){
+    } else if (buttonHeldDict['down']){
         player.move('down')
-    } else if (keyHeldDict[BUTTON_DIR_LEFT]){
+    } else if (buttonHeldDict['left']){
+        player.facing = 'left'
         player.move('left')
-    } else if (keyHeldDict[BUTTON_DIR_RIGHT]){
+    } else if (buttonHeldDict['right']){
+        console.log(buttonHeldDict['right'])
+        player.facing = 'right'
         player.move('right')
     } else {
         player.state = 'idle'
     }
-    if (keyHeldDict[BUTTON_CROSS] == BUTTON_DOWN ||
-        keyHeldDict[BUTTON_CROSS_ALT] == BUTTON_DOWN){
+    if (buttonHeldDict['cross'] == BUTTON_DOWN){
         player.discActionA()
     }
-    if (keyHeldDict[BUTTON_TRIANGLE] == BUTTON_DOWN ||
-        keyHeldDict[BUTTON_TRIANGLE_ALT] == BUTTON_DOWN){
+    if (buttonHeldDict['triangle'] == BUTTON_DOWN){
         player.discActionC()
     }
-    if (keyHeldDict[BUTTON_CIRCLE] == BUTTON_DOWN ||
-        keyHeldDict[BUTTON_CIRCLE_ALT] == BUTTON_DOWN){
+    if (buttonHeldDict['circle'] == BUTTON_DOWN){
         player.inventory()
     }
 }
@@ -283,7 +242,7 @@ function dynamicCheck(){
 }
 
 function ticHandler() {
-    keyHandler()
+    buttonHandler()
     inputHandler()
     sensorCheck()
     dynamicCheck()

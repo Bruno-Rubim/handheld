@@ -3,9 +3,26 @@ export const ctx = canvasElement.getContext('2d');
 export let renderScale;
 export const scaleMultiplyer = 1
 
-let canvas = {
+export let layout;
+
+let canvasPc = {
     originalWidth: 446,
     originalHeight: 269,
+}
+
+let canvasMobile = {
+    originalWidth: 320,
+    originalHeight: 583,
+}
+
+let canvas;
+
+if (innerWidth > innerHeight) {
+    layout = 'pc'
+    canvas = canvasPc
+} else {
+    layout = 'mobile'
+    canvas = canvasMobile
 }
 
 export function clearCanvas(){
