@@ -61,6 +61,7 @@ export function touchHandler(){
             } else {
                 buttonHeldDict[button] = BUTTON_DOWN
             }
+            return
         } else {
             buttonHeldDict[button] = BUTTON_UP
         }

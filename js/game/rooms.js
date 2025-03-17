@@ -653,4 +653,4 @@ roomTeleport1.objectList.push(new TeleportPad({posX: 10, posY: 5, state:'off', c
 roomTeleport1.objectList.push(new DiscScanner({posX: 12, posY: 5, color:'purple'}))
 roomTeleport1.addLineToObjectList(()=>new FlipWall({color:'purple', state:'on'}), 'y', 4, 6, 14)
 
-export let startingRoom = roomConveyor2
+export let startingRoom = room2Discs

@@ -201,7 +201,6 @@ function inputHandler(){
         player.facing = 'left'
         player.move('left')
     } else if (buttonHeldDict['right']){
-        console.log(buttonHeldDict['right'])
         player.facing = 'right'
         player.move('right')
     } else {
