@@ -1,5 +1,6 @@
+import { findSound } from "../sounds.js";
 import { getNow } from "../time-manager.js";
-import { roomModule, gameWidthInTiles} from "./game-manager.js";
+import { roomModule } from "./game-manager.js";
 import { oppDir } from "./game-objects.js";
 
 export const player = {
@@ -19,6 +20,7 @@ export const player = {
         if (this.disc){
             this.disc.posX = this.posX
             this.disc.posY = this.posY
+            this.disc.posYOffset = 0
             roomModule.currentRoom.objectList.push(this.disc)
         }
         this.disc = floorDisc
@@ -44,12 +46,18 @@ export const player = {
         }
         if (targetPosY > 9){
             roomModule.currentRoom = roomModule.currentRoom.downRoom;
-            targetPosY = 0
+            localStorage.setItem('lastRoom', roomModule.currentRoom.name)
+            console.log(roomModule.currentRoom.name)
+            this.posY = 0
+            return
         } else if (targetPosY < 0){
             roomModule.currentRoom = roomModule.currentRoom.upRoom;
-            targetPosY = 9
+            localStorage.setItem('lastRoom', roomModule.currentRoom.name)
+            console.log(roomModule.currentRoom.name)
+            this.posY = 9
+            return
         }
-
+        
         if (dir == 'left'){
             targetPosX --
         }
@@ -57,11 +65,17 @@ export const player = {
             targetPosX ++
         }
         if (targetPosX > 15){
-            targetPosX = 0
             roomModule.currentRoom = roomModule.currentRoom.rightRoom;
+            localStorage.setItem('lastRoom', roomModule.currentRoom.name)
+            console.log(roomModule.currentRoom.name)
+            this.posX = 0
+            return
         } else if (targetPosX < 0){
             roomModule.currentRoom = roomModule.currentRoom.leftRoom;
-            targetPosX = 15
+            localStorage.setItem('lastRoom', roomModule.currentRoom.name)
+            console.log(roomModule.currentRoom.name)
+            this.posX = 15
+            return
         }
         
         //Checking blockage
@@ -130,6 +144,7 @@ export const player = {
                         this.posY = obj.posY
                         return
                     }
+                    findSound('error').play()
                 }
             })
             return

@@ -2,7 +2,7 @@ import { BUTTON_DOWN, buttonHandler, buttonHeldDict } from "../button-manager.js
 import { ctx, layout, renderScale } from "../canvas-handler.js";
 import sprites, { findSprite } from "../sprites.js";
 import { player } from "./player.js";
-import { firstRoom, startingRoom } from "./rooms.js";
+import { allRooms, debugRoom } from "./rooms/room-list.js";
 
 const tileSize = 16
 export const gameWidthInTiles = 16
@@ -21,15 +21,22 @@ if (layout == 'pc') {
     screenPosY = 32
 }
 
-
 export const debug = false
 
-export const roomModule = {
-    currentRoom: startingRoom,
+let lastRoom = allRooms[localStorage.getItem('lastRoom')]
+let day = localStorage.getItem('day')
+if (!lastRoom || day != new Date().getDate()) {
+    lastRoom = allRooms.firstRoom
 }
 
-if (!debug){
-    roomModule.currentRoom = firstRoom
+localStorage.setItem('day', new Date().getDate())
+
+export const roomModule = {
+    currentRoom: lastRoom,
+}
+
+if (debug) {
+    roomModule.currentRoom = debugRoom
 }
 
 roomModule.currentRoom.playerSpawn()
@@ -51,6 +58,9 @@ const renderLayers = [
 ]
 
 function renderObjectList(){
+    if (roomModule.currentRoom == null) {
+        localStorage.setItem('lastRoom', 'firstRoom')
+    }
     for(let i = 0; i < renderLayers.length; i++) {
         const renderLayer = renderLayers[i];
         roomModule.currentRoom.forEachGameObject((object)=>{

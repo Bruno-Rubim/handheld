@@ -10,7 +10,7 @@ const pcCase = {
 
 const mobileCase = {
     originalWidth: 320,
-    originalHeight: 583,
+    originalHeight: 513,
 }
 
 function renderButtons(){

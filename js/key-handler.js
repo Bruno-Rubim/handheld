@@ -31,6 +31,9 @@ const buttonList = [
 ]
 
 export function keyHandler(){
+    if (keyIsPressed['y']) {
+        localStorage.setItem('lastRoom', 'firstRoom')
+    }
     buttonList.forEach(button => {
         let keyPressed = false
         button.keys.forEach(key => {
@@ -40,7 +43,6 @@ export function keyHandler(){
             }
         })
         if (keyPressed){
-            console.log(buttonHeldDict[button.icon])
             if (buttonHeldDict[button.icon] != BUTTON_UP ){
                 buttonHeldDict[button.icon] = BUTTON_HELD
             } else {

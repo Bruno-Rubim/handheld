@@ -6,6 +6,6 @@ Focus on simple mechanics, like remoteBot picking up and using and difference be
 
 Remotebot4 may be easier than Remotebot3
 
-Add conveyor to block toggleSwitch
+reconsider roomRemoteDisc's design
 
 192.168.15.137:5500

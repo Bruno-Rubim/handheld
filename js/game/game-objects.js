@@ -1,3 +1,4 @@
+import { findSound } from "../sounds.js";
 import { getNow } from "../time-manager.js";
 import { roomModule, gameHeightInTiles, gameWidthInTiles } from "./game-manager.js";
 
@@ -86,6 +87,7 @@ export class Disc {
             moved = true
         }
 
+        this.posYOffset = 0
         return moved
     }
 }
@@ -106,13 +108,15 @@ export class DiscScanner {
         const disc = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY, ['disc'])
         if (disc?.color == this.color){
             if (this.state == 'off'){
-                netSwitch(this.color)
                 this.state = 'on'
+                // findSound('scan-on').play()
+                netSwitch(this.color)
             }
         } else {
             if (this.state == 'on') { 
-                netSwitch(this.color)
                 this.state = 'off'
+                // findSound('scan-off').play()
+                netSwitch(this.color)
             }
         }
     }
@@ -144,8 +148,10 @@ export class Lever {
     switchState(){
         if (this.state == 'on'){
             this.state = 'off'
+            // findSound('lever-off').play()
         } else {
             this.state = 'on'
+            // findSound('lever-on').play()
         }
     }
     get sprite() {
@@ -172,16 +178,22 @@ export class PressurePlate {
         if(object){
             if (!this.pressed){
                 this.state = 'on'
+                // findSound('plate-on').play()
                 netSwitch(this.color)
             }
             this.pressed = true
-        } else {
-            if (this.pressed){
-                this.state = 'off'
-                netSwitch(this.color)
-            }
-            this.pressed = false
+            return
         }
+        const disc = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY, ['disc'])
+        if (disc) {
+            disc.posYOffset = 1
+        }
+        if (this.pressed){
+            this.state = 'off'
+            // findSound('plate-off').play()
+            netSwitch(this.color)
+        }
+        this.pressed = false
     }
 }
 
@@ -355,8 +367,10 @@ export class Box {
         }
         if (targetPosY > 8){
             targetPosY = 8
+            findSound('error').play()
         } else if (targetPosY < 1){
             targetPosY = 1
+            findSound('error').play()
         }
 
         if (dir == 'left'){
@@ -369,8 +383,10 @@ export class Box {
         }
         if (targetPosX > 14){
             targetPosX = 14
+            findSound('error').play()
         } else if (targetPosX < 1){
             targetPosX = 1
+            findSound('error').play()
         }
         
         //Checking blockage

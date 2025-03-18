@@ -1,5 +1,5 @@
 import { BUTTON_DOWN, BUTTON_HELD, BUTTON_UP, buttonHeldDict, caseButtons } from "./button-manager.js";
-import { canvasElement } from "./canvas-handler.js";
+import { canvasElement, renderScale, scaleMultiplyer } from "./canvas-handler.js";
 
 export const buttonTouched = {}
 
@@ -23,14 +23,16 @@ const buttonList = [
     BUTTON_TRIANGLE,
 ]
 
+
 document.addEventListener("touchstart", (event) => {
     for (let i = 0; i < event.touches.length; i++){
-        const xInCanv = event.touches[i].clientX - parseInt(canvasElement.style.left, 10)
-        const yInCanv = event.touches[i].clientY - parseInt(canvasElement.style.top, 10)
+        const xInCanv = event.touches[i].clientX;
+        const yInCanv = event.touches[i].clientY;
+        const multiplyer = innerWidth / (320 * renderScale)
         caseButtons.forEach(button => {
             if (
-                xInCanv > button.posXMobl && xInCanv < button.posXMobl + button.widthMobl && 
-                yInCanv > button.posYMobl && yInCanv < button.posYMobl + button.heightMobl
+                xInCanv > (button.posXMobl) * multiplyer && xInCanv < (button.posXMobl + button.widthMobl) * multiplyer && 
+                yInCanv > (button.posYMobl) * multiplyer && yInCanv < (button.posYMobl + button.heightMobl) * multiplyer
             ){
                 buttonTouched[button.icon] = true
             }
@@ -40,12 +42,13 @@ document.addEventListener("touchstart", (event) => {
 
 document.addEventListener("touchend", (event) => {
     for (let i = 0; i < event.changedTouches.length; i++){
-        const xInCanv = event.changedTouches[i].clientX - parseInt(canvasElement.style.left, 10)
-        const yInCanv = event.changedTouches[i].clientY - parseInt(canvasElement.style.top, 10)
+        const xInCanv = event.changedTouches[i].clientX;
+        const yInCanv = event.changedTouches[i].clientY;
+        const multiplyer = innerWidth / (320 * renderScale)
         caseButtons.forEach(button => {
             if (
-                xInCanv > button.posXMobl && xInCanv < button.posXMobl + button.widthMobl && 
-                yInCanv > button.posYMobl && yInCanv < button.posYMobl + button.heightMobl
+                xInCanv > (button.posXMobl) * multiplyer && xInCanv < (button.posXMobl + button.widthMobl) * multiplyer && 
+                yInCanv > (button.posYMobl) * multiplyer && yInCanv < (button.posYMobl + button.heightMobl) * multiplyer
             ){
                 buttonTouched[button.icon] = false
             }

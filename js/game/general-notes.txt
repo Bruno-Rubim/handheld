@@ -2,5 +2,3 @@
 General notes
 
 Make more use of Switch Buttons
-
-Remotebot4 may be easier than Remotebot3
