@@ -3,7 +3,7 @@ import { roomRemoteBot1, roomRemoteBot3, roomRemoteBot4, roomRemoteDisc, roomRem
 import { roomTeleport1, roomTeleport2 } from "./section-d.js"
 import { roomConveyor1, roomConveyor2, roomConveyor3, roomConveyor4, roomPlatesBoxConv } from "./section-c.js"
 
-export const debugRoom = roomConveyor4
+export const debugRoom = roomRemoteBot1
 
 export const allRooms = {
     //A

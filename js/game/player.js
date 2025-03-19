@@ -92,7 +92,7 @@ export const player = {
                     blocked = true
                 }
             } else if (this.disc?.color == 'yellow'){
-                if (targetObject.tags.includes('bot')){
+                if (targetObject.tags.includes('bot') && !targetObject.tags.includes('player') ){
                     if (!targetObject.move(dir)){
                         blocked = true
                     }
@@ -123,8 +123,8 @@ export const player = {
 
         if (this.disc?.color == 'yellow' && !remoteBotMoved){
             roomModule.currentRoom.forEachGameObject((obj)=>{
-                if (obj.tags.includes('bot')) {
-                    obj.move(dir)
+                if (obj.tags.includes('bot') && !obj.tags.includes('player')) {
+                    obj.move(dir, 'input')
                 }
             })
             remoteBotMoved = true;
