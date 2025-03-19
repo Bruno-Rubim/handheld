@@ -25,12 +25,12 @@ export const player = {
         }
         this.disc = floorDisc
     },
-    move(dir){
+    move(dir, type){
         //Checking direction
         let targetPosX = this.posX;
         let targetPosY = this.posY;
 
-        if (this.lastMoveDir == dir){
+        if (type == 'input' && this.lastMoveDir == dir){
             if (this.lastMoveTime + this.moveDelay > getNow()){
                 return
             }
@@ -137,16 +137,20 @@ export const player = {
             return
         }
         if (this.disc.color == 'purple'){
+            let teleported = false;
             roomModule.currentRoom.forEachGameObject((obj)=>{
                 if (obj.tags.includes('teleport')){
                     if (!roomModule.currentRoom.findObjectByPosition(obj.posX, obj.posY, ['block', 'bot']) && obj.state == 'on'){
                         this.posX = obj.posX
                         this.posY = obj.posY
+                        teleported = true
                         return
                     }
-                    findSound('error').play()
                 }
             })
+            if (!teleported) {
+                findSound('error').play()
+            }
             return
         }
         if (this.disc.color == 'yellow'){

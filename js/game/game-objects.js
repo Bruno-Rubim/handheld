@@ -289,7 +289,7 @@ export class DiscTrap {
 }
 
 export class Conveyor {
-    constructor({posX=7, posY=5, dir='right', color='white'}){
+    constructor({posX=7, posY=5, dir='right', color='white', speed=4}){
         this.posX = posX
         this.posY = posY
         this.dir = dir
@@ -299,16 +299,15 @@ export class Conveyor {
         this.tags = ['dynamic']
         this.tags[1] = dir
         this.ticsSinceFrame = 0
-        this.animationTicDelay = 24/8
+        this.animationTicDelay = 24/(speed*2)
         this.animatioFrame = 0
         this.ticsSinceMove = 0;
-        this.moveTicDelay = 24/8
+        this.moveTicDelay = 24/speed
     }
     get sprite(){
         return `conveyor-${this.dir}-${this.animatioFrame}-${this.color}`
     }
     dynamics(){
-        this.ticsSinceMove ++
         this.ticsSinceFrame ++
         if (this.ticsSinceFrame > this.animationTicDelay) {
             this.animatioFrame ++
@@ -318,6 +317,9 @@ export class Conveyor {
             this.ticsSinceFrame = 0
         }
         const object = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY, ['movable'])
+        if (object) {
+            this.ticsSinceMove ++
+        }
         if (this.ticsSinceMove > this.moveTicDelay) {
             if (object){
                 if (!object.movedByConveryor){

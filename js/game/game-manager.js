@@ -21,7 +21,7 @@ if (layout == 'pc') {
     screenPosY = 32
 }
 
-export const debug = false
+export const debug = true
 
 let lastRoom = allRooms[localStorage.getItem('lastRoom')]
 let day = localStorage.getItem('day')
@@ -204,15 +204,15 @@ export function renderGame(){
 // Input handler
 function inputHandler(){
     if (buttonHeldDict['up']){
-        player.move('up')
+        player.move('up', 'input')
     } else if (buttonHeldDict['down']){
-        player.move('down')
+        player.move('down', 'input')
     } else if (buttonHeldDict['left']){
         player.facing = 'left'
-        player.move('left')
+        player.move('left', 'input')
     } else if (buttonHeldDict['right']){
         player.facing = 'right'
-        player.move('right')
+        player.move('right', 'input')
     } else {
         player.state = 'idle'
     }

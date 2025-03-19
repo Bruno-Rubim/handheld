@@ -4,6 +4,7 @@ import { roomBoxPlates } from "./section-a.js";
 
 //roomRemoteLever; Introduces remoteBot
 export const roomRemoteBot1 = new Room({name:'roomRemoteBot', playerStartPos:{posX: 12, posY:9}})
+export const secBStart = roomRemoteBot1
 
 roomBoxPlates.upRoom = roomRemoteBot1
 roomRemoteBot1.downRoom = roomBoxPlates
@@ -165,6 +166,7 @@ roomRemoteBot3.addLineToObjectList(()=>new FlipWall({color:'yellow', state:'off'
 
 //roomRemoteBot4 
 export const roomRemoteBot4 = new Room({name:'roomRemoteBot4', playerStartPos:{posX: 0, posY:7}})
+export const secBEnd = roomRemoteBot4
 
 roomRemoteBot3.rightRoom = roomRemoteBot4
 roomRemoteBot4.leftRoom = roomRemoteBot3
@@ -198,4 +200,3 @@ roomRemoteBot4.objectList.push(new DiscScanner({color: 'green', posX: 13, posY: 
 roomRemoteBot4.objectList.push(new FlipWall({color:'white', state:'on', posX:10, posY:4}))
 roomRemoteBot4.objectList.push(new FlipWall({color:'yellow', state:'on', posX:11, posY:4}))
 roomRemoteBot4.objectList.push(new FlipWall({color:'green', state:'on', posX:12, posY:4}))
-

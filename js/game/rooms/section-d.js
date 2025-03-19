@@ -1,61 +1,61 @@
-import { DiscScanner, FlipWall, Disc, RemoteBot, Lever, PressurePlate, TeleportPad, Box, Conveyor } from "../game-objects.js";
-import { Room } from "./room-class.js";
+import { Disc, DiscScanner, FlipWall, TeleportPad, Lever } from "../game-objects.js"
+import { Room } from "./room-class.js"
+import { roomRemoteBot4 } from "./section-b.js"
 
-//roomConveyor; introduces conveyor blocks
-export const roomConveyor1 = new Room({name:'roomConveyor1', playerStartPos:{posX: 3, posY:9}})
+// introduces teleport pads
+export const roomTeleport1 = new Room({name:'roomTeleport1', playerStartPos:{posX: 0, posY:4}})
+export const secDStart = roomTeleport1
 
-// room?.upRoom = roomConveyor1
-// roomConveyor1.downRoom = room?
+roomRemoteBot4.rightRoom = roomTeleport1
+roomTeleport1.leftRoom = roomRemoteBot4
 
-roomConveyor1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 10, 0)
-roomConveyor1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 14, 15, 0)
-roomConveyor1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 1, 9)
-roomConveyor1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 5, 15, 9)
+roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 15, 0)
+roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 15, 1)
+roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 8, 15, 2)
+roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 7, 7)
+roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 15, 8)
+roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 15, 9)
 
-roomConveyor1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 9, 0)
-roomConveyor1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 9, 15)
+roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 3, 0)
+roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 5, 9, 0)
+roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 2, 1)
+roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 6, 9, 1)
+roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 9, 7)
+roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 9, 8)
+roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 3, 14)
+roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 7, 9, 14)
+roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 4, 15)
+roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 6, 9, 15)
 
-//roomConveyor; introduces conveyor blocks
-export const roomConveyor2 = new Room({name:'roomConveyor2', playerStartPos:{posX: 3, posY:9}})
+roomTeleport1.addLineToObjectList(()=>new FlipWall({color:'white', state:'off'}), 'y', 3, 5, 1)
+roomTeleport1.objectList.push(new Disc({posX: 3, posY: 3, color:'white'}))
+roomTeleport1.objectList.push(new DiscScanner({posX: 5, posY: 4, color:'white'}))
+roomTeleport1.objectList.push(new Disc({posX: 3, posY: 5, color:'purple'}))
 
-roomConveyor1.upRoom = roomConveyor2
-roomConveyor2.downRoom = roomConveyor1
+roomTeleport1.objectList.push(new TeleportPad({posX: 10, posY: 5, state:'off', color:'white'}))
+roomTeleport1.objectList.push(new DiscScanner({posX: 12, posY: 5, color:'purple'}))
+roomTeleport1.addLineToObjectList(()=>new FlipWall({color:'purple', state:'on'}), 'y', 4, 6, 14)
 
-roomConveyor2.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 15, 0)
-roomConveyor2.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 5, 15, 9)
+// introduces teleport pads
+export const roomTeleport2 = new Room({name:'roomTeleport2', playerStartPos:{posX: 0, posY:5}})
 
-roomConveyor2.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 9, 0)
-roomConveyor2.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 5, 15)
+roomTeleport1.rightRoom = roomTeleport2
+roomTeleport2.leftRoom = roomTeleport1
 
-//roomLeverPLate Uses multiple Pressure plates boxes and conveyors
-export const roomPlatesBoxConv = new Room({name:'roomPlatesBoxConv', playerStartPos:{posX: 0, posY:7}})
+roomTeleport2.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 15, 0)
+roomTeleport2.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 15, 9)
 
-roomConveyor2.rightRoom = roomPlatesBoxConv
-roomPlatesBoxConv.leftRoom = roomConveyor2
+roomTeleport2.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 4, 0)
+roomTeleport2.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 6, 9, 0)
+roomTeleport2.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 3, 15)
+roomTeleport2.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 7, 9, 15)
 
-roomPlatesBoxConv.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 15, 0)
-roomPlatesBoxConv.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 4, 9, 4)
-roomPlatesBoxConv.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 4, 9, 5)
-roomPlatesBoxConv.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 15, 9)
+roomTeleport2.objectList.push(new Disc({posX: 3, posY: 5, color:'purple'}))
+roomTeleport2.objectList.push(new DiscScanner({posX: 3, posY: 5, color:'purple'}))
 
-roomPlatesBoxConv.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 5, 0)
-roomPlatesBoxConv.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 1, 3, 9)
-roomPlatesBoxConv.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 5, 13)
-roomPlatesBoxConv.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 5, 14)
-roomPlatesBoxConv.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 5, 15)
-
-roomPlatesBoxConv.addLineToObjectList(()=>(new Conveyor({color:'white', dir: 'left'})), 'y', 1, 3, 4)
-roomPlatesBoxConv.addLineToObjectList(()=>(new Conveyor({color:'white', dir: 'left'})), 'y', 1, 3, 5)
-roomPlatesBoxConv.objectList.push(new Lever({color: 'white', posX:7, posY:2}))
-
-roomPlatesBoxConv.objectList.push(new Disc({color: 'green', posX:4, posY:7}))
-roomPlatesBoxConv.objectList.push(new PressurePlate({color: 'white', posX:6, posY:7}))
-roomPlatesBoxConv.objectList.push(new Box({posX:6, posY:7}))
-roomPlatesBoxConv.addLineToObjectList(()=>new FlipWall({color:'white', state:'on'}), 'y', 6, 8, 9)
-roomPlatesBoxConv.objectList.push(new PressurePlate({color: 'white', posX:11, posY:7}))
-
-roomPlatesBoxConv.objectList.push(new DiscScanner({color: 'green', posX:11, posY:2}))
-roomPlatesBoxConv.addLineToObjectList(()=>new FlipWall({color:'green', state:'on'}), 'y', 6, 8, 13)
-roomPlatesBoxConv.addLineToObjectList(()=>new FlipWall({color:'white', state:'off'}), 'y', 6, 8, 14)
-
-//roomConveyor; pressure plates and boxes
+roomTeleport2.addLineToObjectList(()=>(new FlipWall({state:'on', color:'white'})), 'y', 4, 6, 10)
+roomTeleport2.objectList.push(new Lever({posX: 11, posY: 5, color:'white'}))
+roomTeleport2.objectList.push(new TeleportPad({posX: 13, posY: 5, state:'on', color:'white'}))
+roomTeleport2.addLineToObjectList(()=>(new FlipWall({state:'on', color:'purple'})), 'y', 4, 6, 14)
+roomTeleport2.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 10, 15, 3)
+roomTeleport2.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 10, 15, 7)
