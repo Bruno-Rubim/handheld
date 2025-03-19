@@ -72,7 +72,7 @@ roomConveyor2.leftRoom = roomConveyor3
 roomConveyor3.rightRoom = roomConveyor2
 
 roomConveyor3.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 4, 0)
-roomConveyor3.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 8, 15, 0)
+roomConveyor3.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 9, 15, 0)
 roomConveyor3.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 15, 9)
 
 roomConveyor3.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 9, 0)
@@ -80,33 +80,66 @@ roomConveyor3.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:
 roomConveyor3.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 2, 15)
 roomConveyor3.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 6, 9, 15)
 
-roomConveyor3.addLineToObjectList(()=>(new Conveyor({dir:'down', color:'blue', speed:2})), 'y', 1, 8, 1)
-roomConveyor3.objectList.push(new DiscScanner({color:'white', posX:1, posY:1}))
-roomConveyor3.objectList.push(new Disc({color:'white', posX:1, posY:1}))
+roomConveyor3.addLineToObjectList(()=>(new Conveyor({dir:'down', color:'blue', speed:2.5})), 'y', 1, 8, 1)
+roomConveyor3.objectList.push(new PressurePlate({color:'white', posX:1, posY:1}))
+roomConveyor3.objectList.push(new Box({posX:1, posY:1}))
 
-roomConveyor3.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 3, 4)
-roomConveyor3.addLineToObjectList(()=>(new FlipWall({color:'white', state: 'on'})), 'x', 5, 7, 1)
-roomConveyor3.addLineToObjectList(()=>(new FlipWall({color:'green', state: 'on'})), 'x', 5, 7, 2)
-roomConveyor3.addLineToObjectList(()=>(new FlipWall({color:'white', state: 'off'})), 'x', 5, 7, 3)
-roomConveyor3.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 3, 8)
+roomConveyor3.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 2, 5)
+roomConveyor3.addLineToObjectList(()=>(new FlipWall({color:'white', state: 'on'})), 'x', 6, 8, 0)
+roomConveyor3.addLineToObjectList(()=>(new FlipWall({color:'green', state: 'on'})), 'x', 6, 8, 1)
+roomConveyor3.addLineToObjectList(()=>(new FlipWall({color:'white', state: 'off'})), 'x', 6, 8, 2)
+roomConveyor3.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 2, 9)
 
-roomConveyor3.objectList.push(new PressurePlate({color:'blue', posX:10, posY:2}))
-roomConveyor3.objectList.push(new Box({posX:13, posY:7}))
-roomConveyor3.objectList.push(new Disc({color:'green', posX:10, posY:7}))
-roomConveyor3.objectList.push(new DiscScanner({color:'green', posX:10, posY:7}))
+roomConveyor3.objectList.push(new PressurePlate({color:'blue', posX:5, posY:7}))
+roomConveyor3.objectList.push(new Disc({color:'green', posX:9, posY:7}))
+roomConveyor3.objectList.push(new DiscScanner({color:'green', posX:9, posY:7}))
+roomConveyor3.objectList.push(new Box({posX:12, posY:7}))
+
+//roomConveyor; introduces conveyor blocks
+export const roomConveyor4 = new Room({name:'roomConveyor4', playerStartPos:{posX: 7, posY:9}})
+
+roomConveyor3.upRoom = roomConveyor4
+roomConveyor4.downRoom = roomConveyor3
+
+roomConveyor4.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 15, 0)
+roomConveyor4.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 5, 9)
+roomConveyor4.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 9, 15, 9)
+
+roomConveyor4.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 9, 0)
+roomConveyor4.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 3, 15)
+
+roomConveyor4.addLineToObjectList(()=>(new Conveyor({dir:'left', color:'white', speed:1.5})), 'x', 2, 3, 3)
+roomConveyor4.addLineToObjectList(()=>(new Conveyor({dir:'down', color:'white', speed:1.5})), 'y', 3, 5, 1)
+roomConveyor4.addLineToObjectList(()=>(new Conveyor({dir:'right', color:'white', speed:1.5})), 'x', 1, 2, 6)
+roomConveyor4.addLineToObjectList(()=>(new Conveyor({dir:'up', color:'white', speed:1.5})), 'y', 4, 6, 3)
+roomConveyor4.objectList.push(new PressurePlate({color:'blue', posX:2, posY:3}))
+roomConveyor4.objectList.push(new PressurePlate({color:'blue', posX:2, posY:6}))
+
+roomConveyor4.objectList.push(new Box({posX:5, posY:6}))
+roomConveyor4.objectList.push(new Box({posX:5, posY:3}))
+roomConveyor4.objectList.push(new Disc({color:'green', posX:8, posY:3}))
+roomConveyor4.objectList.push(new DiscScanner({color:'green', posX:8, posY:3}))
+
+roomConveyor4.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 13, 15, 4)
+roomConveyor4.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 9, 13, 5)
+roomConveyor4.addLineToObjectList(()=>(new Conveyor({dir:'left', color:'blue', speed:4})), 'x', 9, 13, 6)
+roomConveyor4.addLineToObjectList(()=>(new Conveyor({dir:'left', color:'green', speed:4})), 'y', 5, 7, 14)
+roomConveyor4.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 9, 13, 7)
+roomConveyor4.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 13, 15, 8)
 
 //roomLeverPLate Uses multiple Pressure plates boxes and conveyors
-export const roomPlatesBoxConv = new Room({name:'roomPlatesBoxConv', playerStartPos:{posX: 0, posY:7}})
+export const roomPlatesBoxConv = new Room({name:'roomPlatesBoxConv', playerStartPos:{posX: 0, posY:6}})
 
-// roomConveyor2.rightRoom = roomPlatesBoxConv
-// roomPlatesBoxConv.leftRoom = roomConveyor2
+roomConveyor4.rightRoom = roomPlatesBoxConv
+roomPlatesBoxConv.leftRoom = roomConveyor4
 
 roomPlatesBoxConv.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 15, 0)
 roomPlatesBoxConv.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 4, 9, 4)
 roomPlatesBoxConv.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 4, 9, 5)
 roomPlatesBoxConv.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 15, 9)
 
-roomPlatesBoxConv.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 5, 0)
+roomPlatesBoxConv.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 4, 0)
+roomPlatesBoxConv.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 8, 9, 0)
 roomPlatesBoxConv.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 1, 3, 9)
 roomPlatesBoxConv.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 5, 13)
 roomPlatesBoxConv.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 5, 14)
@@ -123,7 +156,5 @@ roomPlatesBoxConv.addLineToObjectList(()=>new FlipWall({color:'white', state:'on
 roomPlatesBoxConv.objectList.push(new PressurePlate({color: 'white', posX:11, posY:7}))
 
 roomPlatesBoxConv.objectList.push(new DiscScanner({color: 'green', posX:11, posY:2}))
-roomPlatesBoxConv.addLineToObjectList(()=>new FlipWall({color:'green', state:'on'}), 'y', 6, 8, 13)
-roomPlatesBoxConv.addLineToObjectList(()=>new FlipWall({color:'white', state:'off'}), 'y', 6, 8, 14)
-
-//roomConveyor; pressure plates and boxes
+roomPlatesBoxConv.addLineToObjectList(()=>new Conveyor({color:'green', dir:'left'}), 'y', 6, 8, 13)
+roomPlatesBoxConv.addLineToObjectList(()=>new Conveyor({color:'white', dir:'right'}), 'y', 6, 8, 14)

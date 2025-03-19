@@ -152,6 +152,22 @@ const sprites = {
 	conveyor_up_1_blue: new Sprite('./images/game/conveyor-up-1-blue.png'),
 	conveyor_up_2_blue: new Sprite('./images/game/conveyor-up-2-blue.png'),
 	conveyor_up_3_blue: new Sprite('./images/game/conveyor-up-3-blue.png'),
+	conveyor_right_0_green: new Sprite('./images/game/conveyor-right-0-green.png'),
+	conveyor_right_1_green: new Sprite('./images/game/conveyor-right-1-green.png'),
+	conveyor_right_2_green: new Sprite('./images/game/conveyor-right-2-green.png'),
+	conveyor_right_3_green: new Sprite('./images/game/conveyor-right-3-green.png'),
+	conveyor_left_0_green: new Sprite('./images/game/conveyor-left-0-green.png'),
+	conveyor_left_1_green: new Sprite('./images/game/conveyor-left-1-green.png'),
+	conveyor_left_2_green: new Sprite('./images/game/conveyor-left-2-green.png'),
+	conveyor_left_3_green: new Sprite('./images/game/conveyor-left-3-green.png'),
+	conveyor_down_0_green: new Sprite('./images/game/conveyor-down-0-green.png'),
+	conveyor_down_1_green: new Sprite('./images/game/conveyor-down-1-green.png'),
+	conveyor_down_2_green: new Sprite('./images/game/conveyor-down-2-green.png'),
+	conveyor_down_3_green: new Sprite('./images/game/conveyor-down-3-green.png'),
+	conveyor_up_0_green: new Sprite('./images/game/conveyor-up-0-green.png'),
+	conveyor_up_1_green: new Sprite('./images/game/conveyor-up-1-green.png'),
+	conveyor_up_2_green: new Sprite('./images/game/conveyor-up-2-green.png'),
+	conveyor_up_3_green: new Sprite('./images/game/conveyor-up-3-green.png'),
 }
 
 const spriteArr = Object.values(sprites)

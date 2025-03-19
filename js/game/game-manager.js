@@ -21,15 +21,15 @@ if (layout == 'pc') {
     screenPosY = 32
 }
 
-export const debug = true
+export const debug = false
 
 let lastRoom = allRooms[localStorage.getItem('lastRoom')]
-let day = localStorage.getItem('day')
-if (!lastRoom || day != new Date().getDate()) {
+let version = localStorage.getItem('version')
+if (!lastRoom || version != 26) {
     lastRoom = allRooms.firstRoom
 }
 
-localStorage.setItem('day', new Date().getDate())
+localStorage.setItem('version', 26)
 
 export const roomModule = {
     currentRoom: lastRoom,

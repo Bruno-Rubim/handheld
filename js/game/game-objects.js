@@ -289,7 +289,7 @@ export class DiscTrap {
 }
 
 export class Conveyor {
-    constructor({posX=7, posY=5, dir='right', color='white', speed=4}){
+    constructor({posX=7, posY=5, dir='right', color='white', speed=4, corner=null}){
         this.posX = posX
         this.posY = posY
         this.dir = dir
@@ -369,10 +369,10 @@ export class Box {
         }
         if (targetPosY > 8){
             targetPosY = 8
-            findSound('error').play()
+            // findSound('error').play()
         } else if (targetPosY < 1){
             targetPosY = 1
-            findSound('error').play()
+            // findSound('error').play()
         }
 
         if (dir == 'left'){
