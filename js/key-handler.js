@@ -10,14 +10,15 @@ window.addEventListener("keyup", function(event) {
     keyIsPressed[event.key] = false;
 });
 
-const BUTTON_DIR_LEFT = {keys:['a'], icon:'left'}
-const BUTTON_DIR_RIGHT = {keys:['d'], icon:'right'}
-const BUTTON_DIR_DOWN = {keys:['s'], icon:'down'}
-const BUTTON_DIR_UP = {keys:['w'], icon:'up'}
-const BUTTON_SQUARE = {keys:['j', '4'], icon:'square'}
-const BUTTON_CIRCLE = {keys:['l', '6'], icon:'circle'}
-const BUTTON_CROSS = {keys:['k', '5'], icon:'cross'}
-const BUTTON_TRIANGLE = {keys:['i', '8'], icon:'triangle'}
+const BUTTON_DIR_LEFT = {keys:['a', 'A'], icon:'left'}
+const BUTTON_DIR_RIGHT = {keys:['d', 'D'], icon:'right'}
+const BUTTON_DIR_DOWN = {keys:['s', 'S'], icon:'down'}
+const BUTTON_DIR_UP = {keys:['w', 'W'], icon:'up'}
+const BUTTON_SQUARE = {keys:['j', 'J', '4'], icon:'square'}
+const BUTTON_CIRCLE = {keys:['l', 'L', '6'], icon:'circle'}
+const BUTTON_CROSS = {keys:['k', 'K', '5'], icon:'cross'}
+const BUTTON_TRIANGLE = {keys:['i', 'I', '8'], icon:'triangle'}
+const BUTTON_START = {keys:['Escape', 'Enter'], icon:'start'}
 
 const buttonList = [
     BUTTON_DIR_LEFT,
@@ -28,12 +29,10 @@ const buttonList = [
     BUTTON_CIRCLE,
     BUTTON_CROSS,
     BUTTON_TRIANGLE,
+    BUTTON_START,
 ]
 
 export function keyHandler(){
-    if (keyIsPressed['y']) {
-        localStorage.setItem('lastRoom', 'firstRoom')
-    }
     buttonList.forEach(button => {
         let keyPressed = false
         button.keys.forEach(key => {

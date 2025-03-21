@@ -113,6 +113,19 @@ export const caseButtons = [
         posXMobl: 254,
         posYMobl: 326,
     },
+    {
+        sprite: 'start',
+        icon: 'start',
+        widthPC: 23,
+        heightPC: 14,
+        posXPC: 61,
+        posYPC: 37,
+        keys: ['Escape', 'Enter'],
+        widthMobl: 46,
+        heightMobl: 28,
+        posXMobl: 25,
+        posYMobl: 241,
+    },
 ]
 
 export function buttonHandler(){

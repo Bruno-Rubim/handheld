@@ -1,4 +1,38 @@
-
 General notes
 
+Maybe more examples for simpler mechanics
+
+Conveyor 4 seems like the answer is having both boxes on both buttons at the same time
+
 Make more use of Switch Buttons
+
+Focus on simple mechanics, like remoteBot picking up and using and difference between scanners, pressure plates and buttons
+
+Remotebot4 may be easier than Remotebot3
+
+reconsider roomRemoteDisc's design
+
+Conveyor4 is weird af
+old layout {
+    roomConveyor4.addLineToObjectList(()=>(new Conveyor({dir:'left', color:'white', speed:2})), 'x', 2, 3, 3)
+    roomConveyor4.addLineToObjectList(()=>(new Conveyor({dir:'down', color:'white', speed:8})), 'y', 3, 4, 1)
+    roomConveyor4.addLineToObjectList(()=>(new Conveyor({dir:'right', color:'white', speed:2})), 'x', 1, 2, 5)
+    roomConveyor4.addLineToObjectList(()=>(new Conveyor({dir:'up', color:'white', speed:8})), 'y', 4, 5, 3)
+    roomConveyor4.objectList.push(new PressurePlate({color:'yellow', posX:2, posY:3}))
+    roomConveyor4.objectList.push(new PressurePlate({color:'blue', posX:2, posY:5}))
+
+    roomConveyor4.objectList.push(new Box({posX:5, posY:6}))
+    roomConveyor4.objectList.push(new Box({posX:5, posY:3}))
+    roomConveyor4.objectList.push(new Disc({color:'green', posX:8, posY:3}))
+    roomConveyor4.objectList.push(new DiscScanner({color:'green', posX:8, posY:3}))
+
+    roomConveyor4.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 13, 15, 4)
+    roomConveyor4.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 9, 13, 5)
+    roomConveyor4.addLineToObjectList(()=>(new Conveyor({dir:'left', color:'yellow', speed:8})), 'x', 9, 11, 6)
+    roomConveyor4.addLineToObjectList(()=>(new Conveyor({dir:'left', color:'blue', speed:8})), 'x', 12, 14, 6)
+    roomConveyor4.addLineToObjectList(()=>(new Conveyor({dir:'left', color:'green', speed:8})), 'y', 5, 7, 14)
+    roomConveyor4.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 9, 13, 7)
+    roomConveyor4.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 13, 15, 8)
+}
+
+192.168.15.137:5500

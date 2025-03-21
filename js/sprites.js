@@ -14,6 +14,7 @@ class Sprite {
 }
 
 const sprites = {
+	//pc case
 	case_pc: new Sprite('./images/case-pc/case.png'),
 	circle_button_off_pc: new Sprite('./images/case-pc/circle-button-off.png'),
 	circle_button_on_pc: new Sprite('./images/case-pc/circle-button-on.png'),
@@ -31,7 +32,10 @@ const sprites = {
 	triangle_button_on_pc: new Sprite('./images/case-pc/triangle-button-on.png'),
 	up_button_off_pc: new Sprite('./images/case-pc/up-button-off.png'),
 	up_button_on_pc: new Sprite('./images/case-pc/up-button-on.png'),
+	start_button_off_pc: new Sprite('./images/case-pc/start-button-off.png'),
+	start_button_on_pc: new Sprite('./images/case-pc/start-button-on.png'),
 	
+	//mobile case
 	case_mobile: new Sprite('./images/case-mobile/case.png'),
 	circle_button_off_mobile: new Sprite('./images/case-mobile/circle-button-off.png'),
 	circle_button_on_mobile: new Sprite('./images/case-mobile/circle-button-on.png'),
@@ -49,9 +53,26 @@ const sprites = {
 	triangle_button_on_mobile: new Sprite('./images/case-mobile/triangle-button-on.png'),
 	up_button_off_mobile: new Sprite('./images/case-mobile/up-button-off.png'),
 	up_button_on_mobile: new Sprite('./images/case-mobile/up-button-on.png'),
-	
+	start_button_off_mobile: new Sprite('./images/case-mobile/start-button-off.png'),
+	start_button_on_mobile: new Sprite('./images/case-mobile/start-button-on.png'),
+
 	screen_shine: new Sprite('./images/case-pc/screen-shine.png'),
 	
+	//menu
+	restart_option: new Sprite('./images/game/menu/restart-option.png'),
+	controls_option: new Sprite('./images/game/menu/controls-option.png'),
+	controls_screen: new Sprite('./images/game/menu/controls-screen.png'),
+	levels_option: new Sprite('./images/game/menu/levels-option.png'),
+	reset_save_option: new Sprite('./images/game/menu/reset-save-option.png'),
+	reset_save_screen: new Sprite('./images/game/menu/reset-save-screen.png'),
+	section_a_option: new Sprite('./images/game/menu/section-a-option.png'),
+	section_b_option: new Sprite('./images/game/menu/section-b-option.png'),
+	section_c_option: new Sprite('./images/game/menu/section-c-option.png'),
+	section_d_option: new Sprite('./images/game/menu/section-d-option.png'),
+	selected_option: new Sprite('./images/game/menu/selected-option.png'),
+	blocked_option: new Sprite('./images/game/menu/blocked-option.png'),
+
+	//game
 	background: new Sprite('./images/game/background.png'),
 	box: new Sprite('./images/game/box.png'),
 	disc_bot_left: new Sprite('./images/game/disc-bot-left.png'),
@@ -101,6 +122,8 @@ const sprites = {
 	plate_on_blue: new Sprite('./images/game/plate-on-blue.png'),
 	plate_off_green: new Sprite('./images/game/plate-off-green.png'),
 	plate_on_green: new Sprite('./images/game/plate-on-green.png'),
+	plate_off_yellow: new Sprite('./images/game/plate-off-yellow.png'),
+	plate_on_yellow: new Sprite('./images/game/plate-on-yellow.png'),
 	plate_off_white: new Sprite('./images/game/plate-off-white.png'),
 	plate_on_white: new Sprite('./images/game/plate-on-white.png'),
 	pull_box_controls: new Sprite('./images/game/pull-box-controls.png'),
@@ -168,6 +191,22 @@ const sprites = {
 	conveyor_up_1_green: new Sprite('./images/game/conveyor-up-1-green.png'),
 	conveyor_up_2_green: new Sprite('./images/game/conveyor-up-2-green.png'),
 	conveyor_up_3_green: new Sprite('./images/game/conveyor-up-3-green.png'),
+	conveyor_right_0_yellow: new Sprite('./images/game/conveyor-right-0-yellow.png'),
+	conveyor_right_1_yellow: new Sprite('./images/game/conveyor-right-1-yellow.png'),
+	conveyor_right_2_yellow: new Sprite('./images/game/conveyor-right-2-yellow.png'),
+	conveyor_right_3_yellow: new Sprite('./images/game/conveyor-right-3-yellow.png'),
+	conveyor_left_0_yellow: new Sprite('./images/game/conveyor-left-0-yellow.png'),
+	conveyor_left_1_yellow: new Sprite('./images/game/conveyor-left-1-yellow.png'),
+	conveyor_left_2_yellow: new Sprite('./images/game/conveyor-left-2-yellow.png'),
+	conveyor_left_3_yellow: new Sprite('./images/game/conveyor-left-3-yellow.png'),
+	conveyor_down_0_yellow: new Sprite('./images/game/conveyor-down-0-yellow.png'),
+	conveyor_down_1_yellow: new Sprite('./images/game/conveyor-down-1-yellow.png'),
+	conveyor_down_2_yellow: new Sprite('./images/game/conveyor-down-2-yellow.png'),
+	conveyor_down_3_yellow: new Sprite('./images/game/conveyor-down-3-yellow.png'),
+	conveyor_up_0_yellow: new Sprite('./images/game/conveyor-up-0-yellow.png'),
+	conveyor_up_1_yellow: new Sprite('./images/game/conveyor-up-1-yellow.png'),
+	conveyor_up_2_yellow: new Sprite('./images/game/conveyor-up-2-yellow.png'),
+	conveyor_up_3_yellow: new Sprite('./images/game/conveyor-up-3-yellow.png'),
 }
 
 const spriteArr = Object.values(sprites)

@@ -46,15 +46,19 @@ export const player = {
         }
         if (targetPosY > 9){
             roomModule.currentRoom = roomModule.currentRoom.downRoom;
-            localStorage.setItem('lastRoom', roomModule.currentRoom.name)
-            console.log(roomModule.currentRoom.name)
             this.posY = 0
+            if (!roomModule.currentRoom.loaded){
+                roomModule.currentRoom.loadRoom()
+            }
+            localStorage.setItem('lastRoom', roomModule.currentRoom.name)
             return
         } else if (targetPosY < 0){
             roomModule.currentRoom = roomModule.currentRoom.upRoom;
-            localStorage.setItem('lastRoom', roomModule.currentRoom.name)
-            console.log(roomModule.currentRoom.name)
             this.posY = 9
+            if (!roomModule.currentRoom.loaded){
+                roomModule.currentRoom.loadRoom()
+            }
+            localStorage.setItem('lastRoom', roomModule.currentRoom.name)
             return
         }
         
@@ -66,15 +70,19 @@ export const player = {
         }
         if (targetPosX > 15){
             roomModule.currentRoom = roomModule.currentRoom.rightRoom;
-            localStorage.setItem('lastRoom', roomModule.currentRoom.name)
-            console.log(roomModule.currentRoom.name)
             this.posX = 0
+            if (!roomModule.currentRoom.loaded){
+                roomModule.currentRoom.loadRoom()
+            }
+            localStorage.setItem('lastRoom', roomModule.currentRoom.name)
             return
         } else if (targetPosX < 0){
             roomModule.currentRoom = roomModule.currentRoom.leftRoom;
-            localStorage.setItem('lastRoom', roomModule.currentRoom.name)
-            console.log(roomModule.currentRoom.name)
             this.posX = 15
+            if (!roomModule.currentRoom.loaded){
+                roomModule.currentRoom.loadRoom()
+            }
+            localStorage.setItem('lastRoom', roomModule.currentRoom.name)
             return
         }
         

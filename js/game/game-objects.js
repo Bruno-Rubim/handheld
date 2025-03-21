@@ -317,9 +317,7 @@ export class Conveyor {
             this.ticsSinceFrame = 0
         }
         const object = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY, ['movable'])
-        if (object) {
-            this.ticsSinceMove ++
-        }
+        this.ticsSinceMove ++
         if (this.ticsSinceMove > this.moveTicDelay) {
             if (object){
                 if (!object.movedByConveryor){

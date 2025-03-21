@@ -1,24 +1,31 @@
 import { BUTTON_DOWN, buttonHandler, buttonHeldDict } from "../button-manager.js";
 import { ctx, layout, renderScale } from "../canvas-handler.js";
 import sprites, { findSprite } from "../sprites.js";
+import { menuInputHandler, renderMenu, startMenu } from "./menu-manager.js";
 import { player } from "./player.js";
 import { allRooms, debugRoom } from "./rooms/room-list.js";
+
+export const gameState = {
+    currentState: 'menu',
+}
 
 const tileSize = 16
 export const gameWidthInTiles = 16
 export const gameHeightInTiles = 12
 
-const screenWidth = tileSize * gameWidthInTiles
-const screenHeight = tileSize * gameHeightInTiles
-let screenPosX;
-let screenPosY;
+export const screenConfig = {
+    screenWidth: tileSize * gameWidthInTiles,
+    screenHeight: tileSize * gameHeightInTiles,
+    posX: 0,
+    posY: 0,
+}
 
 if (layout == 'pc') {
-    screenPosX = 95
-    screenPosY = 13
+    screenConfig.posX = 95
+    screenConfig.posY = 13
 } else {
-    screenPosX = 32
-    screenPosY = 32
+    screenConfig.posX = 32
+    screenConfig.posY = 32
 }
 
 export const debug = false
@@ -39,15 +46,15 @@ if (debug) {
     roomModule.currentRoom = debugRoom
 }
 
-roomModule.currentRoom.playerSpawn()
+roomModule.currentRoom.loadRoom()
 
 //rendering
 
 function renderBackGround(){
     let backgroundImg = (debug ? sprites.background_debug : sprites.background).img
     ctx.drawImage(backgroundImg,
-        (screenPosX) * renderScale,
-        (screenPosY) * renderScale,
+        (screenConfig.posX) * renderScale,
+        (screenConfig.posY) * renderScale,
         gameWidthInTiles * tileSize * renderScale,
         (gameHeightInTiles * tileSize - (2 * tileSize)) * renderScale
     )
@@ -79,8 +86,8 @@ function renderObjectList(){
                 posYOffscale = object.posYOffset
             }
             ctx.drawImage(img,
-                (screenPosX + object.posX * tileSize) * renderScale,
-                (screenPosY - posYOffscale + object.posY * tileSize) * renderScale,
+                (screenConfig.posX + object.posX * tileSize) * renderScale,
+                (screenConfig.posY - posYOffscale + object.posY * tileSize) * renderScale,
                 tileSize * renderScale,
                 tileSize * renderScale
             )
@@ -100,8 +107,8 @@ function renderControls(){
     //Frame
     const frameImg = sprites.inventory_frame.img
     ctx.drawImage(frameImg,
-        ((screenPosX)) * renderScale,
-        ((screenPosY) + (screenHeight - 2 * tileSize)) * renderScale,
+        ((screenConfig.posX)) * renderScale,
+        ((screenConfig.posY) + (screenConfig.screenHeight - 2 * tileSize)) * renderScale,
         tileSize * gameWidthInTiles * renderScale,
         tileSize * 2 * renderScale)
         
@@ -117,8 +124,8 @@ function renderControls(){
     if (!player.disc){
         playerDiscImg = sprites.floppy_null_selected.img
         ctx.drawImage(playerDiscImg,
-            (screenPosX + 8) * renderScale,
-            ((screenPosY + 8) + (screenHeight - 2*tileSize)) * renderScale,
+            (screenConfig.posX + 8) * renderScale,
+            ((screenConfig.posY + 8) + (screenConfig.screenHeight - 2*tileSize)) * renderScale,
             tileSize * renderScale,tileSize * renderScale)
             return
     } else {
@@ -126,16 +133,16 @@ function renderControls(){
     }
 
     ctx.drawImage(playerDiscImg,
-        (screenPosX + 8) * renderScale,
-        ((screenPosY + 8) + (screenHeight - 2*tileSize)) * renderScale,
+        (screenConfig.posX + 8) * renderScale,
+        ((screenConfig.posY + 8) + (screenConfig.screenHeight - 2*tileSize)) * renderScale,
         tileSize * renderScale,tileSize * renderScale)
 
     let controls = controlsDict[player.disc.color]
     for (let i = 0; i < controls.length; i++){
         const controlImg = findSprite(`${controls[i]}-controls`).img
         ctx.drawImage(controlImg,
-            ((screenPosX) + (2 * tileSize*(i + 1))) * renderScale,
-            ((screenPosY) + (screenHeight - 2*tileSize)) * renderScale,
+            ((screenConfig.posX) + (2 * tileSize*(i + 1))) * renderScale,
+            ((screenConfig.posY) + (screenConfig.screenHeight - 2*tileSize)) * renderScale,
             tileSize *2* renderScale, tileSize *2* renderScale)
     }
 
@@ -153,8 +160,8 @@ function renderControls(){
         if (!rBot.disc){
             rBotDiscImg = sprites.floppy_null_selected.img
             ctx.drawImage(rBotDiscImg,
-                (screenPosX + screenWidth - 1.5*tileSize) * renderScale,
-                ((screenPosY + 8) + (screenHeight - 2*tileSize)) * renderScale,
+                (screenConfig.posX + screenConfig.screenWidth - 1.5*tileSize) * renderScale,
+                ((screenConfig.posY + 8) + (screenConfig.screenHeight - 2*tileSize)) * renderScale,
                 tileSize * renderScale,tileSize * renderScale)
                 return
         } else {
@@ -162,8 +169,8 @@ function renderControls(){
             rBotDiscImg = findSprite(`floppy-${rBot.disc.color}-selected`).img
         }
         ctx.drawImage(rBotDiscImg,
-            (screenPosX + screenWidth - 1.5 * tileSize) * renderScale,
-            ((screenPosY + 8) + (screenHeight - 2*tileSize)) * renderScale,
+            (screenConfig.posX + screenConfig.screenWidth - 1.5 * tileSize) * renderScale,
+            ((screenConfig.posY + 8) + (screenConfig.screenHeight - 2*tileSize)) * renderScale,
             tileSize * renderScale,tileSize * renderScale)
         
         if (rBot.disc){
@@ -177,8 +184,8 @@ function renderControls(){
                 }
                 ctx.drawImage(
                     controlImg,
-                    ((screenPosX + screenWidth) - ((2 * tileSize) * (i + 2))) * renderScale,
-                    ((screenPosY) + (screenHeight - 2*tileSize)) * renderScale,
+                    ((screenConfig.posX + screenConfig.screenWidth) - ((2 * tileSize) * (i + 2))) * renderScale,
+                    ((screenConfig.posY) + (screenConfig.screenHeight - 2*tileSize)) * renderScale,
                     tileSize *2* renderScale,
                     tileSize *2* renderScale,
                 )
@@ -190,19 +197,23 @@ function renderControls(){
 export function renderGame(){
     ctx.fillStyle = "#000";
     ctx.fillRect(
-        screenPosX * renderScale,
-        screenPosY * renderScale,
-        screenWidth * renderScale,
-        screenHeight * renderScale);
-    renderBackGround()
-    renderObjectList()
-    renderControls()
+        screenConfig.posX * renderScale,
+        screenConfig.posY * renderScale,
+        screenConfig.screenWidth * renderScale,
+        screenConfig.screenHeight * renderScale);
+    if (gameState.currentState == 'game') {
+        renderBackGround()
+        renderObjectList()
+        renderControls()
+    } else {
+        renderMenu()
+    }
     const shineImg = sprites.screen_shine.img
-    ctx.drawImage(shineImg, screenPosX * renderScale, screenPosY * renderScale, screenWidth * renderScale, screenHeight * renderScale)
+    ctx.drawImage(shineImg, screenConfig.posX * renderScale, screenConfig.posY * renderScale, screenConfig.screenWidth * renderScale, screenConfig.screenHeight * renderScale)
 }
 
 // Input handler
-function inputHandler(){
+function gameInputHandler(){
     if (buttonHeldDict['up']){
         player.move('up', 'input')
     } else if (buttonHeldDict['down']){
@@ -224,6 +235,10 @@ function inputHandler(){
     }
     if (buttonHeldDict['circle'] == BUTTON_DOWN){
         player.inventory()
+    }
+    if (buttonHeldDict['start'] == BUTTON_DOWN){
+        gameState.currentState = 'menu'
+        startMenu()
     }
 }
 
@@ -252,9 +267,13 @@ function dynamicCheck(){
 
 function ticHandler() {
     buttonHandler()
-    inputHandler()
-    sensorCheck()
-    dynamicCheck()
+    if (gameState.currentState == 'game') {
+        gameInputHandler()
+        sensorCheck()
+        dynamicCheck()
+    } else {
+        menuInputHandler()
+    }
 }
 
 export function start() {

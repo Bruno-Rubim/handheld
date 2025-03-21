@@ -11,6 +11,7 @@ const BUTTON_SQUARE = 'square'
 const BUTTON_CIRCLE = 'circle'
 const BUTTON_CROSS = 'cross'
 const BUTTON_TRIANGLE = 'triangle'
+const BUTTON_START = 'start'
 
 const buttonList = [
     BUTTON_DIR_LEFT,
@@ -21,8 +22,8 @@ const buttonList = [
     BUTTON_CIRCLE,
     BUTTON_CROSS,
     BUTTON_TRIANGLE,
+    BUTTON_START,
 ]
-
 
 document.addEventListener("touchstart", (event) => {
     for (let i = 0; i < event.touches.length; i++){

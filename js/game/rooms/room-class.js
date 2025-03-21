@@ -1,7 +1,7 @@
 import { player } from "../player.js";
 
 export class Room {
-    constructor({name='', playerStartPos={posX:0, posY:0}}){
+    constructor({name='', playerStartPos={posX:0, posY:0}, loadObjects: loadObjects=()=>{}}){
         this.name = name;
         this.objectList = []
         this.leftRoom = null
@@ -11,10 +11,19 @@ export class Room {
         this.colorNets={}
         this.playerStartPos = playerStartPos
         this.objectList.push(player)
+        this.loaded = false
+        this.loadObjects = loadObjects
     }
-    playerSpawn(){
+    spawnPlayer(){
+        player.disc = null
         player.posX = this.playerStartPos.posX
         player.posY = this.playerStartPos.posY
+    }
+    loadRoom(){
+        this.objectList = [player]
+        this.spawnPlayer()
+        this.loaded = true
+        this.loadObjects()
     }
     addLineToObjectList(buildFn, orientation, posStart, posEnd, fixedAxis){
         for(let i = posStart; i <= posEnd; i++){
