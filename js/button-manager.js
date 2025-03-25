@@ -123,8 +123,8 @@ export const caseButtons = [
         keys: ['Escape', 'Enter'],
         widthMobl: 46,
         heightMobl: 28,
-        posXMobl: 25,
-        posYMobl: 241,
+        posXMobl: 102,
+        posYMobl: 230,
     },
 ]
 

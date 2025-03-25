@@ -1,5 +1,5 @@
 import { BUTTON_DOWN, buttonHeldDict } from "../button-manager.js";
-import { ctx, renderScale } from "../canvas-handler.js";
+import { ctx, layout, renderScale } from "../canvas-handler.js";
 import { findSound } from "../sounds.js";
 import { findSprite } from "../sprites.js";
 import { gameHeightInTiles, gameState, gameWidthInTiles, roomModule, screenConfig } from "./game-manager.js";
@@ -181,8 +181,10 @@ const resetSaveScreen = new Screen({
         currentScreen = mainScreen
     }
 })
-const mainScreen = new Screen({
-    options: [
+
+let mainScreenOptions = []
+if (layout == 'pc') {
+    mainScreenOptions = [
         new menuOption({
             sprite:'restart',
             onConfirm: () => {
@@ -209,7 +211,34 @@ const mainScreen = new Screen({
                 currentScreen = resetSaveScreen
             }
         }),
-    ],
+    ]
+} else {
+    mainScreenOptions = [
+        new menuOption({
+            sprite:'restart',
+            onConfirm: () => {
+                roomModule.currentRoom.loadRoom()
+                gameState.currentState = 'game'
+            }
+        }),
+        new menuOption({
+            sprite:'levels',
+            onConfirm: () => {
+                updateSave()
+                currentScreen = levelsScreen
+            }
+        }),
+        new menuOption({
+            sprite:'reset-save',
+            onConfirm: () => {
+                currentScreen = resetSaveScreen
+            }
+        }),
+    ]
+}
+
+const mainScreen = new Screen({
+    options: mainScreenOptions,
     render: () => {
         let xShift = ((mainScreen.optionList.length - 1)/2 * -32) -16
         for (let i = 0; i < mainScreen.optionList.length; i++){
@@ -229,6 +258,13 @@ const mainScreen = new Screen({
                     32 * renderScale,
                     32 * renderScale
                 )
+                const selectedTextImg = findSprite(`${option.sprite}-option-text`).img;
+                ctx.drawImage(selectedTextImg,
+                    (screenConfig.posX) * renderScale,
+                    (144 + screenConfig.posY) * renderScale,
+                    256 * renderScale,
+                    32 * renderScale
+                )
             }
             xShift += 32;
         }
@@ -239,6 +275,9 @@ const mainScreen = new Screen({
 })
 
 let currentScreen = controlsScreen
+if (layout == 'mobile') {
+    currentScreen = mainScreen
+}
 
 export function startMenu(){
     currentScreen = mainScreen

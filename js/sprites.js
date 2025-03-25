@@ -60,11 +60,15 @@ const sprites = {
 	
 	//menu
 	restart_option: new Sprite('./images/game/menu/restart-option.png'),
+	restart_option_text: new Sprite('./images/game/menu/restart-option-text.png'),
 	controls_option: new Sprite('./images/game/menu/controls-option.png'),
+	controls_option_text: new Sprite('./images/game/menu/controls-option-text.png'),
 	controls_screen: new Sprite('./images/game/menu/controls-screen.png'),
 	levels_option: new Sprite('./images/game/menu/levels-option.png'),
+	levels_option_text: new Sprite('./images/game/menu/levels-option-text.png'),
 	reset_save_option: new Sprite('./images/game/menu/reset-save-option.png'),
 	reset_save_screen: new Sprite('./images/game/menu/reset-save-screen.png'),
+	reset_save_option_text: new Sprite('./images/game/menu/reset-save-option-text.png'),
 	section_a_option: new Sprite('./images/game/menu/section-a-option.png'),
 	section_b_option: new Sprite('./images/game/menu/section-b-option.png'),
 	section_c_option: new Sprite('./images/game/menu/section-c-option.png'),
