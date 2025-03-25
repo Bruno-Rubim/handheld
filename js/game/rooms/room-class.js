@@ -1,4 +1,4 @@
-import { player } from "../player.js";
+import { player } from "../game-objects.js";
 
 export class Room {
     constructor({name='', playerStartPos={posX:0, posY:0}, loadObjects: loadObjects=()=>{}}){
@@ -20,6 +20,7 @@ export class Room {
         player.posY = this.playerStartPos.posY
     }
     loadRoom(){
+        localStorage.setItem('lastRoom', this.name)
         this.objectList = [player]
         this.spawnPlayer()
         this.loaded = true

@@ -2,11 +2,11 @@ import { BUTTON_DOWN, buttonHandler, buttonHeldDict } from "../button-manager.js
 import { ctx, layout, renderScale } from "../canvas-handler.js";
 import sprites, { findSprite } from "../sprites.js";
 import { menuInputHandler, renderMenu, startMenu } from "./menu-manager.js";
-import { player } from "./player.js";
+import { player } from "./game-objects.js";
 import { allRooms, debugRoom } from "./rooms/room-list.js";
 
 export const gameState = {
-    currentState: 'menu',
+    currentState: 'game',
 }
 
 const tileSize = 16
@@ -28,7 +28,11 @@ if (layout == 'pc') {
     screenConfig.posY = 32
 }
 
-export const debug = false
+export const debug = true
+
+if (!debug) {
+    gameState.currentState = 'menu'
+}
 
 let lastRoom = allRooms[localStorage.getItem('lastRoom')]
 let version = localStorage.getItem('version')
@@ -61,7 +65,7 @@ function renderBackGround(){
 }
 
 const renderLayers = [
-    'wall', 'sensor', 'disc', 'block', 'player',
+    'wall', 'conveyor', 'sensor', 'disc', 'block', 'player',
 ]
 
 function renderObjectList(){
@@ -265,12 +269,21 @@ function dynamicCheck(){
     })
 }
 
+function resets(){
+    roomModule.currentRoom.forEachGameObject((object)=>{
+        if (object.tags.includes('bot') && !object.tags.includes('player')){
+            object.moved = false
+        }
+    })
+}
+
 function ticHandler() {
     buttonHandler()
     if (gameState.currentState == 'game') {
         gameInputHandler()
         sensorCheck()
         dynamicCheck()
+        resets()
     } else {
         menuInputHandler()
     }

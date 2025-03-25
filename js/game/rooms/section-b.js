@@ -1,5 +1,4 @@
 import { Box, Disc, DiscScanner, FlipWall, PressurePlate } from '../game-objects.js'
-import { player } from '../player.js'
 import { Room } from './room-class.js'
 import { secAEnd } from './section-a.js'
 

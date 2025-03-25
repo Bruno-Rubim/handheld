@@ -1,5 +1,5 @@
 import { BUTTON_DOWN, BUTTON_HELD, BUTTON_UP, buttonHeldDict, caseButtons } from "./button-manager.js";
-import { canvasElement, renderScale, scaleMultiplyer } from "./canvas-handler.js";
+import { canvasElement, layout, renderScale, scaleMultiplyer } from "./canvas-handler.js";
 
 export const buttonTouched = {}
 
@@ -31,11 +31,20 @@ document.addEventListener("touchstart", (event) => {
         const yInCanv = event.touches[i].clientY;
         const multiplyer = innerWidth / (320 * renderScale)
         caseButtons.forEach(button => {
-            if (
-                xInCanv > (button.posXMobl) * multiplyer && xInCanv < (button.posXMobl + button.widthMobl) * multiplyer && 
-                yInCanv > (button.posYMobl) * multiplyer && yInCanv < (button.posYMobl + button.heightMobl) * multiplyer
-            ){
-                buttonTouched[button.icon] = true
+            if (layout == 'mobile'){
+                if (
+                    xInCanv > (button.posXMobl) * multiplyer && xInCanv < (button.posXMobl + button.widthMobl) * multiplyer && 
+                    yInCanv > (button.posYMobl) * multiplyer && yInCanv < (button.posYMobl + button.heightMobl) * multiplyer
+                ){
+                    buttonTouched[button.icon] = true
+                }
+            } else {
+                if (
+                    xInCanv > (button.posXPC) * multiplyer && xInCanv < (button.posXPC + button.widthPC) * multiplyer && 
+                    yInCanv > (button.posYPC) * multiplyer && yInCanv < (button.posYPC + button.heightPC) * multiplyer
+                ){
+                    buttonTouched[button.icon] = true
+                }
             }
         })
     }
