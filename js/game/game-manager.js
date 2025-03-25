@@ -28,7 +28,7 @@ if (layout == 'pc') {
     screenConfig.posY = 32
 }
 
-export const debug = true
+export const debug = false
 
 if (!debug) {
     gameState.currentState = 'menu'
