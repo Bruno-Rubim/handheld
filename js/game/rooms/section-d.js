@@ -4,6 +4,7 @@ import { secCEnd } from "./section-c.js";
 
 // introduces teleport pads
 export const roomTeleport1 = new Room({name:'roomTeleport1', playerStartPos:{posX: 0, posY:6}, loadObjects: ()=>{
+    localStorage.setItem('startedSectionD', 'yes')
     roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 15, 0)
     roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 15, 1)
     roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 15, 2)
@@ -218,7 +219,7 @@ export const roomConveyorTeleport = new Room({name:'roomConveyor3', playerStartP
     roomConveyorTeleport.objectList.push(new TeleportPad({posX:11, posY:2, color:'white', state:'on'}))
     
     roomConveyorTeleport.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 1, 4)
-    roomConveyorTeleport.addLineToObjectList(()=>(new Conveyor({dir:'right', color:'white'})), 'x', 2, 3, 4)
+    roomConveyorTeleport.addLineToObjectList(()=>(new Conveyor({dir:'right', color:'white'})), 'x', 2, 5, 4)
     roomConveyorTeleport.objectList.push(new Conveyor({dir:'up', color:'white', posX: 2, posY: 5}))
     roomConveyorTeleport.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 1, 5)
     roomConveyorTeleport.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 3, 4, 5)
@@ -230,11 +231,11 @@ export const roomConveyorTeleport = new Room({name:'roomConveyor3', playerStartP
     roomConveyorTeleport.objectList.push(new RemoteBot({posX:7, posY:6, color:'yellow'}))
     roomConveyorTeleport.objectList.push(new Disc({posX:10, posY:6, color:'yellow'}))
 
-    roomConveyorTeleport.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 11, 15, 4)
+    roomConveyorTeleport.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 10, 15, 4)
     roomConveyorTeleport.addLineToObjectList(()=>(new FlipWall({state:'on', color:'yellow'})), 'y', 5, 7, 12)
     roomConveyorTeleport.addLineToObjectList(()=>(new FlipWall({state:'on', color:'purple'})), 'y', 5, 7, 13)
     roomConveyorTeleport.addLineToObjectList(()=>(new FlipWall({state:'on', color:'white'})), 'y', 5, 7, 14)
-    roomConveyorTeleport.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 11, 15, 8)
+    roomConveyorTeleport.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 10, 15, 8)
 }})
 
 roomConveyor3.upRoom = roomConveyorTeleport
