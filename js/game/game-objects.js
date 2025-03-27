@@ -1,6 +1,6 @@
 import { findSound } from "../sounds.js";
 import { getNow } from "../time-manager.js";
-import { roomModule, gameHeightInTiles, gameWidthInTiles } from "./game-manager.js";
+import { controlsDict, roomModule } from "./game-manager.js";
 
 export const oppDir = {
     left: 'right',
@@ -31,7 +31,7 @@ export class Disc {
         this.color = color;
         this.sprite = 'floppy-' + this.color + '-item'
         this.controls = controls
-        this.controls.unshift('eject-disc-controls')
+        this.controls.unshift('controls-eject-disc')
     }
     move(dir){
         //Checking direction
@@ -413,12 +413,14 @@ export class RemoteBot {
         this.posX = posX
         this.posY = posY
         this.posYOffset = 6
-        this.tags = ['bot', 'movable'] 
+        this.tags = ['bot', 'movable', 'remoteBot'] 
         this.renderLayer = 'player'
         this.facing = 'left'
-        this.sprite = 'remote-bot-' + this.facing
         this.disc = disc
         this.moved = false
+    }
+    get sprite(){
+        return `remote-bot-${this.facing}`
     }
     inventory(){
         let floorDisc = roomModule.currentRoom.takeObjectByPosition(this.posX, this.posY, ['disc'])
@@ -430,10 +432,17 @@ export class RemoteBot {
         }
         this.disc = floorDisc
     }
-    move(dir){
+    move(dir, type){
         if (this.moved){
             return false
         }
+
+        if (type == 'input') {
+            if (dir != 'up' && dir != 'down') {
+                this.facing = dir
+            }
+        }
+
         let targetPosX = this.posX;
         let targetPosY = this.posY;
 
@@ -459,11 +468,9 @@ export class RemoteBot {
 
         if (dir == 'left'){
             targetPosX --
-            this.facing = 'left'
         }
         if (dir == 'right'){
             targetPosX ++
-            this.facing = 'right'
         }
         if (targetPosX > 15){
             targetPosX = 15
@@ -498,12 +505,45 @@ export class RemoteBot {
                 this.inventory()
             }
         }
-        this.sprite = 'remote-bot-' + this.facing
         this.moved = botMoved;
         return botMoved
     }
     discAction(){
         if (!this.disc){
+            return
+        }
+        if (this.disc.color == 'red'){
+            if (this.pointer) {
+                let pointerXShift = 0
+                let pointerYShift = 0
+                switch (this.pointer) {
+                    case 'left':
+                        pointerXShift = -1
+                        break
+                    case 'right':
+                        pointerXShift = 1
+                        break
+                    case 'up':
+                        pointerYShift = -1
+                        break
+                    case 'down':
+                        pointerYShift = 1
+                        break
+                }
+                let blocking = roomModule.currentRoom.findObjectByPosition(this.posX + pointerXShift, this.posY + pointerYShift, ['block', 'lever'])
+                if (blocking) {
+                    findSound('error').play()
+                    return
+                }
+                roomModule.currentRoom.objectList.push(new RedDiscProjectile({
+                    posX: this.posX + pointerXShift,
+                    posY: this.posY + pointerYShift,
+                    dir: this.pointer}))
+                this.pointer = null
+                this.disc = null
+                return
+            }
+            this.pointer = this.lastMoveDir
             return
         }
         if (this.disc.color == 'purple'){
@@ -564,6 +604,81 @@ export class RemoteBot {
     }
 }
 
+export class RedDiscProjectile {
+    constructor({posX=0, posY=0, dir='left'}){
+        this.posX = posX
+        this.posY = posY
+        this.dir = dir
+        this.tags = ['dynamic', 'projectile'] 
+        this.renderLayer = 'player'
+        this.sprite = 'red-projectile-' + this.dir
+        this.ticsSinceMove = 0
+        this.moveTicDelay = 1
+    }
+    dynamics(){
+        this.ticsSinceMove ++
+        if (this.ticsSinceMove > this.moveTicDelay) {
+            this.move(this.dir)
+            this.ticsSinceMove = 0
+        }
+    }
+    move(dir){
+        let targetPosX = this.posX;
+        let targetPosY = this.posY;
+
+        this.lastMoveTime = getNow()
+        this.lastMoveDir = dir
+        let blocked = false
+
+        if (dir == 'up'){
+            targetPosY --
+        }
+        if (dir == 'down'){
+            targetPosY ++
+        }
+        if (targetPosY > 9){
+            blocked = true
+        } else if (targetPosY < 0){
+            blocked = true
+        }
+
+        if (dir == 'left'){
+            targetPosX --
+            this.facing = 'left'
+        }
+        if (dir == 'right'){
+            targetPosX ++
+            this.facing = 'right'
+        }
+        if (targetPosX > 15){
+            blocked = true
+        } else if (targetPosX < 0){
+            blocked = true
+        }
+        
+        let targetObject = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, ['block', 'lever', 'bot'])
+        if (targetObject){
+            if (targetObject.tags.includes('lever')) {
+                netSwitch(targetObject.colorNet)
+            }
+            blocked = true
+        }
+        if (!blocked) {
+            this.posX = targetPosX
+            this.posY = targetPosY
+        } else {
+            roomModule.currentRoom.takeObjectByPosition(this.posX, this.posY, ['projectile'])
+            let floorDisc = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, ['disc'])
+            if (targetObject.tags.includes('bot') && (!targetObject.disc || !floorDisc)) {
+                targetObject.inventory()
+                targetObject.disc = new Disc({color:'red'})
+                return;
+            }
+            roomModule.currentRoom.objectList.push(new Disc({color:'red', posX:this.posX, posY:this.posY}))
+        }
+    }
+}
+
 export const player = {
     sprite: 'disc-bot-right',
     posX: 1,
@@ -576,7 +691,17 @@ export const player = {
     moveDelay: 175,
     facing: 'left',
     disc: null,
+    pointer: null,
+    get sprite() {
+        return `disc-bot-${this.facing}`
+    },
     inventory(){
+        console.log(controlsDict['red'])
+        if (this.pointer) {
+            controlsDict['red'] = ['eject-disc', 'pointer'];
+            this.pointer = null
+            return
+        }
         let floorDisc = roomModule.currentRoom.takeObjectByPosition(this.posX, this.posY, ['disc'])
         if (this.disc){
             this.disc.posX = this.posX
@@ -592,8 +717,32 @@ export const player = {
         let targetPosX = this.posX;
         let targetPosY = this.posY;
 
-        if (type == 'input' && this.lastMoveDir == dir){
-            if (this.lastMoveTime + this.moveDelay > getNow()){
+        if (type == 'input'){
+            if (this.lastMoveDir == dir){
+                if (this.lastMoveTime + this.moveDelay > getNow()){
+                    return
+                }
+            }
+            if (this.disc?.color == 'yellow'){
+                let remoteBot;
+                roomModule.currentRoom.forEachGameObject((obj)=>{
+                    if (obj.tags.includes('remoteBot')){
+                        remoteBot = obj
+                    }
+                })
+                if (remoteBot.disc?.color == 'red' && remoteBot.pointer) {
+                    if (dir != 'up' && dir != 'down') {
+                        remoteBot.facing = dir
+                    }
+                    remoteBot.pointer = dir
+                    return
+                }
+            }
+            if (dir != 'up' && dir != 'down') {
+                this.facing = dir
+            }
+            if (this.disc?.color == 'red' && this.pointer){
+                this.pointer = dir
                 return
             }
         }
@@ -684,7 +833,6 @@ export const player = {
             }
         }
 
-        this.sprite = 'disc-bot-' + this.facing
         this.state = 'walking'
 
         if (this.disc?.color == 'yellow' && !remoteBotMoved && type == 'input'){
@@ -700,6 +848,42 @@ export const player = {
     },
     discActionA(){
         if (!this.disc){
+            return
+        }
+        if (this.disc.color == 'red'){
+            if (this.pointer) {
+                controlsDict['red'] = ['eject-disc', 'pointer'];
+                let pointerXShift = 0
+                let pointerYShift = 0
+                switch (this.pointer) {
+                    case 'left':
+                        pointerXShift = -1
+                        break
+                    case 'right':
+                        pointerXShift = 1
+                        break
+                    case 'up':
+                        pointerYShift = -1
+                        break
+                    case 'down':
+                        pointerYShift = 1
+                        break
+                }
+                let blocking = roomModule.currentRoom.findObjectByPosition(this.posX + pointerXShift, this.posY + pointerYShift, ['block', 'lever'])
+                if (blocking) {
+                    findSound('error').play()
+                    return
+                }
+                roomModule.currentRoom.objectList.push(new RedDiscProjectile({
+                    posX: this.posX + pointerXShift,
+                    posY: this.posY + pointerYShift,
+                    dir: this.pointer}))
+                this.pointer = null
+                this.disc = null
+                return
+            }
+            controlsDict['red'] = ['cancel', 'shoot'];
+            this.pointer = this.lastMoveDir
             return
         }
         if (this.disc.color == 'purple'){

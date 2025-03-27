@@ -3,7 +3,7 @@ import { ctx, layout, renderScale } from "../canvas-handler.js";
 import { findSound } from "../sounds.js";
 import { findSprite } from "../sprites.js";
 import { gameHeightInTiles, gameState, gameWidthInTiles, roomModule, screenConfig } from "./game-manager.js";
-import { resetSave, startedSections, updateSave } from "./game-save.js";
+import { resetSave, startedSections, updateSave } from "./save-manager.js";
 import { allRooms, sectionBRooms, sectionCRooms, sectionDRooms } from "./rooms/room-list.js";
 import { secAStart } from "./rooms/section-a.js";
 import { secBStart } from "./rooms/section-b.js";

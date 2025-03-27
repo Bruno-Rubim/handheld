@@ -2,7 +2,7 @@ import { Box, Conveyor, Disc, DiscScanner, DiscTrap, FlipWall, Lever, PressurePl
 import { Room } from "./room-class.js"
 
 //test room
-export let testRoom = new Room({name:'testRoom', playerStartPos:{posX: 2, posY: 3}, loadObjects:()=>{
+export const testRoom = new Room({name:'testRoom', playerStartPos:{posX: 2, posY: 3}, loadObjects:()=>{
 
     testRoom.rightRoom = null
 

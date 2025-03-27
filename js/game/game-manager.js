@@ -95,16 +95,40 @@ function renderObjectList(){
                 tileSize * renderScale,
                 tileSize * renderScale
             )
+            if (object.pointer) {
+                let pointerXShift = 0
+                let pointerYShift = 0
+                switch (object.pointer) {
+                    case 'left':
+                        pointerXShift = -1
+                        break
+                    case 'right':
+                        pointerXShift = 1
+                        break
+                    case 'up':
+                        pointerYShift = -1
+                        break
+                    case 'down':
+                        pointerYShift = 1
+                        break
+                }
+                ctx.drawImage(findSprite(`pointer-${object.pointer}`).img,
+                    (screenConfig.posX + (object.posX + pointerXShift) * tileSize) * renderScale,
+                    (screenConfig.posY - posYOffscale + (object.posY + pointerYShift) * tileSize) * renderScale,
+                    tileSize * renderScale,
+                    tileSize * renderScale
+                )
+            }
         })
     }
 }
 
-const controlsDict = {
+export const controlsDict = {
     'white': ['eject-disc'],
     'green': ['eject-disc', 'push-box', 'pull-box'],
     'purple': ['eject-disc', 'teleport'],
     'yellow': ['eject-disc', 'move-remote-bot'],
-    'red': ['eject-disc'],
+    'red': ['eject-disc', 'pointer'],
 }
 
 function renderControls(){
@@ -143,7 +167,7 @@ function renderControls(){
 
     let controls = controlsDict[player.disc.color]
     for (let i = 0; i < controls.length; i++){
-        const controlImg = findSprite(`${controls[i]}-controls`).img
+        const controlImg = findSprite(`controls-${controls[i]}`).img
         ctx.drawImage(controlImg,
             ((screenConfig.posX) + (2 * tileSize*(i + 1))) * renderScale,
             ((screenConfig.posY) + (screenConfig.screenHeight - 2*tileSize)) * renderScale,
@@ -182,7 +206,7 @@ function renderControls(){
             for (let i = 0; i < rControls.length; i++){
                 let controlImg;
                 if (i == 0){
-                    controlImg = findSprite(`remote-${rControls[i]}`).img
+                    controlImg = findSprite(`${rControls[i]}-remote`).img
                 } else {
                     controlImg = findSprite(rControls[i]).img
                 }
@@ -223,10 +247,8 @@ function gameInputHandler(){
     } else if (buttonHeldDict['down']){
         player.move('down', 'input')
     } else if (buttonHeldDict['left']){
-        player.facing = 'left'
         player.move('left', 'input')
     } else if (buttonHeldDict['right']){
-        player.facing = 'right'
         player.move('right', 'input')
     } else {
         player.state = 'idle'
@@ -238,7 +260,11 @@ function gameInputHandler(){
         player.discActionC()
     }
     if (buttonHeldDict['circle'] == BUTTON_DOWN){
-        player.inventory()
+        if (player.pointer) {
+            player.pointer = null             
+        } else {
+            player.inventory()
+        }
     }
     if (buttonHeldDict['start'] == BUTTON_DOWN){
         gameState.currentState = 'menu'

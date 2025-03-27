@@ -92,10 +92,10 @@ roomDisc2.rightRoom = roomDisc1
 //roomDiscLever Uses 2 different color nets with lever and disc
 export const roomDiscLever = new Room({name:'roomDiscLever2', playerStartPos:{posX: 15, posY: 4}, loadObjects(){
     roomDiscLever.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 4, 0)
-    roomDiscLever.addLineToObjectList(()=>new FlipWall({color:'blue', state:'off'}), 'x', 5, 9, 0)
+    roomDiscLever.addLineToObjectList(()=>new FlipWall({color:'white', state:'on'}), 'x', 5, 9, 0)
     roomDiscLever.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 10, 15, 0)
     roomDiscLever.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 4, 1)
-    roomDiscLever.addLineToObjectList(()=>new FlipWall({color:'white', state:'on'}), 'x', 5, 9, 1)
+    roomDiscLever.addLineToObjectList(()=>new FlipWall({color:'blue', state:'on'}), 'x', 5, 9, 1)
     roomDiscLever.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 10, 15, 1)
     roomDiscLever.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 4, 7)
     roomDiscLever.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 15, 8)
@@ -104,13 +104,13 @@ export const roomDiscLever = new Room({name:'roomDiscLever2', playerStartPos:{po
     roomDiscLever.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 9, 0)
     roomDiscLever.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 2, 1)
     roomDiscLever.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 6, 9, 1)
-    roomDiscLever.addLineToObjectList(()=>new FlipWall({color:'blue', state:'on'}), 'y', 2, 6, 4)
+    roomDiscLever.addLineToObjectList(()=>new FlipWall({color:'white', state:'off'}), 'y', 2, 6, 4)
 
-    roomDiscLever.objectList.push(new Lever({posX: 8, posY: 6, color: 'blue'}))
+    roomDiscLever.objectList.push(new Lever({posX: 2, posY: 4, color: 'blue'}))
 
-    roomDiscLever.objectList.push(new Disc({posX: 8, posY: 3, color: 'white'}))
+    roomDiscLever.objectList.push(new Disc({posX: 8, posY: 6, color: 'white'}))
 
-    roomDiscLever.objectList.push(new DiscScanner({posX: 2, posY: 4, color: 'white'}))
+    roomDiscLever.objectList.push(new DiscScanner({posX: 8, posY: 6, color: 'white'}))
 }})
 
 roomDisc2.leftRoom = roomDiscLever

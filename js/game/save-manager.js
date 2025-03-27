@@ -19,3 +19,9 @@ export function resetSave(){
         allRooms[room].loaded = false
     }
 }
+
+export function unlockLevels(){
+    localStorage.setItem('startedSectionB', 'yes');
+    localStorage.setItem('startedSectionC', 'yes');
+    localStorage.setItem('startedSectionD', 'yes');
+}

@@ -3,18 +3,20 @@ import { Room } from "./room-class.js";
 import { secCEnd } from "./section-c.js";
 
 // introduces teleport pads
-export const roomTeleport1 = new Room({name:'roomTeleport1', playerStartPos:{posX: 0, posY:6}, loadObjects: ()=>{
+export const roomTeleport1 = new Room({name:'roomTeleport1', playerStartPos:{posX: 0, posY:4}, loadObjects: ()=>{
     localStorage.setItem('startedSectionD', 'yes')
     roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 15, 0)
     roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 15, 1)
-    roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 15, 2)
-    roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 7, 3)
-    roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 1, 8)
+    roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 8, 15, 2)
+    roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 7, 7)
+    roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 7, 8)
     roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 8, 15, 8)
     roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 15, 9)
     
-    roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 4, 0)
-    roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 4, 1)
+    roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 2, 0)
+    roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 6, 9, 0)
+    roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 2, 1)
+    roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 6, 9, 1)
     roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 9, 7)
     roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 9, 8)
     roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 3, 14)
@@ -22,10 +24,10 @@ export const roomTeleport1 = new Room({name:'roomTeleport1', playerStartPos:{pos
     roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 3, 15)
     roomTeleport1.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 7, 9, 15)
     
-    roomTeleport1.addLineToObjectList(()=>new FlipWall({color:'white', state:'off'}), 'y', 5, 7, 1)
-    roomTeleport1.objectList.push(new Disc({posX: 3, posY: 5, color:'white'}))
-    roomTeleport1.objectList.push(new DiscScanner({posX: 5, posY: 6, color:'white'}))
-    roomTeleport1.objectList.push(new Disc({posX: 3, posY: 7, color:'purple'}))
+    roomTeleport1.addLineToObjectList(()=>new FlipWall({color:'white', state:'off'}), 'y', 3, 5, 1)
+    roomTeleport1.objectList.push(new Disc({posX: 3, posY: 3, color:'white'}))
+    roomTeleport1.objectList.push(new DiscScanner({posX: 5, posY: 4, color:'white'}))
+    roomTeleport1.objectList.push(new Disc({posX: 3, posY: 5, color:'purple'}))
     
     roomTeleport1.objectList.push(new TeleportPad({posX: 10, posY: 5, state:'off', color:'white'}))
     roomTeleport1.objectList.push(new DiscScanner({posX: 12, posY: 5, color:'purple'}))
@@ -64,7 +66,7 @@ export const roomTeleport2 = new Room({name:'roomTeleport2', playerStartPos:{pos
 roomTeleport1.rightRoom = roomTeleport2
 roomTeleport2.leftRoom = roomTeleport1
 
-// needs player to teleport remotebot
+// needs player to teleport remoteBot
 export const roomTeleport3 = new Room({name:'roomTeleport3', playerStartPos:{posX: 0, posY:6}, loadObjects:()=>{
     roomTeleport3.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 9, 0)
     roomTeleport3.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 13, 15, 0)
@@ -138,7 +140,7 @@ export const roomConveyor1 = new Room({name:'roomConveyor1', playerStartPos:{pos
 roomTeleport3.upRoom = roomConveyor1
 roomConveyor1.downRoom = roomTeleport3
 
-// needs player to teleport remotebot
+// needs player to teleport remoteBot
 export const roomConveyor2 = new Room({name:'roomConveyorTeleport', playerStartPos:{posX: 15, posY:6}, loadObjects:()=>{
     roomConveyor2.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 15, 0)
     roomConveyor2.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 15, 9)
