@@ -4,11 +4,12 @@ import { findSound } from "../sounds.js";
 import { findSprite } from "../sprites.js";
 import { gameHeightInTiles, gameState, gameWidthInTiles, roomModule, screenConfig } from "./game-manager.js";
 import { resetSave, startedSections, updateSave } from "./save-manager.js";
-import { allRooms, sectionBRooms, sectionCRooms, sectionDRooms } from "./rooms/room-list.js";
+import { allRooms, sectionBRooms, sectionCRooms, sectionDRooms, sectionERooms } from "./rooms/room-list.js";
 import { secAStart } from "./rooms/section-a.js";
 import { secBStart } from "./rooms/section-b.js";
 import { secCStart } from "./rooms/section-c.js";
 import { secDStart } from "./rooms/section-d.js";
+import { secEStart } from "./rooms/section-e.js";
 
 class menuOption {
     constructor({onConfirm=()=>{null}, onCancel=()=>{null}, sprite=''}){
@@ -116,6 +117,21 @@ const levelsScreen = new Screen({
                 })
                 if (startedSections['section-d'] == 'yes'){
                     roomModule.currentRoom = secDStart
+                    roomModule.currentRoom.loadRoom()
+                    gameState.currentState = 'game'
+                } else {
+                    findSound('error').play()
+                }
+            }
+        }),
+        new menuOption({
+            sprite:'section-e',
+            onConfirm: () => {
+                sectionERooms.forEach(room =>{
+                    room.loaded = false
+                })
+                if (startedSections['section-e'] == 'yes'){
+                    roomModule.currentRoom = secEStart
                     roomModule.currentRoom.loadRoom()
                     gameState.currentState = 'game'
                 } else {

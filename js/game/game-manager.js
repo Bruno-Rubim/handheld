@@ -260,11 +260,7 @@ function gameInputHandler(){
         player.discActionC()
     }
     if (buttonHeldDict['circle'] == BUTTON_DOWN){
-        if (player.pointer) {
-            player.pointer = null             
-        } else {
-            player.inventory()
-        }
+        player.inventory()
     }
     if (buttonHeldDict['start'] == BUTTON_DOWN){
         gameState.currentState = 'menu'

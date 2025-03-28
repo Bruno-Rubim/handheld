@@ -242,3 +242,5 @@ export const roomConveyorTeleport = new Room({name:'roomConveyor3', playerStartP
 
 roomConveyor3.upRoom = roomConveyorTeleport
 roomConveyorTeleport.downRoom = roomConveyor3
+
+export const secDend = roomConveyorTeleport;

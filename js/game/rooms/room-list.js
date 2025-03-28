@@ -2,9 +2,10 @@ import { firstRoom, room2Levers, roomDisc1, roomDisc2, roomDiscLever, room2Discs
 import { roomBoxPlates, roomPullBox, roomPushBox1, roomPushBox2 } from "./section-b.js"
 import { roomRemoteBot1, roomRemoteBot3, roomRemoteBot4, roomRemoteDisc, roomRemotePushBox, roomRemoteWallShift } from "./section-c.js"
 import { roomConveyor1, roomConveyor2, roomConveyor3, roomConveyorTeleport, roomTeleport1, roomTeleport2, roomTeleport3 } from "./section-d.js"
+import { roomShoot1, roomShoot2 } from "./section-e.js"
 import { testRoom } from "./test-room.js"
 
-export const debugRoom = testRoom
+export const debugRoom = roomShoot2
 
 export const sectionARooms = [
     firstRoom,
@@ -37,6 +38,10 @@ export const sectionDRooms = [
     roomConveyor3,
     roomConveyorTeleport,
 ]
+export const sectionERooms = [
+    roomShoot1,
+    roomShoot2,
+]
 
 export const allRooms = {
     //A
@@ -65,4 +70,7 @@ export const allRooms = {
     [roomConveyor1.name]: roomConveyor1,
     [roomConveyor2.name]: roomConveyor2,
     [roomConveyorTeleport.name]: roomConveyorTeleport,
+    //E
+    [roomShoot1.name]: roomShoot1,
+    [roomShoot2.name]: roomShoot2,
 }

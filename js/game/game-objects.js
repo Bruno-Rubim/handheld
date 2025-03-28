@@ -900,7 +900,6 @@ export const player = {
         }
         if (this.disc.color == 'red'){
             if (this.pointer) {
-                controlsDict['red'] = ['eject-disc', 'pointer'];
                 let pointerXShift = 0
                 let pointerYShift = 0
                 switch (this.pointer) {
@@ -932,6 +931,7 @@ export const player = {
                     findSound('error').play()
                     return
                 }
+                controlsDict['red'] = ['eject-disc', 'pointer'];
                 roomModule.currentRoom.objectList.push(new RedDiscProjectile({
                     posX: this.posX + pointerXShift,
                     posY: this.posY + pointerYShift,
