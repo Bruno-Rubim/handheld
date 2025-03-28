@@ -132,6 +132,8 @@ const sprites = {
 	plate_green_on: new Sprite('./images/game/plate-green-on.png'),
 	plate_purple_off: new Sprite('./images/game/plate-purple-off.png'),
 	plate_purple_on: new Sprite('./images/game/plate-purple-on.png'),
+	plate_red_off: new Sprite('./images/game/plate-red-off.png'),
+	plate_red_on: new Sprite('./images/game/plate-red-on.png'),
 	plate_yellow_off: new Sprite('./images/game/plate-yellow-off.png'),
 	plate_yellow_on: new Sprite('./images/game/plate-yellow-on.png'),
 	plate_white_off: new Sprite('./images/game/plate-white-off.png'),

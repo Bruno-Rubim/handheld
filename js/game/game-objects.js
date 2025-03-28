@@ -397,7 +397,6 @@ export class RedDiscProjectile {
             }
             blocked = true
         }
-        console.log(blocked)
         if (!blocked) {
             this.posX = targetPosX
             this.posY = targetPosY
@@ -644,7 +643,6 @@ export class RemoteBot {
                         break
                 }
                 let targetObject = roomModule.currentRoom.findObjectByPosition(this.posX + pointerXShift, this.posY + pointerYShift, ['block', 'lever', 'bot'])
-                console.log(targetObject)
                 if (targetObject) {
                     if (targetObject.tags.includes('bot')){
                         let floorDisc = roomModule.currentRoom.findObjectByPosition(targetObject.posX, targetObject.posY, ['disc'])

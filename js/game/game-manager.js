@@ -35,8 +35,7 @@ if (!debug) {
 }
 
 let lastRoom = allRooms[localStorage.getItem('lastRoom')]
-let version = localStorage.getItem('version')
-if (!lastRoom || version != 26) {
+if (!lastRoom) {
     lastRoom = allRooms.firstRoom
 }
 
@@ -69,9 +68,6 @@ const renderLayers = [
 ]
 
 function renderObjectList(){
-    if (roomModule.currentRoom == null) {
-        localStorage.setItem('lastRoom', 'firstRoom')
-    }
     for(let i = 0; i < renderLayers.length; i++) {
         const renderLayer = renderLayers[i];
         roomModule.currentRoom.forEachGameObject((object)=>{
