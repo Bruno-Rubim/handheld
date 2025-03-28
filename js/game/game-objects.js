@@ -338,6 +338,114 @@ export class Conveyor {
     }
 }
 
+export class RedDiscProjectile {
+    constructor({posX=0, posY=0, dir='left'}){
+        this.posX = posX
+        this.posY = posY
+        this.dir = dir
+        this.tags = ['dynamic', 'projectile'] 
+        this.renderLayer = 'player'
+        this.sprite = 'red-projectile-' + this.dir
+        this.ticsSinceMove = 0
+        this.moveTicDelay = 1
+    }
+    dynamics(){
+        this.ticsSinceMove ++
+        if (this.ticsSinceMove > this.moveTicDelay) {
+            this.move(this.dir)
+            this.ticsSinceMove = 0
+        }
+    }
+    move(dir){
+        let targetPosX = this.posX;
+        let targetPosY = this.posY;
+
+        this.lastMoveTime = getNow()
+        this.lastMoveDir = dir
+        let blocked = false
+
+        if (dir == 'up'){
+            targetPosY --
+        }
+        if (dir == 'down'){
+            targetPosY ++
+        }
+        if (targetPosY > 9){
+            blocked = true
+        } else if (targetPosY < 0){
+            blocked = true
+        }
+
+        if (dir == 'left'){
+            targetPosX --
+            this.facing = 'left'
+        }
+        if (dir == 'right'){
+            targetPosX ++
+            this.facing = 'right'
+        }
+        if (targetPosX > 15){
+            blocked = true
+        } else if (targetPosX < 0){
+            blocked = true
+        }
+        
+        let targetObject = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, ['block', 'lever', 'bot'])
+        if (targetObject){
+            if (targetObject.tags.includes('lever')) {
+                netSwitch(targetObject.colorNet)
+            }
+            blocked = true
+        }
+        console.log(blocked)
+        if (!blocked) {
+            this.posX = targetPosX
+            this.posY = targetPosY
+        } else {
+            roomModule.currentRoom.takeObjectByPosition(this.posX, this.posY, ['projectile'])
+            let floorDisc = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, ['disc'])
+            if (targetObject?.tags.includes('bot') && (!targetObject.disc || !floorDisc)) {
+                targetObject.inventory()
+                targetObject.disc = new Disc({color:'red'})
+                return;
+            }
+            roomModule.currentRoom.objectList.push(new Disc({color:'red', posX:this.posX, posY:this.posY}))
+        }
+    }
+}
+
+export class Pole {
+    constructor({posX=0, posY=0, color='', state='off'}){
+        this.posX = posX
+        this.posY = posY
+        this.color = color
+        this.state = state
+        this.colorNet = color
+        this.tags = ['half-block']
+        if (state=='off'){
+            this.tags = []
+        } else {
+            this.tags = ['half-block']
+        }
+    }
+    switchState(){
+        if (this.state == 'off') {
+            this.tags = ['half-block']
+            this.state = 'on'
+        } else {
+            this.tags = []
+            this.state = 'off'
+        }
+    }
+    get sprite() {
+        return `pole-${this.color}-${this.state}`
+    }
+}
+
+const blocksMovement = [
+    'block', 'wall', 'half-block',
+]
+
 export class Box {
     constructor({posX=0, posY=0, disc=null}){
         this.posX = posX
@@ -366,11 +474,11 @@ export class Box {
             targetPosY ++
         }
         if (targetPosY > 8){
-            targetPosY = 8
             // findSound('error').play()
+            return false
         } else if (targetPosY < 1){
-            targetPosY = 1
             // findSound('error').play()
+            return false
         }
 
         if (dir == 'left'){
@@ -391,7 +499,7 @@ export class Box {
         
         //Checking blockage
         let blocked = false
-        let targetObject = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, ['bot', 'block', 'lever'])
+        let targetObject = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, [...blocksMovement, 'bot', 'lever'])
         if (targetObject){
             blocked = true
         }
@@ -423,6 +531,11 @@ export class RemoteBot {
         return `remote-bot-${this.facing}`
     }
     inventory(){
+        if (this.pointer) {
+            controlsDict['red'] = ['eject-disc', 'pointer'];
+            this.pointer = null
+            return
+        }
         let floorDisc = roomModule.currentRoom.takeObjectByPosition(this.posX, this.posY, ['disc'])
         if (this.disc){
             this.disc.posX = this.posX
@@ -479,7 +592,7 @@ export class RemoteBot {
         }
         
         let blocked = false
-        let targetObject = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, ['bot', 'block', oppDir[dir]])
+        let targetObject = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, [...blocksMovement, 'bot', oppDir[dir]])
         if (targetObject){
             if (this.disc?.color == 'green') {
                 if (targetObject.tags.includes('box')){
@@ -530,8 +643,19 @@ export class RemoteBot {
                         pointerYShift = 1
                         break
                 }
-                let blocking = roomModule.currentRoom.findObjectByPosition(this.posX + pointerXShift, this.posY + pointerYShift, ['block', 'lever'])
-                if (blocking) {
+                let targetObject = roomModule.currentRoom.findObjectByPosition(this.posX + pointerXShift, this.posY + pointerYShift, ['block', 'lever', 'bot'])
+                console.log(targetObject)
+                if (targetObject) {
+                    if (targetObject.tags.includes('bot')){
+                        let floorDisc = roomModule.currentRoom.findObjectByPosition(targetObject.posX, targetObject.posY, ['disc'])
+                        if (targetObject.tags.includes('bot') && (!targetObject.disc || !floorDisc)) {
+                            targetObject.inventory()
+                            targetObject.disc = new Disc({color:'red'})
+                            this.pointer = null
+                            this.disc = null
+                            return;
+                        }
+                    }
                     findSound('error').play()
                     return
                 }
@@ -604,81 +728,6 @@ export class RemoteBot {
     }
 }
 
-export class RedDiscProjectile {
-    constructor({posX=0, posY=0, dir='left'}){
-        this.posX = posX
-        this.posY = posY
-        this.dir = dir
-        this.tags = ['dynamic', 'projectile'] 
-        this.renderLayer = 'player'
-        this.sprite = 'red-projectile-' + this.dir
-        this.ticsSinceMove = 0
-        this.moveTicDelay = 1
-    }
-    dynamics(){
-        this.ticsSinceMove ++
-        if (this.ticsSinceMove > this.moveTicDelay) {
-            this.move(this.dir)
-            this.ticsSinceMove = 0
-        }
-    }
-    move(dir){
-        let targetPosX = this.posX;
-        let targetPosY = this.posY;
-
-        this.lastMoveTime = getNow()
-        this.lastMoveDir = dir
-        let blocked = false
-
-        if (dir == 'up'){
-            targetPosY --
-        }
-        if (dir == 'down'){
-            targetPosY ++
-        }
-        if (targetPosY > 9){
-            blocked = true
-        } else if (targetPosY < 0){
-            blocked = true
-        }
-
-        if (dir == 'left'){
-            targetPosX --
-            this.facing = 'left'
-        }
-        if (dir == 'right'){
-            targetPosX ++
-            this.facing = 'right'
-        }
-        if (targetPosX > 15){
-            blocked = true
-        } else if (targetPosX < 0){
-            blocked = true
-        }
-        
-        let targetObject = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, ['block', 'lever', 'bot'])
-        if (targetObject){
-            if (targetObject.tags.includes('lever')) {
-                netSwitch(targetObject.colorNet)
-            }
-            blocked = true
-        }
-        if (!blocked) {
-            this.posX = targetPosX
-            this.posY = targetPosY
-        } else {
-            roomModule.currentRoom.takeObjectByPosition(this.posX, this.posY, ['projectile'])
-            let floorDisc = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, ['disc'])
-            if (targetObject.tags.includes('bot') && (!targetObject.disc || !floorDisc)) {
-                targetObject.inventory()
-                targetObject.disc = new Disc({color:'red'})
-                return;
-            }
-            roomModule.currentRoom.objectList.push(new Disc({color:'red', posX:this.posX, posY:this.posY}))
-        }
-    }
-}
-
 export const player = {
     sprite: 'disc-bot-right',
     posX: 1,
@@ -696,7 +745,6 @@ export const player = {
         return `disc-bot-${this.facing}`
     },
     inventory(){
-        console.log(controlsDict['red'])
         if (this.pointer) {
             controlsDict['red'] = ['eject-disc', 'pointer'];
             this.pointer = null
@@ -796,7 +844,7 @@ export const player = {
         //Checking blockage
         let blocked = false
         let remoteBotMoved = false
-        let targetObject = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, ['block', 'bot', oppDir[dir]])
+        let targetObject = roomModule.currentRoom.findObjectByPosition(targetPosX, targetPosY, [...blocksMovement, 'bot', oppDir[dir]])
         if (targetObject){
             if (this.disc?.color == 'green') {
                 if (targetObject.tags.includes('box')){
@@ -869,8 +917,18 @@ export const player = {
                         pointerYShift = 1
                         break
                 }
-                let blocking = roomModule.currentRoom.findObjectByPosition(this.posX + pointerXShift, this.posY + pointerYShift, ['block', 'lever'])
-                if (blocking) {
+                let targetObject = roomModule.currentRoom.findObjectByPosition(this.posX + pointerXShift, this.posY + pointerYShift, ['block', 'lever', 'bot'])
+                if (targetObject) {
+                    if (targetObject.tags.includes('bot')){
+                        let floorDisc = roomModule.currentRoom.findObjectByPosition(targetObject.posX, targetObject.posY, ['disc'])
+                        if (targetObject.tags.includes('bot') && (!targetObject.disc || !floorDisc)) {
+                            targetObject.inventory()
+                            targetObject.disc = new Disc({color:'red'})
+                            this.pointer = null
+                            this.disc = null
+                            return;
+                        }
+                    }
                     findSound('error').play()
                     return
                 }

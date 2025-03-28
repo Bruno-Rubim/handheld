@@ -1,4 +1,4 @@
-import { Box, Conveyor, Disc, DiscScanner, DiscTrap, FlipWall, Lever, PressurePlate, RemoteBot, TeleportPad } from "../game-objects.js"
+import { Box, Conveyor, Disc, DiscScanner, DiscTrap, FlipWall, Lever, Pole, PressurePlate, RemoteBot, TeleportPad } from "../game-objects.js"
 import { Room } from "./room-class.js"
 
 //test room
@@ -24,6 +24,8 @@ export const testRoom = new Room({name:'testRoom', playerStartPos:{posX: 2, posY
     testRoom.objectList.push(new Lever({posX: 5, posY: 6,color: 'blue'}))
     testRoom.objectList.push(new TeleportPad({posX: 6, posY: 6, color: 'white'}))
     testRoom.objectList.push(new RemoteBot({posX: 7, posY: 6, disc:null}))
+
+    testRoom.objectList.push(new Pole({posX:7, posY:4, color:'white', state:'on'}))
 
     testRoom.addLineToObjectList(()=>new FlipWall({color:'white', state:'on'}), 'y', 2, 7, 12)
     testRoom.addLineToObjectList(()=>new Conveyor({color:'white', dir:'right'}), 'x', 3, 7, 8)

@@ -39,7 +39,13 @@ export class Room {
             this.objectList.push(obj)
         }
     }
-    forEachGameObject(funct){
+    forEachGameObject(funct, order){
+        if (order && order == 'reversed') {
+            for(let i = this.objectList.length -1; i >= 0; i--){
+                funct(this.objectList[i])
+            }
+            return
+        }
         for(let i = 0; i < this.objectList.length; i++){
             funct(this.objectList[i])
         }

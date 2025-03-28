@@ -4,7 +4,7 @@ import { roomRemoteBot1, roomRemoteBot3, roomRemoteBot4, roomRemoteDisc, roomRem
 import { roomConveyor1, roomConveyor2, roomConveyor3, roomConveyorTeleport, roomTeleport1, roomTeleport2, roomTeleport3 } from "./section-d.js"
 import { testRoom } from "./test-room.js"
 
-export const debugRoom = roomDiscLever
+export const debugRoom = testRoom
 
 export const sectionARooms = [
     firstRoom,

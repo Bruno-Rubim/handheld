@@ -119,7 +119,7 @@ function renderObjectList(){
                     tileSize * renderScale
                 )
             }
-        })
+        }, 'reversed')
     }
 }
 
