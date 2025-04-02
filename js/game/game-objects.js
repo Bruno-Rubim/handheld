@@ -1,12 +1,168 @@
+import { ctx, renderScale } from "../canvas-handler.js";
 import { findSound } from "../sounds.js";
+import { findSprite } from "../sprites.js";
 import { getNow } from "../time-manager.js";
-import { controlsDict, roomModule } from "./game-manager.js";
+import { controlsDict, roomModule, screenConfig, tileSize } from "./game-manager.js";
 
 export const oppDir = {
     left: 'right',
     right: 'left',
     up: 'down',
     down: 'up',
+}
+
+export class Wall {
+    constructor({posX=0, posY=0}){
+        this.posX = posX
+        this.posY = posY
+        this.tags = ['block', 'wall']
+        this.spriteDefined = false
+        this.tileSheet = 'wall-sprite-sheet'
+        this.spritePosX = 7;
+        this.spritePosY = 7;
+    }
+    render(){
+        if (!this.spriteDefined) {
+            const positionShifts = [
+                [-1,-1],
+                [ 0,-1],
+                [ 1,-1],
+                [-1, 0],
+                [ 0, 0],
+                [ 1, 0],
+                [-1, 1],
+                [ 0, 1],
+                [ 1, 1]
+            ]
+            let walls = ''
+            for(let i = 0; i < positionShifts.length; i++){
+                // if (this.posX + positionShifts[i][0] < 0 || this.posX + positionShifts[i][0] > 15 ||
+                //     this.posY + positionShifts[i][1] < 0 || this.posY + positionShifts[i][1] > 9){
+                //     walls += '1'
+                //     continue
+                // }
+                const wall = roomModule.currentRoom.findObjectByPosition(this.posX + positionShifts[i][0], this.posY  + positionShifts[i][1], ['wall'])
+                if (wall){
+                    walls += '1'
+                } else {
+                    walls += '0'
+                }
+            }
+            if (walls == '000010000' || walls == '000010100' || walls == '001010000'){
+                this.spritePosX = 0
+                this.spritePosY = 0
+            } else if (walls == '010010000' || walls == '011010000' || walls == '111010000' || walls == '110010000'){
+                this.spritePosX = 1
+                this.spritePosY = 0
+            } else if (walls == `001011001` || walls == `000011000` || walls == `000011001` || walls == `001011000`){
+                this.spritePosX = 2
+                this.spritePosY = 0
+            } else if (walls == '000010010' || walls == `000010111` || walls == `000010011` || walls == `000010110`){
+                this.spritePosX = 3
+                this.spritePosY = 0
+            } else if (walls == '000110000' || walls == '000110100' || walls == `100110100` || walls == `100110000`){
+                this.spritePosX = 4
+                this.spritePosY = 0
+            } else if (walls == '011011000' || walls == `111011000` || walls == `011011001` || walls == `111011001` || walls == `010011000`){
+                this.spritePosX = 5
+                this.spritePosY = 0
+            } else if (walls == '010010011' || walls == '011010010' || walls == `010010110` || walls == `010010010` || walls == `110010010` || walls == `111010010` || walls == `010010111` || walls == `011010011`){
+                this.spritePosX = 6
+                this.spritePosY = 0
+            } else if (walls == '111110100' || walls == '110110000' || walls == `111110000` || walls == `010110000` || walls == `110110100`){
+                this.spritePosX = 7
+                this.spritePosY = 0
+            } else if (walls == '000011010'){
+                this.spritePosX = 0
+                this.spritePosY = 1
+            } else if (walls == '000111000' || walls == '000111001' || walls == '000111100' || walls == '100111000' || walls == '001111001' || walls == '001111000' || walls == '101111000' || walls == '000111101'){
+                this.spritePosX = 1
+                this.spritePosY = 1
+            } else if (walls == '000110010'){
+                this.spritePosX = 2
+                this.spritePosY = 1
+            } else if (walls == '000011011' || walls == `000011111` || walls == `001011011` || walls == `001011111`){
+                this.spritePosX = 5
+                this.spritePosY = 1
+            } else if (walls == '100110111' || walls == '000110110' || walls == `000110111` || walls == `100110110`){
+                this.spritePosX = 6
+                this.spritePosY = 1
+            } else if (walls == '001011001' || walls == '010110010'){
+                this.spritePosX = 0
+                this.spritePosY = 2
+            } else if (walls == '000111010'){
+                this.spritePosX = 2
+                this.spritePosY = 2
+            } else if (walls == '011011010'){
+                this.spritePosX = 3
+                this.spritePosY = 2
+            } else if (walls == '010011011'){
+                this.spritePosX = 4
+                this.spritePosY = 2
+            } else if (walls == '000011111' || walls == `000111011`){
+                this.spritePosX = 6
+                this.spritePosY = 2
+            } else if (walls == '000111110' || walls == '100111110'){
+                this.spritePosX = 7
+                this.spritePosY = 2
+            } else if (walls == '011011011' || walls == `011011111` || walls == `111011011` || walls == `111011111`){
+                this.spritePosX = 1
+                this.spritePosY = 3
+            } else if (walls == '111111000' || walls == `111111101` || walls == `111111100` || walls == `111111001` || walls == `110111000` || walls == `011111000` || walls == `110111100` || walls == `010111000` || walls == `011111001`){
+                this.spritePosX = 2
+                this.spritePosY = 3
+            } else if (walls == '111110111' || walls == `111110110` || walls == `110110110` || walls == `110110111` || walls == `010110111` || walls == `010110110`){
+                this.spritePosX = 3
+                this.spritePosY = 3
+            } else if (walls == `000111111` || walls == `100111111` || walls == `001111111`){
+                this.spritePosX = 4
+                this.spritePosY = 3
+            } else if (walls == `011111011`){
+                this.spritePosX = 5
+                this.spritePosY = 3
+            } else if (walls == `010111111`){
+                this.spritePosX = 6
+                this.spritePosY = 3
+            } else if (walls == `111111010`){
+                this.spritePosX = 7
+                this.spritePosY = 3
+            } else if (walls == `110111110`){
+                this.spritePosX = 0
+                this.spritePosY = 4
+            } else if (walls == `011111111`){
+                this.spritePosX = 1
+                this.spritePosY = 4
+            } else if (walls == `111111011`){
+                this.spritePosX = 2
+                this.spritePosY = 4
+            } else if (walls == `111111110`){
+                this.spritePosX = 3
+                this.spritePosY = 4
+            } else if (walls == `110111111`){
+                this.spritePosX = 4
+                this.spritePosY = 4
+            } else if (walls == `110110010`){
+                this.spritePosX = 6
+                this.spritePosY = 4
+            } else if (walls == '111111111'){
+                this.spritePosX = 7
+                this.spritePosY = 7
+            } else {
+                console.log(walls)
+            }
+            this.spriteDefined = true
+        }
+        const img = findSprite(this.tileSheet).img
+        ctx.drawImage(img,
+            this.spritePosX * tileSize,
+            this.spritePosY * tileSize,
+            tileSize,
+            tileSize,
+            (screenConfig.posX + this.posX * tileSize) * renderScale,
+            (screenConfig.posY + this.posY * tileSize) * renderScale,
+            tileSize * renderScale,
+            tileSize * renderScale)
+    }
 }
 
 function netSwitch(color){
@@ -22,16 +178,24 @@ function netSwitch(color){
 }
 
 export class Disc {
-    constructor({effect=()=>{}, color='default', posX=7, posY=5, controls=[]}){
+    constructor({color='default', posX=7, posY=5, controls=[]}){
         this.posX = posX
         this.posY = posY
-        this.tags = ['disc', 'movable'];
-        this.renderLayer = 'disc';
-        this.effect = effect;
         this.color = color;
-        this.sprite = 'floppy-' + this.color + '-item'
         this.controls = controls
         this.controls.unshift('controls-eject-disc')
+        this.tags = ['disc', 'movable'];
+        this.renderLayer = 'disc';
+        this.sprite = 'floppy-' + this.color + '-item'
+        this.posYOffset = 0;
+    }
+    render(){
+        const img = findSprite(this.sprite).img
+        ctx.drawImage(img,
+            (screenConfig.posX + this.posX * tileSize) * renderScale,
+            (screenConfig.posY - this.posYOffset + this.posY * tileSize) * renderScale,
+            tileSize * renderScale,
+            tileSize * renderScale)
     }
     move(dir){
         //Checking direction
@@ -133,6 +297,48 @@ export class Lever {
         this.state = 'off';
         this.pressed = pressed;
         this.colorNet = color;
+        this.spritePosX = 0;
+        this.spritePosY = 0;
+        this.tileSheet = 'lever-sprite-sheet'
+    }
+    render(){
+        switch(this.color){
+            case 'white': 
+                break
+            case 'blue': 
+                this.spritePosY = 1
+                break
+            case 'purple': 
+                this.spritePosY = 2
+                break
+            case 'red': 
+                this.spritePosY = 3
+                break
+            case 'yellow': 
+                this.spritePosY = 4
+                break
+            case 'green': 
+                this.spritePosY = 5
+                break
+        }
+        switch(this.state){
+            case 'on': 
+                this.spritePosX = 0
+                break
+            case 'off': 
+                this.spritePosX = 1
+                break
+        }
+        const img = findSprite(this.tileSheet).img
+        ctx.drawImage(img,
+            this.spritePosX * tileSize,
+            this.spritePosY * tileSize,
+            tileSize,
+            tileSize,
+            (screenConfig.posX + this.posX * tileSize) * renderScale,
+            (screenConfig.posY + this.posY * tileSize) * renderScale,
+            tileSize * renderScale,
+            tileSize * renderScale)
     }
     validate(){
         const object = roomModule.currentRoom.findObjectByPosition(this.posX, this.posY, ['bot'])
@@ -303,9 +509,54 @@ export class Conveyor {
         this.animatioFrame = 0
         this.ticsSinceMove = 0;
         this.moveTicDelay = 24/speed
+        this.tileSheet = 'conveyor-sprite-sheet'
+        this.spritePosX = 0;
+        this.spritePosY = 0;
     }
-    get sprite(){
-        return `conveyor-${this.color}-${this.dir}-${this.animatioFrame}`
+    render(){
+        switch(this.color){
+            case 'white': 
+                break
+            case 'blue': 
+                this.spritePosY = 1
+                break
+            case 'purple': 
+                this.spritePosY = 2
+                break
+            case 'red': 
+                this.spritePosY = 3
+                break
+            case 'yellow': 
+                this.spritePosY = 4
+                break
+            case 'green': 
+                this.spritePosY = 5
+                break
+        }
+        switch(this.dir){
+            case 'down': 
+                this.spritePosX = 0
+                break
+            case 'left': 
+                this.spritePosX = 4
+                break
+            case 'right':
+                this.spritePosX = 8
+                break
+            case 'up': 
+                this.spritePosX = 12
+                break
+        }
+        const img = findSprite(this.tileSheet).img
+        ctx.drawImage(img,
+            (this.spritePosX + this.animatioFrame) * tileSize,
+            this.spritePosY * tileSize,
+            tileSize,
+            tileSize,
+            (screenConfig.posX + this.posX * tileSize) * renderScale,
+            (screenConfig.posY + this.posY * tileSize) * renderScale,
+            tileSize * renderScale,
+            tileSize * renderScale)
     }
     dynamics(){
         this.ticsSinceFrame ++

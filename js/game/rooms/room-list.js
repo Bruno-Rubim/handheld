@@ -3,9 +3,9 @@ import { roomBoxPlates, roomPullBox, roomPushBox1, roomPushBox2 } from "./sectio
 import { roomRemoteBot1, roomRemoteBot3, roomRemoteBot4, roomRemoteDisc, roomRemotePushBox, roomRemoteWallShift } from "./section-c.js"
 import { roomConveyor1, roomConveyor2, roomConveyor3, roomConveyorTeleport, roomTeleport1, roomTeleport2, roomTeleport3 } from "./section-d.js"
 import { roomShoot1, roomShoot2, roomShoot3, roomShoot4 } from "./section-e.js"
-import { testRoom } from "./test-room.js"
+import { testRoom, testWalls } from "./test-room.js"
 
-export const debugRoom = roomShoot3
+export const debugRoom = roomShoot2
 
 export const sectionARooms = [
     firstRoom,

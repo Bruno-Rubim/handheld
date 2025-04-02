@@ -9,7 +9,7 @@ export const gameState = {
     currentState: 'game',
 }
 
-const tileSize = 16
+export const tileSize = 16
 export const gameWidthInTiles = 16
 export const gameHeightInTiles = 12
 
@@ -80,20 +80,25 @@ function renderObjectList(){
             } else if (object.renderLayer != renderLayer){
                 return
             }
-            const img = findSprite(object.sprite).img
-            let posYOffscale = 0
-            if (object.posYOffset){
-                posYOffscale = object.posYOffset
+            if (object.render) {
+                object.render()
+            } else {
+                const img = findSprite(object.sprite).img
+                let posYOffset = 0
+                if (object.posYOffset){
+                    posYOffset = object.posYOffset
+                }
+                ctx.drawImage(img,
+                    (screenConfig.posX + object.posX * tileSize) * renderScale,
+                    (screenConfig.posY - posYOffset + object.posY * tileSize) * renderScale,
+                    tileSize * renderScale,
+                    tileSize * renderScale
+                )
             }
-            ctx.drawImage(img,
-                (screenConfig.posX + object.posX * tileSize) * renderScale,
-                (screenConfig.posY - posYOffscale + object.posY * tileSize) * renderScale,
-                tileSize * renderScale,
-                tileSize * renderScale
-            )
             if (object.pointer) {
                 let pointerXShift = 0
                 let pointerYShift = 0
+                let posYOffset = 0
                 switch (object.pointer) {
                     case 'left':
                         pointerXShift = -1
@@ -110,7 +115,7 @@ function renderObjectList(){
                 }
                 ctx.drawImage(findSprite(`pointer-${object.pointer}`).img,
                     (screenConfig.posX + (object.posX + pointerXShift) * tileSize) * renderScale,
-                    (screenConfig.posY - posYOffscale + (object.posY + pointerYShift) * tileSize) * renderScale,
+                    (screenConfig.posY - posYOffset + (object.posY + pointerYShift) * tileSize) * renderScale,
                     tileSize * renderScale,
                     tileSize * renderScale
                 )

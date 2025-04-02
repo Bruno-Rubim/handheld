@@ -1,4 +1,4 @@
-import { Box, Conveyor, Disc, DiscScanner, DiscTrap, FlipWall, Lever, Pole, PressurePlate, RemoteBot, TeleportPad } from "../game-objects.js"
+import { Box, Conveyor, Disc, DiscScanner, DiscTrap, FlipWall, Lever, Pole, PressurePlate, RemoteBot, TeleportPad, Wall } from "../game-objects.js"
 import { Room } from "./room-class.js"
 
 //test room
@@ -13,6 +13,8 @@ export const testRoom = new Room({name:'testRoom', playerStartPos:{posX: 2, posY
     testRoom.objectList.push(new Disc({color:'white', posX: 5, posY: 1}))
 
     testRoom.objectList.push(new Box({posX: 9, posY: 6}))
+    
+    testRoom.objectList.push(new Wall({posX: 4, posY: 3}))
 
     testRoom.objectList.push(new DiscTrap({posX: 11, posY: 6}))
 
@@ -30,9 +32,18 @@ export const testRoom = new Room({name:'testRoom', playerStartPos:{posX: 2, posY
     testRoom.addLineToObjectList(()=>new FlipWall({color:'white', state:'on'}), 'y', 2, 7, 12)
     testRoom.addLineToObjectList(()=>new Conveyor({color:'white', dir:'right'}), 'x', 3, 7, 8)
 
-    testRoom.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 15, 0)
-    testRoom.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'x', 0, 15, 9)
-    testRoom.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 9, 0)
-    testRoom.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 0, 2, 15)
-    testRoom.addLineToObjectList(()=>({sprite:'wall', renderLayer:'wall', tags:['block']}), 'y', 7, 9, 15)
+    testRoom.addLineToObjectList(()=>new Wall({}), 'x', 0, 15, 0)
+    testRoom.addLineToObjectList(()=>new Wall({}), 'x', 0, 15, 9)
+    testRoom.addLineToObjectList(()=>new Wall({}), 'y', 0, 9, 0)
+    testRoom.addLineToObjectList(()=>new Wall({}), 'y', 0, 2, 15)
+    testRoom.addLineToObjectList(()=>new Wall({}), 'y', 7, 9, 15)
+}})
+
+
+//test room
+export const testWalls = new Room({name:'testWalls', playerStartPos:{posX: 2, posY: 3}, loadObjects:()=>{
+
+    testWalls.objectList.push(new Wall({posX: 4, posY: 3}))
+    testWalls.objectList.push(new Wall({posX: 4, posY: 2}))
+    testWalls.objectList.push(new Wall({posX: 5, posY: 2}))
 }})
