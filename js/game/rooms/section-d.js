@@ -13,8 +13,8 @@ export const roomTeleport1 = new Room({name:'roomTeleport1', playerStartPos:{pos
     roomTeleport1.addLineToObjectList(()=>new Wall({}), 'x', 8, 15, 8)
     roomTeleport1.addLineToObjectList(()=>new Wall({}), 'x', 0, 15, 9)
     
-    roomTeleport1.addLineToObjectList(()=>new Wall({}), 'y', 0, 2, 0)
-    roomTeleport1.addLineToObjectList(()=>new Wall({}), 'y', 6, 9, 0)
+    roomTeleport1.addLineToObjectList(()=>new Wall({}), 'y', 0, 3, 0)
+    roomTeleport1.addLineToObjectList(()=>new Wall({}), 'y', 5, 9, 0)
     roomTeleport1.addLineToObjectList(()=>new Wall({}), 'y', 0, 2, 1)
     roomTeleport1.addLineToObjectList(()=>new Wall({}), 'y', 6, 9, 1)
     roomTeleport1.addLineToObjectList(()=>new Wall({}), 'y', 0, 9, 7)
@@ -67,40 +67,40 @@ roomTeleport1.rightRoom = roomTeleport2
 roomTeleport2.leftRoom = roomTeleport1
 
 // needs player to teleport remoteBot
-export const roomTeleport3 = new Room({name:'roomTeleport3', playerStartPos:{posX: 0, posY:6}, loadObjects:()=>{
-    roomTeleport3.addLineToObjectList(()=>new Wall({}), 'x', 0, 9, 0)
-    roomTeleport3.addLineToObjectList(()=>new Wall({}), 'x', 13, 15, 0)
-    roomTeleport3.addLineToObjectList(()=>new Wall({}), 'x', 0, 15, 9)
+export const roomTeleportRemoteBot = new Room({name:'roomTeleport3', playerStartPos:{posX: 0, posY:6}, loadObjects:()=>{
+    roomTeleportRemoteBot.addLineToObjectList(()=>new Wall({}), 'x', 0, 9, 0)
+    roomTeleportRemoteBot.addLineToObjectList(()=>new Wall({}), 'x', 13, 15, 0)
+    roomTeleportRemoteBot.addLineToObjectList(()=>new Wall({}), 'x', 0, 15, 9)
 
-    roomTeleport3.addLineToObjectList(()=>new Wall({}), 'y', 0, 4, 0)
-    roomTeleport3.addLineToObjectList(()=>new Wall({}), 'y', 8, 9, 0)
-    roomTeleport3.addLineToObjectList(()=>new Wall({}), 'y', 0, 5, 13)
-    roomTeleport3.addLineToObjectList(()=>new Wall({}), 'y', 0, 5, 14)
-    roomTeleport3.addLineToObjectList(()=>new Wall({}), 'y', 0, 9, 15)
+    roomTeleportRemoteBot.addLineToObjectList(()=>new Wall({}), 'y', 0, 4, 0)
+    roomTeleportRemoteBot.addLineToObjectList(()=>new Wall({}), 'y', 8, 9, 0)
+    roomTeleportRemoteBot.addLineToObjectList(()=>new Wall({}), 'y', 0, 5, 13)
+    roomTeleportRemoteBot.addLineToObjectList(()=>new Wall({}), 'y', 0, 5, 14)
+    roomTeleportRemoteBot.addLineToObjectList(()=>new Wall({}), 'y', 0, 9, 15)
     
-    roomTeleport3.objectList.push(new Disc({posX: 3, posY: 2, color:'purple'}))
-    roomTeleport3.objectList.push(new DiscScanner({posX: 3, posY: 2 , color:'purple'}))
-    roomTeleport3.objectList.push(new PressurePlate({posX: 7, posY: 2 , color:'purple'}))
+    roomTeleportRemoteBot.objectList.push(new Disc({posX: 3, posY: 2, color:'purple'}))
+    roomTeleportRemoteBot.objectList.push(new DiscScanner({posX: 3, posY: 2 , color:'purple'}))
+    roomTeleportRemoteBot.objectList.push(new PressurePlate({posX: 7, posY: 2 , color:'purple'}))
     
     // roomTeleport3.addLineToObjectList(()=>new Wall({}), 'y', 4, 5, 5)
 
-    roomTeleport3.objectList.push(new Disc({posX: 3, posY: 7, color:'yellow'}))
-    roomTeleport3.objectList.push(new DiscScanner({posX: 3, posY: 7 , color:'yellow'}))
-    roomTeleport3.objectList.push(new RemoteBot({posX: 7, posY: 7}))
+    roomTeleportRemoteBot.objectList.push(new Disc({posX: 3, posY: 7, color:'yellow'}))
+    roomTeleportRemoteBot.objectList.push(new DiscScanner({posX: 3, posY: 7 , color:'yellow'}))
+    roomTeleportRemoteBot.objectList.push(new RemoteBot({posX: 7, posY: 7}))
     
-    roomTeleport3.addLineToObjectList(()=>new Wall({}), 'x', 11, 15, 5)
-    roomTeleport3.addLineToObjectList(()=>(new FlipWall({color:'white', state:'on'})), 'y', 6, 8, 11)
-    roomTeleport3.objectList.push(new TeleportPad({posX: 12, posY: 7, color:'purple', state:'off'}))
-    roomTeleport3.objectList.push(new PressurePlate({posX: 13, posY: 7, color:'white', state:'off'}))
+    roomTeleportRemoteBot.addLineToObjectList(()=>new Wall({}), 'x', 11, 15, 5)
+    roomTeleportRemoteBot.addLineToObjectList(()=>(new FlipWall({color:'white', state:'on'})), 'y', 6, 8, 11)
+    roomTeleportRemoteBot.objectList.push(new TeleportPad({posX: 12, posY: 7, color:'purple', state:'off'}))
+    roomTeleportRemoteBot.objectList.push(new PressurePlate({posX: 13, posY: 7, color:'white', state:'off'}))
 
-    roomTeleport3.addLineToObjectList(()=>new Wall({}), 'y', 0, 2, 10)
-    roomTeleport3.addLineToObjectList(()=>(new FlipWall({color:'white', state:'on'})), 'x', 11, 12, 1)
-    roomTeleport3.addLineToObjectList(()=>(new FlipWall({color:'yellow', state:'on'})), 'x', 11, 12, 2)
-    roomTeleport3.addLineToObjectList(()=>(new FlipWall({color:'purple', state:'on'})), 'x', 11, 12, 0)
+    roomTeleportRemoteBot.addLineToObjectList(()=>new Wall({}), 'y', 0, 2, 10)
+    roomTeleportRemoteBot.addLineToObjectList(()=>(new FlipWall({color:'white', state:'on'})), 'x', 11, 12, 1)
+    roomTeleportRemoteBot.addLineToObjectList(()=>(new FlipWall({color:'yellow', state:'on'})), 'x', 11, 12, 2)
+    roomTeleportRemoteBot.addLineToObjectList(()=>(new FlipWall({color:'purple', state:'on'})), 'x', 11, 12, 0)
 }})
 
-roomTeleport2.rightRoom = roomTeleport3
-roomTeleport3.leftRoom = roomTeleport2
+roomTeleport2.rightRoom = roomTeleportRemoteBot
+roomTeleportRemoteBot.leftRoom = roomTeleport2
 
 // introduces conveyor
 export const roomConveyor1 = new Room({name:'roomConveyor1', playerStartPos:{posX: 11, posY:9}, loadObjects:()=>{
@@ -138,37 +138,40 @@ export const roomConveyor1 = new Room({name:'roomConveyor1', playerStartPos:{pos
     roomConveyor1.objectList.push(new Lever({posX: 12, posY: 6, color:'blue', state:'off'}))
 }})
 
-roomTeleport3.upRoom = roomConveyor1
-roomConveyor1.downRoom = roomTeleport3
+roomTeleportRemoteBot.upRoom = roomConveyor1
+roomConveyor1.downRoom = roomTeleportRemoteBot
 
 // needs player to teleport remoteBot
-export const roomConveyor2 = new Room({name:'roomConveyorTeleport', playerStartPos:{posX: 15, posY:6}, loadObjects:()=>{
-    roomConveyor2.addLineToObjectList(()=>new Wall({}), 'x', 0, 15, 0)
-    roomConveyor2.addLineToObjectList(()=>new Wall({}), 'x', 0, 15, 9)
+export const roomConveyorDisc = new Room({name:'roomConveyorTeleport', playerStartPos:{posX: 15, posY:6}, loadObjects:()=>{
+    roomConveyorDisc.addLineToObjectList(()=>new Wall({}), 'x', 0, 15, 0)
+    roomConveyorDisc.addLineToObjectList(()=>new Wall({}), 'x', 0, 15, 9)
 
-    roomConveyor2.addLineToObjectList(()=>new Wall({}), 'y', 0, 3, 0)
-    roomConveyor2.addLineToObjectList(()=>new Wall({}), 'y', 7, 9, 0)
-    roomConveyor2.addLineToObjectList(()=>new Wall({}), 'y', 0, 3, 14)
-    roomConveyor2.addLineToObjectList(()=>new Wall({}), 'y', 0, 5, 15)
-    roomConveyor2.addLineToObjectList(()=>new Wall({}), 'y', 8, 9, 15)
+    roomConveyorDisc.addLineToObjectList(()=>new Wall({}), 'y', 0, 3, 0)
+    roomConveyorDisc.addLineToObjectList(()=>new Wall({}), 'y', 7, 9, 0)
+    roomConveyorDisc.addLineToObjectList(()=>new Wall({}), 'y', 0, 3, 14)
+    roomConveyorDisc.addLineToObjectList(()=>new Wall({}), 'y', 0, 5, 15)
+    roomConveyorDisc.addLineToObjectList(()=>new Wall({}), 'y', 8, 9, 15)
 
-    roomConveyor2.addLineToObjectList(()=>new Wall({}), 'x', 0, 1, 3)
-    roomConveyor2.addLineToObjectList(()=>(new FlipWall({color:'white', state: 'on'})), 'y', 4, 6, 1)
-    roomConveyor2.addLineToObjectList(()=>new Wall({}), 'x', 0, 1, 7)
+    roomConveyorDisc.addLineToObjectList(()=>new Wall({}), 'x', 0, 1, 3)
+    roomConveyorDisc.addLineToObjectList(()=>(new FlipWall({color:'white', state: 'on'})), 'y', 4, 6, 1)
+    roomConveyorDisc.addLineToObjectList(()=>new Wall({}), 'x', 0, 1, 7)
 
-    roomConveyor2.objectList.push(new DiscScanner({color: 'white', posX:4, posY:3}))
-    roomConveyor2.objectList.push(new Lever({color: 'blue', posX:4, posY:7}))
+    roomConveyorDisc.objectList.push(new DiscScanner({color: 'white', posX:4, posY:3}))
+    roomConveyorDisc.objectList.push(new Lever({color: 'blue', posX:4, posY:7}))
 
-    roomConveyor2.addLineToObjectList(()=>new Wall({}), 'x', 9, 14, 1)
-    roomConveyor2.objectList.push(new FlipWall({color: 'blue', state:'on', posX:9, posY:2}))
-    roomConveyor2.addLineToObjectList(()=>(new Conveyor({dir:'right', color:'blue', speed:4})), 'x', 10, 13, 2)
-    roomConveyor2.objectList.push(new Disc({color: 'white', posX:10, posY:2}))
-    roomConveyor2.addLineToObjectList(()=>new Wall({}), 'x', 9, 14, 3)
+    roomConveyorDisc.addLineToObjectList(()=>new Wall({}), 'x', 9, 14, 1)
+    roomConveyorDisc.objectList.push(new FlipWall({color: 'blue', state:'on', posX:9, posY:2}))
+    roomConveyorDisc.addLineToObjectList(()=>(new Conveyor({dir:'right', color:'blue', speed:4})), 'x', 10, 13, 2)
+    roomConveyorDisc.objectList.push(new Disc({color: 'white', posX:10, posY:2}))
+    roomConveyorDisc.addLineToObjectList(()=>new Wall({}), 'x', 9, 14, 3)
+    roomConveyorDisc.addLineToObjectList(()=>new Wall({}), 'x', 9, 14, 4)
+    roomConveyorDisc.addLineToObjectList(()=>new Wall({}), 'x', 9, 14, 5)
+    roomConveyorDisc.addLineToObjectList(()=>new Wall({}), 'x', 9, 14, 8)
 
 }})
 
-roomConveyor1.leftRoom = roomConveyor2
-roomConveyor2.rightRoom = roomConveyor1
+roomConveyor1.leftRoom = roomConveyorDisc
+roomConveyorDisc.rightRoom = roomConveyor1
 
 //roomLeverPLate Uses multiple Pressure plates boxes and conveyors
 export const roomConveyor3 = new Room({name:'roomConveyor3', playerStartPos:{posX: 15, posY:5}, loadObjects:()=>{
@@ -197,8 +200,8 @@ export const roomConveyor3 = new Room({name:'roomConveyor3', playerStartPos:{pos
     roomConveyor3.objectList.push(new Box({posX:12, posY:7}))
 }})
 
-roomConveyor2.leftRoom = roomConveyor3
-roomConveyor3.rightRoom = roomConveyor2
+roomConveyorDisc.leftRoom = roomConveyor3
+roomConveyor3.rightRoom = roomConveyorDisc
 
 //roomLeverPLate Uses multiple Pressure plates boxes and conveyors
 export const roomConveyorTeleport = new Room({name:'roomConveyor3', playerStartPos:{posX: 7, posY:9}, loadObjects:()=>{

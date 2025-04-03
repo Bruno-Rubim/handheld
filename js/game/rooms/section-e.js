@@ -1,4 +1,4 @@
-import { DiscScanner, FlipWall, Disc, RemoteBot, Lever, PressurePlate, TeleportPad, Box, Conveyor, Wall } from "../game-objects.js";
+import { DiscScanner, FlipWall, Disc, RemoteBot, Lever, PressurePlate, TeleportPad, Box, Conveyor, Wall, Pole } from "../game-objects.js";
 import { Room } from "./room-class.js";
 import { secDend } from "./section-d.js";
 
@@ -117,7 +117,7 @@ export const roomShoot4 = new Room({name:'roomShoot4', playerStartPos:{posX: 15,
     roomShoot4.addLineToObjectList(()=>(new FlipWall({color:'red', state:'on'})), 'y', 5, 7, 2)
     roomShoot4.addLineToObjectList(()=>(new FlipWall({color:'red', state:'off'})), 'y', 5, 7, 4)
     roomShoot4.objectList.push(new Conveyor({posX:3, posY:4, color:'white', dir:'up'}))
-    roomShoot4.objectList.push({posX:4, posY:4, sprite:'wall', renderLayer:'wall', tags:['block']})
+    roomShoot4.objectList.push(new Wall({posX:4, posY:4}))
     
     roomShoot4.addLineToObjectList(()=>(new Conveyor({color:'red', dir:'right'})), 'y', 1, 3, 8)
     roomShoot4.objectList.push(new Box({posX:9, posY:2}))
@@ -129,3 +129,53 @@ export const roomShoot4 = new Room({name:'roomShoot4', playerStartPos:{posX: 15,
 
 roomShoot3.leftRoom = roomShoot4
 roomShoot4.rightRoom = roomShoot3
+
+export const roomShoot5 = new Room({name:'roomShoot5', playerStartPos:{posX: 15, posY: 6}, loadObjects:()=>{
+    roomShoot5.addLineToObjectList(()=>new Wall({}), 'x', 0, 15, 0)
+    roomShoot5.addLineToObjectList(()=>new Wall({}), 'x', 0, 15, 9)
+    
+    roomShoot5.addLineToObjectList(()=>new Wall({}), 'y', 0, 1, 0)
+    roomShoot5.addLineToObjectList(()=>new Wall({}), 'y', 5, 9, 0)
+    roomShoot5.addLineToObjectList(()=>new Wall({}), 'y', 0, 4, 15)
+    roomShoot5.addLineToObjectList(()=>new Wall({}), 'y', 8, 9, 15)
+}})
+
+// roomShoot4.leftRoom = roomShoot5
+// roomShoot5.rightRoom = roomShoot4
+
+export const roomShoot6 = new Room({name:'roomShoot6', playerStartPos:{posX: 15, posY: 4}, loadObjects:()=>{
+    roomShoot6.addLineToObjectList(()=>new Wall({}), 'x', 0, 15, 0)
+    roomShoot6.addLineToObjectList(()=>new Wall({}), 'x', 0, 5, 9)
+    roomShoot6.addLineToObjectList(()=>new Wall({}), 'x', 9, 15, 9)
+    
+    roomShoot6.addLineToObjectList(()=>new Wall({}), 'y', 0, 9, 0)
+    roomShoot6.addLineToObjectList(()=>new Wall({}), 'y', 0, 1, 15)
+    roomShoot6.addLineToObjectList(()=>new Wall({}), 'y', 5, 9, 15)
+
+    roomShoot6.addLineToObjectList(()=>new Wall({}), 'y', 0, 3, 9)
+    roomShoot6.addLineToObjectList(()=>new Wall({}), 'x', 9, 10, 3)
+    roomShoot6.addLineToObjectList(()=>new Pole({color:'red', state:'on'}), 'x', 11, 13, 3)
+    roomShoot6.addLineToObjectList(()=>new Wall({}), 'x', 14, 15, 3)
+    
+    roomShoot6.addLineToObjectList(()=>new Pole({color:'red', state:'off'}), 'x', 1, 3, 3)
+    roomShoot6.objectList.push(new DiscScanner({posX:2, posY:2, color:'red'}))
+    roomShoot6.objectList.push(new Disc({posX:2, posY:1, color:'red'}))
+    roomShoot6.addLineToObjectList(()=>new Wall({}), 'y', 0, 3, 4)
+    
+    roomShoot6.objectList.push(new DiscScanner({posX:2, posY:7, color:'green'}))
+    roomShoot6.objectList.push(new Disc({posX:2, posY:7, color:'green'}))
+    roomShoot6.addLineToObjectList(()=>new Wall({}), 'y', 0, 3, 4)
+    
+    roomShoot6.objectList.push(new Box({posX:5, posY:5}))
+    roomShoot6.objectList.push(new PressurePlate({posX:5, posY:5, color:'white'}))
+    roomShoot6.objectList.push(new PressurePlate({posX:9, posY:5, color:'blue'}))
+    
+    roomShoot6.addLineToObjectList(()=>new Wall({}), 'y', 7, 9, 5)
+    roomShoot6.addLineToObjectList(()=>new FlipWall({color:'green', state:'on'}), 'x', 5, 9, 6)
+    roomShoot6.addLineToObjectList(()=>new Conveyor({color:'white', dir:'up'}), 'x', 6, 8, 7)
+    roomShoot6.addLineToObjectList(()=>new Conveyor({color:'blue', dir:'up'}), 'x', 6, 8, 8)
+    roomShoot6.addLineToObjectList(()=>new Wall({}), 'y', 7, 9, 9)
+}})
+
+roomShoot5.leftRoom = roomShoot6
+roomShoot6.rightRoom = roomShoot5

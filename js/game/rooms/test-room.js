@@ -38,12 +38,3 @@ export const testRoom = new Room({name:'testRoom', playerStartPos:{posX: 2, posY
     testRoom.addLineToObjectList(()=>new Wall({}), 'y', 0, 2, 15)
     testRoom.addLineToObjectList(()=>new Wall({}), 'y', 7, 9, 15)
 }})
-
-
-//test room
-export const testWalls = new Room({name:'testWalls', playerStartPos:{posX: 2, posY: 3}, loadObjects:()=>{
-
-    testWalls.objectList.push(new Wall({posX: 4, posY: 3}))
-    testWalls.objectList.push(new Wall({posX: 4, posY: 2}))
-    testWalls.objectList.push(new Wall({posX: 5, posY: 2}))
-}})

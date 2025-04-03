@@ -124,7 +124,7 @@ function renderObjectList(){
     }
 }
 
-export const controlsDict = {
+export const discControlsDict = {
     'white': ['eject-disc'],
     'green': ['eject-disc', 'push-box', 'pull-box'],
     'purple': ['eject-disc', 'teleport'],
@@ -134,7 +134,12 @@ export const controlsDict = {
 
 function renderControls(){
     //Frame
-    const frameImg = sprites.inventory_frame.img
+    let frameImg;
+    if (player.disc?.color == 'yellow') {
+        frameImg = sprites.inventory_player_remotebot.img
+    } else {
+        frameImg = sprites.inventory_player.img
+    }
     ctx.drawImage(frameImg,
         ((screenConfig.posX)) * renderScale,
         ((screenConfig.posY) + (screenConfig.screenHeight - 2 * tileSize)) * renderScale,
@@ -151,14 +156,14 @@ function renderControls(){
     //Disc controls
     let playerDiscImg;
     if (!player.disc){
-        playerDiscImg = sprites.floppy_null_selected.img
+        playerDiscImg = sprites.disc_null.img
         ctx.drawImage(playerDiscImg,
             (screenConfig.posX + 8) * renderScale,
             ((screenConfig.posY + 8) + (screenConfig.screenHeight - 2*tileSize)) * renderScale,
             tileSize * renderScale,tileSize * renderScale)
             return
     } else {
-        playerDiscImg = findSprite(`floppy-${player.disc.color}-selected`).img
+        playerDiscImg = findSprite(`disc-${player.disc.color}`).img
     }
 
     ctx.drawImage(playerDiscImg,
@@ -166,7 +171,7 @@ function renderControls(){
         ((screenConfig.posY + 8) + (screenConfig.screenHeight - 2*tileSize)) * renderScale,
         tileSize * renderScale,tileSize * renderScale)
 
-    let controls = controlsDict[player.disc.color]
+    let controls = discControlsDict[player.disc.color]
     for (let i = 0; i < controls.length; i++){
         const controlImg = findSprite(`controls-${controls[i]}`).img
         ctx.drawImage(controlImg,
@@ -175,6 +180,7 @@ function renderControls(){
             tileSize *2* renderScale, tileSize *2* renderScale)
     }
 
+    //RemoteBot controls 
     if (player.disc?.color == 'yellow') {
         let rBot;
         roomModule.currentRoom.forEachGameObject((obj)=>{
@@ -187,7 +193,7 @@ function renderControls(){
         }
         let rBotDiscImg;
         if (!rBot.disc){
-            rBotDiscImg = sprites.floppy_null_selected.img
+            rBotDiscImg = sprites.disc_null.img
             ctx.drawImage(rBotDiscImg,
                 (screenConfig.posX + screenConfig.screenWidth - 1.5*tileSize) * renderScale,
                 ((screenConfig.posY + 8) + (screenConfig.screenHeight - 2*tileSize)) * renderScale,
@@ -195,7 +201,7 @@ function renderControls(){
                 return
         } else {
 
-            rBotDiscImg = findSprite(`floppy-${rBot.disc.color}-selected`).img
+            rBotDiscImg = findSprite(`disc-${rBot.disc.color}`).img
         }
         ctx.drawImage(rBotDiscImg,
             (screenConfig.posX + screenConfig.screenWidth - 1.5 * tileSize) * renderScale,
@@ -203,13 +209,13 @@ function renderControls(){
             tileSize * renderScale,tileSize * renderScale)
         
         if (rBot.disc){
-            let rControls = rBot.disc.controls
+            let rControls = discControlsDict[rBot.disc.color]
             for (let i = 0; i < rControls.length; i++){
                 let controlImg;
                 if (i == 0){
-                    controlImg = findSprite(`${rControls[i]}-remote`).img
+                    controlImg = findSprite(`controls-${rControls[i]}-remote`).img
                 } else {
-                    controlImg = findSprite(rControls[i]).img
+                    controlImg = findSprite(`controls-${rControls[i]}`).img
                 }
                 ctx.drawImage(
                     controlImg,

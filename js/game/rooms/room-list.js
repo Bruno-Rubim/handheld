@@ -1,11 +1,11 @@
 import { firstRoom, room2Levers, roomDisc1, roomDisc2, roomDiscLever, room2Discs } from "./section-a.js"
 import { roomBoxPlates, roomPullBox, roomPushBox1, roomPushBox2 } from "./section-b.js"
-import { roomRemoteBot1, roomRemoteBot3, roomRemoteBot4, roomRemoteDisc, roomRemotePushBox, roomRemoteWallShift } from "./section-c.js"
-import { roomConveyor1, roomConveyor2, roomConveyor3, roomConveyorTeleport, roomTeleport1, roomTeleport2, roomTeleport3 } from "./section-d.js"
-import { roomShoot1, roomShoot2, roomShoot3, roomShoot4 } from "./section-e.js"
-import { testRoom, testWalls } from "./test-room.js"
+import { roomRemoteLever, roomRemoteBoxShift, roomRemoteSelfTrap, roomRemoteDisc, roomRemotePushBox, roomRemoteWallShift } from "./section-c.js"
+import { roomConveyor1, roomConveyorDisc, roomConveyor3, roomConveyorTeleport, roomTeleport1, roomTeleport2, roomTeleportRemoteBot } from "./section-d.js"
+import { roomShoot1, roomShoot2, roomShoot3, roomShoot4, roomShoot5, roomShoot6 } from "./section-e.js"
+import { testRoom } from "./test-room.js"
 
-export const debugRoom = roomShoot2
+export const debugRoom = roomShoot4
 
 export const sectionARooms = [
     firstRoom,
@@ -22,19 +22,19 @@ export const sectionBRooms = [
     roomBoxPlates,
 ]
 export const sectionCRooms = [
-    roomRemoteBot1,
+    roomRemoteLever,
     roomRemoteDisc,
     roomRemoteWallShift,
     roomRemotePushBox,
-    roomRemoteBot3,
-    roomRemoteBot4,
+    roomRemoteBoxShift,
+    roomRemoteSelfTrap,
 ]
 export const sectionDRooms = [
     roomTeleport1,
     roomTeleport2,
-    roomTeleport3,
+    roomTeleportRemoteBot,
     roomConveyor1,
-    roomConveyor2,
+    roomConveyorDisc,
     roomConveyor3,
     roomConveyorTeleport,
 ]
@@ -43,6 +43,8 @@ export const sectionERooms = [
     roomShoot2,
     roomShoot3,
     roomShoot4,
+    roomShoot5,
+    roomShoot6,
 ]
 
 export const allRooms = {
@@ -59,22 +61,24 @@ export const allRooms = {
     [roomPullBox.name]: roomPullBox,
     [roomBoxPlates.name]: roomBoxPlates,
     //C
-    [roomRemoteBot1.name]: roomRemoteBot1,
+    [roomRemoteLever.name]: roomRemoteLever,
     [roomRemoteDisc.name]: roomRemoteDisc,
     [roomRemoteWallShift.name]: roomRemoteWallShift,
     [roomRemotePushBox.name]: roomRemotePushBox,
-    [roomRemoteBot3.name]: roomRemoteBot3,
-    [roomRemoteBot4.name]: roomRemoteBot4,
+    [roomRemoteBoxShift.name]: roomRemoteBoxShift,
+    [roomRemoteSelfTrap.name]: roomRemoteSelfTrap,
     //D
     [roomTeleport1.name]: roomTeleport1,
     [roomTeleport2.name]: roomTeleport2,
-    [roomTeleport3.name]: roomTeleport3,
+    [roomTeleportRemoteBot.name]: roomTeleportRemoteBot,
     [roomConveyor1.name]: roomConveyor1,
-    [roomConveyor2.name]: roomConveyor2,
+    [roomConveyorDisc.name]: roomConveyorDisc,
     [roomConveyorTeleport.name]: roomConveyorTeleport,
     //E
     [roomShoot1.name]: roomShoot1,
     [roomShoot2.name]: roomShoot2,
     [roomShoot3.name]: roomShoot3,
     [roomShoot4.name]: roomShoot4,
+    [roomShoot5.name]: roomShoot5,
+    [roomShoot6.name]: roomShoot6,
 }

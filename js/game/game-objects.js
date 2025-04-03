@@ -2,7 +2,7 @@ import { ctx, renderScale } from "../canvas-handler.js";
 import { findSound } from "../sounds.js";
 import { findSprite } from "../sprites.js";
 import { getNow } from "../time-manager.js";
-import { controlsDict, roomModule, screenConfig, tileSize } from "./game-manager.js";
+import { discControlsDict, roomModule, screenConfig, tileSize } from "./game-manager.js";
 
 export const oppDir = {
     left: 'right',
@@ -36,11 +36,11 @@ export class Wall {
             ]
             let walls = ''
             for(let i = 0; i < positionShifts.length; i++){
-                // if (this.posX + positionShifts[i][0] < 0 || this.posX + positionShifts[i][0] > 15 ||
-                //     this.posY + positionShifts[i][1] < 0 || this.posY + positionShifts[i][1] > 9){
-                //     walls += '1'
-                //     continue
-                // }
+                if (this.posX + positionShifts[i][0] < 0 || this.posX + positionShifts[i][0] > 15 ||
+                    this.posY + positionShifts[i][1] < 0 || this.posY + positionShifts[i][1] > 9){
+                    walls += '1'
+                    continue
+                }
                 const wall = roomModule.currentRoom.findObjectByPosition(this.posX + positionShifts[i][0], this.posY  + positionShifts[i][1], ['wall'])
                 if (wall){
                     walls += '1'
@@ -75,7 +75,7 @@ export class Wall {
             } else if (walls == '000011010'){
                 this.spritePosX = 0
                 this.spritePosY = 1
-            } else if (walls == '000111000' || walls == '000111001' || walls == '000111100' || walls == '100111000' || walls == '001111001' || walls == '001111000' || walls == '101111000' || walls == '000111101'){
+            } else if (walls == '000111000' || walls == '000111001' || walls == '000111100' || walls == '100111000' || walls == '001111001' || walls == '001111000' || walls == '101111000' || walls == '000111101' || walls == '100111100'){
                 this.spritePosX = 1
                 this.spritePosY = 1
             } else if (walls == '000110010'){
@@ -87,25 +87,25 @@ export class Wall {
             } else if (walls == '100110111' || walls == '000110110' || walls == `000110111` || walls == `100110110`){
                 this.spritePosX = 6
                 this.spritePosY = 1
-            } else if (walls == '001011001' || walls == '010110010'){
+            } else if (walls == '001011001' || walls == '010110010' || walls == `110110010` || walls == `111110010`){
                 this.spritePosX = 0
                 this.spritePosY = 2
             } else if (walls == '000111010'){
                 this.spritePosX = 2
                 this.spritePosY = 2
-            } else if (walls == '011011010'){
+            } else if (walls == '011011010' || walls == `010011010` || walls == `111011010`){
                 this.spritePosX = 3
                 this.spritePosY = 2
             } else if (walls == '010011011'){
                 this.spritePosX = 4
                 this.spritePosY = 2
-            } else if (walls == '000011111' || walls == `000111011`){
+            } else if (walls == '000011111' || walls == `000111011` || walls == `001111011`){
                 this.spritePosX = 6
                 this.spritePosY = 2
             } else if (walls == '000111110' || walls == '100111110'){
                 this.spritePosX = 7
                 this.spritePosY = 2
-            } else if (walls == '011011011' || walls == `011011111` || walls == `111011011` || walls == `111011111`){
+            } else if (walls == '011011011' || walls == `011011111` || walls == `111011011` || walls == `111011111` || walls == `010011111`){
                 this.spritePosX = 1
                 this.spritePosY = 3
             } else if (walls == '111111000' || walls == `111111101` || walls == `111111100` || walls == `111111001` || walls == `110111000` || walls == `011111000` || walls == `110111100` || walls == `010111000` || walls == `011111001`){
@@ -114,7 +114,7 @@ export class Wall {
             } else if (walls == '111110111' || walls == `111110110` || walls == `110110110` || walls == `110110111` || walls == `010110111` || walls == `010110110`){
                 this.spritePosX = 3
                 this.spritePosY = 3
-            } else if (walls == `000111111` || walls == `100111111` || walls == `001111111`){
+            } else if (walls == `000111111` || walls == `100111111` || walls == `001111111` || walls == `101111111`){
                 this.spritePosX = 4
                 this.spritePosY = 3
             } else if (walls == `011111011`){
@@ -140,9 +140,6 @@ export class Wall {
                 this.spritePosY = 4
             } else if (walls == `110111111`){
                 this.spritePosX = 4
-                this.spritePosY = 4
-            } else if (walls == `110110010`){
-                this.spritePosX = 6
                 this.spritePosY = 4
             } else if (walls == '111111111'){
                 this.spritePosX = 7
@@ -186,7 +183,7 @@ export class Disc {
         this.controls.unshift('controls-eject-disc')
         this.tags = ['disc', 'movable'];
         this.renderLayer = 'disc';
-        this.sprite = 'floppy-' + this.color + '-item'
+        this.sprite = 'disc-' + this.color
         this.posYOffset = 0;
     }
     render(){
@@ -782,7 +779,7 @@ export class RemoteBot {
     }
     inventory(){
         if (this.pointer) {
-            controlsDict['red'] = ['eject-disc', 'pointer'];
+            discControlsDict['red'] = ['eject-disc', 'pointer'];
             this.pointer = null
             return
         }
@@ -908,6 +905,7 @@ export class RemoteBot {
                     findSound('error').play()
                     return
                 }
+                discControlsDict['red'] = ['eject-disc', 'pointer'];
                 roomModule.currentRoom.objectList.push(new RedDiscProjectile({
                     posX: this.posX + pointerXShift,
                     posY: this.posY + pointerYShift,
@@ -916,6 +914,7 @@ export class RemoteBot {
                 this.disc = null
                 return
             }
+            discControlsDict['red'] = ['cancel', 'shoot'];
             this.pointer = this.lastMoveDir
             return
         }
@@ -934,7 +933,6 @@ export class RemoteBot {
             if (!teleported) {
                 findSound('error').play()
             }
-            return
         }
         if (this.disc.color == 'green'){
             if (this.state == 'walking'){
@@ -995,7 +993,7 @@ export const player = {
     },
     inventory(){
         if (this.pointer) {
-            controlsDict['red'] = ['eject-disc', 'pointer'];
+            discControlsDict['red'] = ['eject-disc', 'pointer'];
             this.pointer = null
             return
         }
@@ -1180,7 +1178,7 @@ export const player = {
                     findSound('error').play()
                     return
                 }
-                controlsDict['red'] = ['eject-disc', 'pointer'];
+                discControlsDict['red'] = ['eject-disc', 'pointer'];
                 roomModule.currentRoom.objectList.push(new RedDiscProjectile({
                     posX: this.posX + pointerXShift,
                     posY: this.posY + pointerYShift,
@@ -1189,7 +1187,7 @@ export const player = {
                 this.disc = null
                 return
             }
-            controlsDict['red'] = ['cancel', 'shoot'];
+            discControlsDict['red'] = ['cancel', 'shoot'];
             this.pointer = this.lastMoveDir
             return
         }
